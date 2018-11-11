@@ -122,7 +122,11 @@ namespace ScraBoy.Features.CMS.User
         [Authorize(Roles = "admin")]
         public async Task<ActionResult> Delete(string username)
         {
-
+            if(username.Equals("Ainul"))
+            {
+                ModelState.AddModelError(string.Empty,"Cannot Delete Your Account");
+                return View("Index");
+            }
             await this.userservice.DeleteAsync(username);
 
             return RedirectToAction("Index");

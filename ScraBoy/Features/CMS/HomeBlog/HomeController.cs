@@ -41,12 +41,27 @@ namespace ScraBoy.Features.CMS.HomeBlog
         {
             ViewBag.Tags =await this.blogService.GetAllTags();
         }
+
+        private async Task RecentComments()
+        {
+            ViewBag.RecentComments = await this.blogService.GetRecentCommentsAsycn();
+        }
+        private async Task GetCategories()
+        {
+            ViewBag.Categories = await this.blogService.GetAllCategories();
+        }
+        private async Task SetViewBag()
+        {
+            await SetTags();
+            await RecentComments();
+            await GetCategories();
+        }
         [Route("")]
         [AllowAnonymous]
         public async Task<ActionResult> Index()
         {
-            await SetTags();
 
+            await SetViewBag();
             var blogs = await blogService.GetPageBlogAsync(1,pageSize);
 
             ViewBag.PreviousPage = 0;
@@ -58,7 +73,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
         [AllowAnonymous]
         public async Task<ActionResult> Page(int page=1)
         {
-            await SetTags();
+            await SetViewBag();
 
             if(page<2)
             {
@@ -78,7 +93,8 @@ namespace ScraBoy.Features.CMS.HomeBlog
         [AllowAnonymous]
         public async Task<ActionResult> Post(string postId)
         {
-            await SetTags();
+            await SetViewBag();
+
             var blog = await blogService.GetBlogAsync(postId);
 
             if(blog == null)
@@ -98,7 +114,8 @@ namespace ScraBoy.Features.CMS.HomeBlog
         [Route("posts/{postId}")]
         public async Task<ActionResult> Post(BlogViewModel model, string postId)
         {
-            await SetTags();
+            await SetViewBag();
+
             var blog = await blogService.GetBlogAsync(postId);
 
             if(blog == null)
@@ -129,7 +146,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
         [AllowAnonymous]
         public async Task<ActionResult> Tag(string tagId)
         {
-            await SetTags();
+            await SetViewBag();
 
             var posts = await blogService.GetBlogByTagAsync(tagId);
 
@@ -143,7 +160,25 @@ namespace ScraBoy.Features.CMS.HomeBlog
             return View(posts);
         }
 
-       
+        [Route("category/{catId}")]
+        [AllowAnonymous]
+        public async Task<ActionResult> Category(string catId)
+        {
+            await SetViewBag();
+
+            var posts = await blogService.GetBlogByCategoryAsync(catId);
+
+            if(!posts.Any())
+            {
+                return HttpNotFound();
+            }
+
+            ViewBag.category = catId;
+
+            return View(posts);
+        }
+
+
         private async Task<CMSUser> GetLoggedInUser()
         {
             return await userRepository.GetUserByNameAsync(User.Identity.Name);

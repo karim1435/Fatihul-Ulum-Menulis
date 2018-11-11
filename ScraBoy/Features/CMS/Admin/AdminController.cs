@@ -118,7 +118,7 @@ namespace ScraBoy.Features.CMS.Admin
                     {
                         Text = "Users",
                         Action = "Index",
-                        Icon = "fa fa-bars",
+                        Icon = "fa fa-user-cog",
                         RouteInfo = new { controller = "user"}
                     });
                 }
@@ -128,7 +128,7 @@ namespace ScraBoy.Features.CMS.Admin
                     {
                         Text = "Profile",
                         Action = "Edit",
-                        Icon = "fa fa-bars",
+                        Icon = "fa fa-user-edit",
                         RouteInfo = new { controller = "user",username = User.Identity.Name }
                     });
                 }
@@ -139,21 +139,21 @@ namespace ScraBoy.Features.CMS.Admin
                     {
                         Text = "Tags",
                         Action = "Index",
-                        Icon = "fa fa-bars",
+                        Icon = "fa fa-paperclip",
                         RouteInfo = new { controller = "tag"}
                     });
                     items.Add(new AdminMenuItem
                     {
                         Text = "Comment",
                         Action = "Index",
-                        Icon = "fa fa-bars",
+                        Icon = "fa fa-comment-alt",
                         RouteInfo = new { controller = "comment"}
                     });
                     items.Add(new AdminMenuItem
                     {
                         Text = "Category",
                         Action = "Index",
-                        Icon = "fa fa-bars",
+                        Icon = "fa fa-paste",
                         RouteInfo = new { controller = "Category"}
                     });
                 }
@@ -162,7 +162,7 @@ namespace ScraBoy.Features.CMS.Admin
                 {
                     Text = "Posts",
                     Action = "Index",
-                    Icon = "fa fa-bars",
+                    Icon = "fa fa-paste",
                     RouteInfo = new { controller = "post"}
                 });
             }
@@ -180,7 +180,7 @@ namespace ScraBoy.Features.CMS.Admin
             {
                 item.Text = "Logout";
                 item.Action = "Logout";
-                item.Icon = "fa fa-bars";
+                item.Icon = "fa fa-sign-out-alt";
             }
             else
             {

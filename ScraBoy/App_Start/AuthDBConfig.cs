@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using ScraBoy.Features.CMS.Role;
+using ScraBoy.Features.CMS.Topic;
 using ScraBoy.Features.CMS.User;
 using ScraBoy.Features.Data;
 using System;

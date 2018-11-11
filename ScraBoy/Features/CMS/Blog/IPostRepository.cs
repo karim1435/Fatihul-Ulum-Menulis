@@ -21,6 +21,7 @@ namespace ScraBoy.Features.CMS.Blog
         Task<IEnumerable<Post>> GetPublishedPostAsync();
         Task<IEnumerable<Post>> GetPostByTagAsync(string tagId);
         Task<IEnumerable<Post>> GetPageAsync(int pageNumber,int pageSize);
-        
+
+
     }
 }

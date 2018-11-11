@@ -81,11 +81,6 @@ namespace ScraBoy.Features.CMS.Blog
             model.Created = DateTime.Now;
             model.AuthorId = user.Id;
 
-            ////using(var db = new CMSContext())
-            ////{
-            ////    db.Post.Add(model);
-            ////    db.SaveChanges();
-            ////}
             try
             {
                 await postRepository.Create(model);
@@ -95,6 +90,7 @@ namespace ScraBoy.Features.CMS.Blog
             catch(Exception e)
             {
                 ModelState.AddModelError("key",e);
+                await SetViewBag();
                 return View(model);
             }
 
@@ -104,6 +100,8 @@ namespace ScraBoy.Features.CMS.Blog
         [Route("edit/{postId}")]
         public async Task<ActionResult> Edit(string postId)
         {
+            await SetViewBag();
+
             var post = await postRepository.GetAsync(postId);
             
             if(post == null)
@@ -132,8 +130,8 @@ namespace ScraBoy.Features.CMS.Blog
         {
             if(!ModelState.IsValid)
             {
+                await SetViewBag();
                 return View(model);
-                
             }
 
             if(User.IsInRole("author"))
@@ -172,6 +170,7 @@ namespace ScraBoy.Features.CMS.Blog
             catch(Exception e)
             {
                 ModelState.AddModelError("",e.Message);
+                await SetViewBag();
                 return View(model);
             }
         }

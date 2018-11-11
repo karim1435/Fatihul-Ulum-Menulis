@@ -20,7 +20,7 @@ namespace ScraBoy.Features.CMS.Comments
         {
             using(var db = new CMSContext())
             {
-                return await db.Comment.ToArrayAsync();
+                return await db.Comment.Include("Post").OrderByDescending(a=>a.PostedOn).ToArrayAsync();
             }
         }
         public async Task CreateAsync(BlogViewModel model)

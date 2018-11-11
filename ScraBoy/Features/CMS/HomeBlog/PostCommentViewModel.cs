@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScraBoy.Features.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -27,7 +28,9 @@ namespace ScraBoy.Features.CMS.HomeBlog
         public string UserId { get; set; }
         public VoteViewModel Voting { get; set; }
         public List<CommentViewModel> Comments { get; set; }
+        public IEnumerable<CommentViewModel> RecentComments { get; set; }
         public CategoryViewModel SideBarCategory { get; set; }
+        public List<CategoryViewModel> SideBarComments { get; set; }
         public TagViewModel SideBarTags { get; set; }
         public DateTime Created { get; internal set; }
         public DateTime? Published { get; internal set; }
@@ -36,11 +39,14 @@ namespace ScraBoy.Features.CMS.HomeBlog
     {
         public IList<string> Tags { get; set; }
     }
-    public class CategoryViewModel {
+    public class CategoryViewModel
+    {
         public string Names { get; set; }
     }
     public class CommentViewModel
     {
+        public DateTime PostedOn { get; set; }
+        public string Post { get; set; }
         public string Author { get; set; }
         public string Comment { get; set; }
     }

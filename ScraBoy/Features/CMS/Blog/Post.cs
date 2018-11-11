@@ -1,4 +1,6 @@
-﻿using ScraBoy.Features.CMS.Topic;
+﻿using ScraBoy.Features.CMS.Comments;
+using ScraBoy.Features.CMS.Interest;
+using ScraBoy.Features.CMS.Topic;
 using ScraBoy.Features.CMS.User;
 using System;
 using System.Collections.Generic;
@@ -6,18 +8,24 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ScraBoy.Features.CMS.Blog
 {
     public class Post
-    {      
+    {
         [Display(Name ="Slug")]
         public string Id { get; set; }
+
         [Display(Name = "Title")]
         [Required]
+        [StringLength(80,MinimumLength = 3,ErrorMessage = "Cant be empty")]
         public string Title { get; set; }
+
+        [AllowHtml]
         [Display(Name = "Post Content")]
         [Required]
+        [StringLength(int.MaxValue,MinimumLength = 7)]
         public string Content { get; set; }
         [Display(Name = "Date Created")]
         public DateTime Created { get; set; }
@@ -48,5 +56,7 @@ namespace ScraBoy.Features.CMS.Blog
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Voting> Votings { get; set; }
     }
 }

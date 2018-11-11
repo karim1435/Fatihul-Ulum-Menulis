@@ -95,3 +95,11 @@ E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.pdb
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.csprojResolveAssemblyReference.cache
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.init.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.csproj.GenerateResource.Cache
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.user.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.OK.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.OI.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.POST.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.POST1.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.good.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.goos.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.voting.resources
