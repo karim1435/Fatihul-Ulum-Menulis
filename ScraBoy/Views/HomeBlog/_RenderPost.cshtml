@@ -1,0 +1,57 @@
+﻿@model ScraBoy.Features.CMS.HomeBlog.BlogViewModel
+@*<button>@Html.ActionLink("Suka","Like",new { controller = "Voting",postId = Model.PostId })</button>
+    <button>@Html.ActionLink("Benci","Dislike",new { controller = "Voting",postId = Model.PostId })</button>
+
+    @Html.Partial("_RenderVoting",Model.Voting)
+
+    <p>Tags: @Html.Partial("_RenderTags",Model.Tags.Distinct())</p>*@
+@if(ViewBag.IsIndex)
+{
+    <div class="card mb-4">
+
+        <div class="card-text text-muted">
+            Posted by <a href="#">@Model.Author</a> on @Model.Created.ToString("MMMM, dd, yyyy")
+        </div>
+        <img class="card-img-top" src="@Model.UrlImage" alt="Card image cap">
+        <div class="card-body">
+            <h2 class="card-title">
+                @Html.ActionLink(Model.Title,"post",new { controller = "HomeBlog",postId = Model.PostId })
+            </h2>
+            <p class="card-text">@Model.Content</p>
+            <a href="#" class="btn btn-primary">Read More &rarr;</a>
+        </div>
+
+        <div class="card-footer text-muted">
+            @Html.Partial("_RenderVoting",Model.Voting)
+            Topics @Html.Partial("_RenderTags",Model.PostTags.Tags.Distinct())
+        </div>
+    </div>
+}
+else
+{
+    <div class="col-lg-8">
+     
+
+        <!-- Title -->
+        <h1 class="mt-4">@Model.Title</h1>
+        <!-- Author -->
+        <p class="lead">
+            Topics: @Html.Partial("_RenderTags",Model.PostTags.Tags.Distinct())
+            Category: @Html.Partial("_RenderTags",Model.PostTags.Tags.Distinct())
+        </p>
+        <hr>
+        <!-- Preview Image -->
+        <img class="img-fluid rounded" src="@Model.UrlImage" alt="">
+        <hr>
+        <!-- Post Content -->
+        @Model.Content
+        <hr>
+        <div class="card-login text-success">
+            @Html.Partial("_RenderVoting",Model.Voting)
+        </div>
+        @Html.Partial("_CommentForm",Model)
+
+        @Html.Partial("_RenderComment",Model.Comments)
+    </div>
+}
+

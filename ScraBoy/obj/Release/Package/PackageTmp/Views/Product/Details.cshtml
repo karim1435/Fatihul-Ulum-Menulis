@@ -1,0 +1,51 @@
+﻿@model ScraBoy.Features.Product.ProductModel
+
+<div>
+    <h4>ProductModel</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ProductName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProductName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UnitPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UnitPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ShipmentPrice)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ShipmentPrice)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpiresOn)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ExpiresOn)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Url)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Url)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Add To Inventory","AddToInventory",new { controller = "Inventory",id = Model.ProductId })
+</p>

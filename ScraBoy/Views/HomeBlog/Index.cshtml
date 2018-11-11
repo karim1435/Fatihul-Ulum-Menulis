@@ -1,0 +1,78 @@
+﻿@model IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    ViewBag.IsIndex = true;
+
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="my-4">
+                Page Heading
+                <small>Secondary Text</small>
+            </h1>
+            @foreach(var item in Model)
+            {
+                @Html.Partial("_RenderPost",item)
+            }
+
+            <div>
+                <!-- Pagination -->
+                <ul class="pagination justify-content-center mb-4">
+                    @if(ViewBag.PreviousPage > 0)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Page","HomeBlog",new { page = ViewBag.PreviousPage })">
+                                &larr; Older
+                            </a>
+                        </li>
+                    }
+                    @if(ViewBag.NextPage > -1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Page","HomeBlog",new { page = ViewBag.NextPage })">
+                                Newer &rarr;
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+        </div>
+        <div class="col-md-4">
+            <!-- Search Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Search</h5>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-secondary" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card my-4">
+                <h5 class="card-header">Categories</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled mb-0">
+                                @foreach(var item in ViewBag.Tags)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Tag",new { tagId = item })">@item</a>
+                                    </li>
+                                }
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

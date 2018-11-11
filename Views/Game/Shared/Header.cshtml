@@ -1,0 +1,13 @@
+﻿<ul class="nav nav-pills">
+    <li>
+        @Html.ActionLink("View","Index",
+        "Difficult",
+        null,
+        new { @class = "active",@role = "presentation" })
+    </li>
+    <li>
+        @Html.ActionLink("Add","Create",
+        new { controller = "Difficult" },
+        new { @role = "presentation" })
+    </li>
+</ul>

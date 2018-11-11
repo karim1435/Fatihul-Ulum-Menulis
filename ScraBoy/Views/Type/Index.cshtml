@@ -1,0 +1,27 @@
+﻿@model IEnumerable<ScraBoy.Features.Type.TypeModel>
+
+<p>
+    @Html.ActionLink("Create New","Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.TypeName)
+        </th>
+        <th>Action</th>
+    </tr>
+
+    @foreach(var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.TypeName,"Browse",new { controller = "Product",type = item.TypeName })
+            </td>
+            <td>
+                @Html.ActionLink("Delete","Delete",new { id = item.TypeId }) |
+                @Html.ActionLink("Edit","Edit",new { id = item.TypeId })
+            </td>
+        </tr>
+    }
+
+</table>

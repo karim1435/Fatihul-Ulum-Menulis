@@ -1,0 +1,9 @@
+﻿@model ScraBoy.Features.CMS.Blog.Post
+ 
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Post/_PostLayout.cshtml";
+}
+
+<h2>Edit</h2>
+@Html.Partial("_PostForm",Model);

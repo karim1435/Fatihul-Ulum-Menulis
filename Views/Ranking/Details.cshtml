@@ -1,0 +1,52 @@
+﻿@model ScraBoy.Features.Ranking.RankingModel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Rank)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Rank)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Game.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Game.Title)
+        </dd>
+        <dt>
+            Creator
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Game.Creator.Name)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalInstall)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalInstall)
+        </dd>
+      
+
+        <dt>
+            Ranked On
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RankedOn)
+        </dd>
+   
+    </dl>
+</div>
+

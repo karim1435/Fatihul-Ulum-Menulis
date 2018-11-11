@@ -1,0 +1,89 @@
+﻿@model IEnumerable<ScraBoy.Features.Ranking.RankingModel>
+
+@{
+    ViewBag.Title = "Index";
+
+}
+<div class="container">
+
+    <div class="navbar-form navbar-left" role="search">
+        @using(Html.BeginForm("Search","Ranking",FormMethod.Get))
+        {
+            <div class="input-group" style="width:250px;">
+
+
+                <b>Name:</b><br>
+                <input type="text" class="form-control" placeholder="Mobile Legends"
+                       value="@ViewBag.filter" name="name">
+                <br>
+                <b>Creator:</b><br>
+                <input type="text" class="form-control" placeholder="Google LLC"
+                       value="@ViewBag.filter" name="creator">
+                <br>
+                <b>From:</b><br>
+                <input type="text" class="form-control" placeholder="19/10/2018"
+                       value="@ViewBag.filter" name="start">
+                <br>
+                <b>To:</b><br>
+                <input type="text" class="form-control" placeholder="20/10/2018"
+                       value="@ViewBag.filter" name="end">
+                <br>
+                <button type="submit" class="btn btn-success" value="Search" id="searchsubmit">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </div>
+
+        }
+    </div>
+
+    <div class="navbar-form navbar-right" role="search">
+        @using(Html.BeginForm("Scrap","Ranking",FormMethod.Get))
+        {
+            <div class="input-group" style="width:250px;">
+                <input type="text" class="form-control" placeholder="Enter url to scrap"
+                       value="@ViewBag.filter" name="url">
+                <span class="input-group-btn">
+                    <button type="submit" class="btn btn-default" id="searchsubmit">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </button>
+                </span>
+            </div>
+
+        }
+    </div>
+</div>
+<hr />
+<center><h1>Top Games On Playstore </h1></center>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Rank</th>
+            <th>Title</th>
+            <th>Info</th>
+        </tr>
+    </thead>
+    @foreach(var item in Model)
+    {
+        <tbody>
+            <tr>
+                <td class="rank">@Html.DisplayFor(modelItem => item.Rank)</td>
+                <td class="team">
+                    <span class="flag-wrap">
+                        <img class="logo" src="@Url.Content(item.Image)" ; alt="Image" />
+                        <a href=@item.Game.UrlGame>@item.Game.Title</a>
+                    </span>
+                </td>
+                <td class="title">
+                    <b>Developer:</b>
+                    @Html.DisplayFor(modelItem => item.Game.Creator.Name)
+                    <br />
+                    <b>Donwloads:</b>
+                    @Html.DisplayFor(modelItem => item.TotalInstall)
+                    <br/>
+                    <b>Last Updated:</b>
+                    @Html.DisplayFor(modelItem => item.RankedOn)
+                </td>
+            </tr>
+        </tbody>
+    }
+</table>

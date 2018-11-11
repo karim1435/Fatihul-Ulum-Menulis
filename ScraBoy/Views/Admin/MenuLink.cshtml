@@ -1,0 +1,8 @@
+﻿@model ScraBoy.Features.CMS.Admin.AdminMenuItem
+
+<li class="nav-item active">
+    <a class="nav-link" href="@Url.Action(Model.Action,Model.RouteInfo)">
+        <i class="@Model.Icon")"></i>
+        <span>@Model.Text</span>
+    </a>
+</li>

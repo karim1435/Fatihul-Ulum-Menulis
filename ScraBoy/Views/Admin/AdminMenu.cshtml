@@ -1,0 +1,7 @@
+﻿
+@model IEnumerable<ScraBoy.Features.CMS.Admin.AdminMenuItem>
+
+@foreach(var item in Model)
+{
+    @Html.Partial("MenuLink",item)
+}
