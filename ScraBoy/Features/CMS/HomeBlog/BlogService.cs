@@ -48,8 +48,8 @@ namespace ScraBoy.Features.CMS.HomeBlog
             var posts = await this.postRepository.GetAllAsync();
 
             return await GetBlogListViewModel(posts);
-
         }
+        
         public async Task<IEnumerable<BlogViewModel>> GetPageBlogAsync(int pageNumber,int pageSize)
         {
             var blogs = await this.postRepository.GetPageAsync(pageNumber,pageSize);

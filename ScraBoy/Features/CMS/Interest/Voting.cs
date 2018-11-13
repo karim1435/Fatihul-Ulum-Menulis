@@ -11,8 +11,8 @@ namespace ScraBoy.Features.CMS.Interest
     public class Voting
     {
         public int Id { get; set; }
-        public int LikeCount { get; set; }
-        public int DislikeCount { get; set; }
+        public bool LikeCount { get; set; }
+        public bool DislikeCount { get; set; }
         public DateTime PostedOn { get; set; }
         public string PostId { get; set; }
         [ForeignKey("PostId")]

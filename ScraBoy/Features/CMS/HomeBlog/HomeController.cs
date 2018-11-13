@@ -20,14 +20,15 @@ namespace ScraBoy.Features.CMS.HomeBlog
         private readonly IUserRepository userRepository;
         private readonly ICommentRepository commentRepository;
         private readonly IVotingRepository votingRepository;
-        
+
         private BlogService blogService = new BlogService();
 
         private readonly int pageSize = 2;
-        public HomeBlogController() : this(new PostRepository(), 
-            new UserRepository(), new CommentRepository(), new VotingRepository()) { }
+        public HomeBlogController() : this(new PostRepository(),
+            new UserRepository(),new CommentRepository(),new VotingRepository())
+        { }
 
-        public HomeBlogController(IPostRepository postRepository, 
+        public HomeBlogController(IPostRepository postRepository,
             IUserRepository userRepositorry,
             ICommentRepository commentRepository,IVotingRepository votingRepository)
         {
@@ -36,10 +37,9 @@ namespace ScraBoy.Features.CMS.HomeBlog
             this.commentRepository = commentRepository;
             this.votingRepository = votingRepository;
         }
-
         private async Task SetTags()
         {
-            ViewBag.Tags =await this.blogService.GetAllTags();
+            ViewBag.Tags = await this.blogService.GetAllTags();
         }
 
         private async Task RecentComments()
@@ -60,9 +60,14 @@ namespace ScraBoy.Features.CMS.HomeBlog
         [AllowAnonymous]
         public async Task<ActionResult> Index()
         {
-
             await SetViewBag();
+
             var blogs = await blogService.GetPageBlogAsync(1,pageSize);
+
+            foreach(var blog in blogs)
+            {
+                blog.Voted = await StatusVote(blog);
+            }
 
             ViewBag.PreviousPage = 0;
             ViewBag.NextPage = (Decimal.Divide(posRepository.CountPublished,pageSize) > 1) ? 2 : -1;
@@ -71,22 +76,27 @@ namespace ScraBoy.Features.CMS.HomeBlog
         }
         [Route("page/{page:int}")]
         [AllowAnonymous]
-        public async Task<ActionResult> Page(int page=1)
+        public async Task<ActionResult> Page(int page = 1)
         {
             await SetViewBag();
 
-            if(page<2)
+            if(page < 2)
             {
                 RedirectToAction("Index");
             }
             var blogs = await blogService.GetPageBlogAsync(page,pageSize);
 
-            ViewBag.PreviousPage = page-1;
-            ViewBag.NextPage = (Decimal.Divide(posRepository.CountPublished,pageSize) > page) ? page+1 : -1;
+            foreach(var blog in blogs)
+            {
+                blog.Voted = await StatusVote(blog);
+            }
+
+            ViewBag.PreviousPage = page - 1;
+            ViewBag.NextPage = (Decimal.Divide(posRepository.CountPublished,pageSize) > page) ? page + 1 : -1;
 
             return View("Index",blogs);
         }
-   
+
         // root/posts/post-id
         [HttpGet]
         [Route("posts/{postId}")]
@@ -102,19 +112,22 @@ namespace ScraBoy.Features.CMS.HomeBlog
                 return HttpNotFound();
             }
 
+            blog.Voted = await StatusVote(blog);
+
             var currentComments = await blogService.GetPostCommentAsync(blog.PostId);
 
             blog.Comments = currentComments.ToList();
-            
+
             return View(blog);
         }
-       
+
 
         [HttpPost]
         [Route("posts/{postId}")]
-        public async Task<ActionResult> Post(BlogViewModel model, string postId)
+        public async Task<ActionResult> Post(BlogViewModel model,string postId)
         {
             await SetViewBag();
+
 
             var blog = await blogService.GetBlogAsync(postId);
 
@@ -123,8 +136,10 @@ namespace ScraBoy.Features.CMS.HomeBlog
                 return HttpNotFound();
             }
 
+            blog.Voted = await StatusVote(blog);
+
             var user = await GetLoggedInUser();
-        
+
             model.UserId = user.Id;
             model.PostId = blog.PostId;
 
@@ -141,6 +156,8 @@ namespace ScraBoy.Features.CMS.HomeBlog
             }
 
         }
+     
+
         // root/tags/tag-id
         [Route("tags/{tagId}")]
         [AllowAnonymous]
@@ -149,6 +166,11 @@ namespace ScraBoy.Features.CMS.HomeBlog
             await SetViewBag();
 
             var posts = await blogService.GetBlogByTagAsync(tagId);
+
+            foreach(var blog in posts)
+            {
+                blog.Voted = await StatusVote(blog);
+            }
 
             if(!posts.Any())
             {
@@ -168,6 +190,10 @@ namespace ScraBoy.Features.CMS.HomeBlog
 
             var posts = await blogService.GetBlogByCategoryAsync(catId);
 
+            foreach(var blog in posts)
+            {
+                blog.Voted = await StatusVote(blog);
+            }
             if(!posts.Any())
             {
                 return HttpNotFound();
@@ -178,6 +204,12 @@ namespace ScraBoy.Features.CMS.HomeBlog
             return View(posts);
         }
 
+        private async Task<bool> StatusVote(BlogViewModel post)
+        {
+            var user = await GetLoggedInUser();
+
+            return await this.votingRepository.UserHasLiked(post.PostId,user.Id);
+        }
 
         private async Task<CMSUser> GetLoggedInUser()
         {

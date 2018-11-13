@@ -11,8 +11,9 @@ namespace ScraBoy.Features.CMS.Interest
     {
         Task<IEnumerable<Voting>> GetAllVotingAsync();
         Task LikedAsync(Voting model);
-        Task<bool> UserHasVoted(string postId, string userId);
+        Task<Voting> UserHasVoted(string postId, string userId);
         Task DislikeAsync(Voting model);
         Task<VoteViewModel> GetVotedPostUser(string id);
+        Task<bool> UserHasLiked(string postId,string userId);
     }
 }

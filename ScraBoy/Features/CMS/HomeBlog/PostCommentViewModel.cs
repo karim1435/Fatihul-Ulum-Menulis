@@ -34,6 +34,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
         public TagViewModel SideBarTags { get; set; }
         public DateTime Created { get; internal set; }
         public DateTime? Published { get; internal set; }
+        public bool Voted { get; set; }
     }
     public class TagViewModel
     {

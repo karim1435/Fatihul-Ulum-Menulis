@@ -5,6 +5,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using ScraBoy.Features.CMS.Topic;
+using PagedList;
 
 namespace ScraBoy.Features.CMS.Blog
 {
@@ -34,8 +35,33 @@ namespace ScraBoy.Features.CMS.Blog
             return await db.Post.Include("Author")
                 .SingleOrDefaultAsync(post => post.Id == id);
         }
+        public IQueryable<Post> GetPosts(string name)
+        {
+            if(!string.IsNullOrEmpty(name))
+            {
+                return this.db.Post.Where(m => m.Title.Contains(name));
+            }
+            return this.db.Post;
+        }
+ 
+        public List<Post> GetPostList(string name)
+        {
+            return this.GetPosts(name).OrderByDescending(a => a.Created).ToList();
+        }
+        public IPagedList<Post> GetPagedList(string search, int currentPage,string userId)
+        {
+            var model = new List<Post>();
 
-
+            if(userId==null)
+            {
+                model = GetPostList(search);
+            }
+            else
+            {
+                model = GetPostList(search).Where(a => a.AuthorId == userId).ToList();
+            }
+            return model.ToPagedList(currentPage,10);
+        }
         public void Edit(string id,Post updatedItem)
         {
             var post = db.Post.SingleOrDefault(p => p.Id == id);
@@ -46,14 +72,16 @@ namespace ScraBoy.Features.CMS.Blog
                     "does not exist in the data store.");
             }
 
-            post.Id = updatedItem.Id;
             post.Title = updatedItem.Title;
             post.Content = updatedItem.Content;
             post.Published = updatedItem.Published;
             post.Tags = updatedItem.Tags;
+            post.UrlImage = updatedItem.UrlImage;
+            post.CategoryId = updatedItem.CategoryId;
+
             db.SaveChanges();
         }
-
+        
         public async Task<IEnumerable<Post>> GetAllAsync()
         {
             return await db.Post.Include("Author").OrderByDescending(post => post.Created).ToArrayAsync();

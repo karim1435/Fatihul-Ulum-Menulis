@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Threading.Tasks;
 using ScraBoy.Features.CMS.Role;
 using ScraBoy.Features.CMS.Admin;
+using ScraBoy.Features.Utility;
 
 namespace ScraBoy.Features.CMS.User
 {
@@ -27,7 +28,7 @@ namespace ScraBoy.Features.CMS.User
                 return false;
             }
 
-            var existingUser = await this.usersRepository.GetUserByNameAsync(model.Email);
+            var existingUser = await this.usersRepository.GetUserByNameAsync(model.Username);
 
             if(existingUser != null)
             {
@@ -44,8 +45,8 @@ namespace ScraBoy.Features.CMS.User
             var newUser = new CMSUser()
             {
                 DisplayName = model.DisplayName,
-                UserName = model.Email,
-                Email = model.Email
+                UserName = model.Username,
+                Email = model.Username
             };
 
             await usersRepository.CreateAsync(newUser,model.Password);
@@ -115,52 +116,52 @@ namespace ScraBoy.Features.CMS.User
             return viewModel;
         }
 
-        public async Task<bool> UpdateUser(UserViewModel model)
+        public async Task<bool> UpdateProfile(UserViewModel model)
         {
             var user = await this.usersRepository.GetUserByNameAsync(model.UserName);
 
-            if(user == null)
-            {
-                modelState.AddModelError(string.Empty,"The specified user does not ecist.");
-                return false;
-            }
+            //if(user == null)
+            //{
+            //    modelState.AddModelError(string.Empty,"The specified user does not ecist.");
+            //    return false;
+            //}
 
-            if(!modelState.IsValid)
-            {
-                return false;
-            }
+            //if(!modelState.IsValid)
+            //{
+            //    return false;
+            //}
 
-            if(!string.IsNullOrWhiteSpace(model.NewPassword))
-            {
-                if(string.IsNullOrWhiteSpace(model.CurrentPassword))
-                {
-                    modelState.AddModelError(string.Empty,"The current password must be supplied");
-                    return false;
-                }
+            //if(!string.IsNullOrWhiteSpace(model.NewPassword))
+            //{
+            //    if(string.IsNullOrWhiteSpace(model.CurrentPassword))
+            //    {
+            //        modelState.AddModelError(string.Empty,"The current password must be supplied");
+            //        return false;
+            //    }
 
-                bool passwordVerified = usersRepository.VerifyUserPassword(user.PasswordHash,model.CurrentPassword);
+            //    bool passwordVerified = usersRepository.VerifyUserPassword(user.PasswordHash,model.CurrentPassword);
 
-                if(!passwordVerified)
-                {
-                    modelState.AddModelError(string.Empty,"The current password does not match our records");
-                    return false;
-                }
+            //    if(!passwordVerified)
+            //    {
+            //        modelState.AddModelError(string.Empty,"The current password does not match our records");
+            //        return false;
+            //    }
 
-                var newHashedPassword = usersRepository.HashPassword(model.NewPassword);
+            //    var newHashedPassword = usersRepository.HashPassword(model.NewPassword);
 
-                user.PasswordHash = newHashedPassword;
-            }
+            //    user.PasswordHash = newHashedPassword;
+            //}
 
             user.Email = model.Email;
             user.DisplayName = model.DisplayName;
 
             await usersRepository.UpdateAsync(user);
 
-            var roles = await usersRepository.GetRolesForUserAsync(user);
+            //var roles = await usersRepository.GetRolesForUserAsync(user);
 
-            await usersRepository.RemoveUserFromRoleAsync(user,roles.ToArray());
+            //await usersRepository.RemoveUserFromRoleAsync(user,roles.ToArray());
 
-            await usersRepository.AddUserToRoleAsync(user,model.SelectedRole);
+            //await usersRepository.AddUserToRoleAsync(user,model.SelectedRole);
 
             return true;
         }

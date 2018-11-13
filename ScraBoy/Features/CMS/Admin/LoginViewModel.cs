@@ -8,6 +8,7 @@ namespace ScraBoy.Features.CMS.Admin
         [Display(Name ="Username")]
         public string UserName { get; set; }
         [Required]
+        [DataType(DataType.Password)]
         public string Pasword { get; set; }
         [Display(Name ="Remember Me")]
         public bool RememberMe { get; set; }
@@ -15,9 +16,9 @@ namespace ScraBoy.Features.CMS.Admin
     public class RegisterViewModel
     {
         [Required]
-        [EmailAddress]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
+
+        [Display(Name = "UserName")]
+        public string Username { get; set; }
         [Required]
         [Display(Name = "Display Name")]
         public string DisplayName { get; set; }

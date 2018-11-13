@@ -87,7 +87,17 @@ namespace ScraBoy.Features.CMS.User
             return View(user);
 
         }
-
+        [Route("profile")]
+        public async Task<ActionResult> ViewProfile()
+        {
+            return View();
+        }
+        public async Task<PartialViewResult> GetActiveUser()
+        {
+            var currentUser = User.Identity.Name;
+            var displayName = currentUser;
+            return PartialView("GetActiveUser",displayName);
+        }
         [HttpPost]
         [Route("edit/{username}")]
         [ValidateAntiForgeryToken]
@@ -102,7 +112,7 @@ namespace ScraBoy.Features.CMS.User
             {
                 return new HttpUnauthorizedResult();
             }
-            var userUpdated = await this.userservice.UpdateUser(model);
+            var userUpdated = await this.userservice.UpdateProfile(model);
 
             if(userUpdated)
             {
@@ -130,8 +140,13 @@ namespace ScraBoy.Features.CMS.User
             await this.userservice.DeleteAsync(username);
 
             return RedirectToAction("Index");
-
         }
+
+        private async Task<CMSUser> GetLoggedInUser()
+        {
+            return await usersRepository.GetUserByNameAsync(User.Identity.Name);
+        }
+
         private bool _isDisposed;
         protected override void Dispose(bool disposing)
         {

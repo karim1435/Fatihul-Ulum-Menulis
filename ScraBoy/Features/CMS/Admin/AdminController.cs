@@ -118,7 +118,7 @@ namespace ScraBoy.Features.CMS.Admin
                     {
                         Text = "Users",
                         Action = "Index",
-                        Icon = "fa fa-user-cog",
+                        Icon = "fa fa-user-secret",
                         RouteInfo = new { controller = "user"}
                     });
                 }
@@ -189,7 +189,7 @@ namespace ScraBoy.Features.CMS.Admin
                 item.Action = "Login";
             }
 
-            return PartialView("MenuLink",item);
+            return PartialView(item);
         }
 
         private bool _isDisposed;

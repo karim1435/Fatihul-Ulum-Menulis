@@ -8,7 +8,7 @@
         <div class="card-text text-muted">
             Posted by <a href="#">@Model.Author</a> on @Model.Published.Value.ToString("yyyy-MM-dd")
         </div>
-        <img class="card-img-top" src="@Model.UrlImage" style="height: 380px;" alt="Card image cap">
+        <img class="card-img-top" src="@Url.Content(Model.UrlImage)" style="height: 380px;" alt="Card image cap">
         <div class="card-body">
             <h2 class="card-title">
                 @Html.ActionLink(Model.Title,"post",new { controller = "HomeBlog",postId = Model.PostId })
@@ -17,7 +17,8 @@
             <a href="@Url.Action("Post",new { controller="HomeBlog", postId=Model.PostId})" class="btn btn-primary">Read More &rarr;</a>
         </div>
         <div class="card-footer text-muted">
-            @Html.Partial("_RenderVoting",Model.Voting)
+
+            @Html.Partial("_RenderVoting",Model)
             Topics @Html.Partial("_RenderTags",Model.PostTags.Tags.Distinct())
         </div>
     </div>
@@ -36,23 +37,17 @@ else
         </p>
         <hr>
         <!-- Preview Image -->
-        <img class="img-fluid rounded" src="@Model.UrlImage" alt="">
+        <img class="img-fluid rounded" style="height" src="@Url.Content(Model.UrlImage)" alt="">
         <hr>
         <!-- Post Content -->
         @Html.Raw(Model.Content)
         <hr>
         <div class="card-login text-success">
-            @Html.Partial("_RenderVoting",Model.Voting)
+            @Html.Partial("_RenderVoting",Model)
         </div>
         @Html.Partial("_CommentForm",Model)
 
         @Html.Partial("_RenderComment",Model.Comments)
-
-
-
-        <button>@Html.ActionLink("Suka","Like",new { controller = "Voting",postId = Model.PostId })</button>
-        <button>@Html.ActionLink("Benci","Dislike",new { controller = "Voting",postId = Model.PostId })</button>
-
 
     </div>
 }

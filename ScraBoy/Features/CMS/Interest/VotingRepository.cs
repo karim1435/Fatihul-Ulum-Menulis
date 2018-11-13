@@ -18,11 +18,11 @@ namespace ScraBoy.Features.CMS.Interest
         private readonly IPostRepository postRepository;
         private IUserRepository userRepository;
 
-        public VotingRepository():this(new CMSContext(), new PostRepository(), new UserRepository())
+        public VotingRepository() : this(new CMSContext(),new PostRepository(),new UserRepository())
         {
-                
+
         }
-        public VotingRepository(CMSContext db, IPostRepository postRepo, IUserRepository userRepository)
+        public VotingRepository(CMSContext db,IPostRepository postRepo,IUserRepository userRepository)
         {
             this.db = db;
             this.postRepository = postRepo;
@@ -30,7 +30,7 @@ namespace ScraBoy.Features.CMS.Interest
         }
         public async Task<IEnumerable<Voting>> GetAllVotingAsync()
         {
-            return await db.Voting.OrderByDescending(a=>a.PostedOn).ToArrayAsync();
+            return await db.Voting.OrderByDescending(a => a.PostedOn).ToArrayAsync();
         }
         public async Task<VoteViewModel> GetVotedPostUser(string id)
         {
@@ -38,56 +38,67 @@ namespace ScraBoy.Features.CMS.Interest
 
             VoteViewModel model = new VoteViewModel();
 
-            model.LikedUser = votes.Where(p => p.LikeCount >= 1).Select(a => a.User.DisplayName).ToList();
-            model.DislikedUser= votes.Where(p => p.DislikeCount >= 1).Select(a => a.User.DisplayName).ToList();
+            model.LikedUser = votes.Where(p => p.LikeCount ==true).Select(a => a.User.DisplayName).ToList();
 
             model.TotalLike = model.LikedUser.Count();
-            model.TotalDislike = model.DislikedUser.Count();
 
             return model;
         }
-        
-        public async Task<bool> UserHasVoted(string postId, string userId)
+
+        public async Task<Voting> UserHasVoted(string postId,string userId)
         {
-            var postVoted =await db.Voting.Where(a => a.PostId == postId).ToListAsync();
+            var postVoted = db.Voting.Where(a => a.PostId == postId);
 
-            return postVoted.Where(a => a.UserId == userId).Count()>=1;
+            return await postVoted.Where(a => a.UserId == userId).FirstOrDefaultAsync();
+        }
 
+        public async Task<bool> UserHasLiked(string postId, string userId)
+        {
+            var vote = await UserHasVoted(postId,userId);
+
+            if(vote == null)
+                return false;
+
+            return vote.LikeCount;
         }
 
         public async Task LikedAsync(Voting model)
         {
-            bool hasVoted =await UserHasVoted(model.PostId,model.UserId);
+            var vote = await UserHasVoted(model.PostId,model.UserId);
 
-            if(hasVoted)
+            if(vote!=null)
             {
-                return;
+                vote.LikeCount = !vote.LikeCount;
+            }
+            if(vote == null)
+            {
+                model.LikeCount = true;
+                model.PostedOn = DateTime.Now;
+                this.db.Voting.Add(model);   
             }
 
-            model.LikeCount+=1;
+            await this.db.SaveChangesAsync();
 
-            await SavesAsync(model);
         }
 
         public async Task DislikeAsync(Voting model)
         {
-            bool hasVoted = await UserHasVoted(model.PostId,model.UserId);
+            var vote = await UserHasVoted(model.PostId,model.UserId);
 
-            if(hasVoted)
+            if(vote != null)
             {
-                return;
+                vote.DislikeCount = !vote.LikeCount;
+            }
+            if(vote == null)
+            {
+                model.DislikeCount = true;
+                model.PostedOn = DateTime.Now;
+                this.db.Voting.Add(model);
             }
 
-            model.DislikeCount += 1;
-
-            await SavesAsync(model);
-        }
-        private async Task SavesAsync(Voting model)
-        {
-            model.PostedOn = DateTime.Now;
-
-            this.db.Voting.Add(model);
             await this.db.SaveChangesAsync();
+
         }
+
     }
 }

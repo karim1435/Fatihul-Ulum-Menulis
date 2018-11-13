@@ -85,12 +85,12 @@
       <HintPath>..\packages\Microsoft.Owin.4.0.0\lib\net451\Microsoft.Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PagedList, Version=1.16.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\PagedList.1.16.0.0\lib\net40\PagedList.dll</HintPath>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PagedList.Mvc, Version=4.3.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
-      <HintPath>..\packages\PagedList.Mvc.4.3.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -293,43 +293,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201811110836440_init.cs" />
-    <Compile Include="Migrations\201811110836440_init.Designer.cs">
-      <DependentUpon>201811110836440_init.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201811111611285_user.cs" />
-    <Compile Include="Migrations\201811111611285_user.Designer.cs">
-      <DependentUpon>201811111611285_user.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201811111613001_OK.cs" />
-    <Compile Include="Migrations\201811111613001_OK.Designer.cs">
-      <DependentUpon>201811111613001_OK.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201811111613319_OI.cs" />
-    <Compile Include="Migrations\201811111613319_OI.Designer.cs">
-      <DependentUpon>201811111613319_OI.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201811111621224_POST.cs" />
-    <Compile Include="Migrations\201811111621224_POST.Designer.cs">
-      <DependentUpon>201811111621224_POST.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201811111652346_POST1.cs" />
-    <Compile Include="Migrations\201811111652346_POST1.Designer.cs">
-      <DependentUpon>201811111652346_POST1.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201811111700139_good.cs" />
-    <Compile Include="Migrations\201811111700139_good.Designer.cs">
-      <DependentUpon>201811111700139_good.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201811111708202_goos.cs" />
-    <Compile Include="Migrations\201811111708202_goos.Designer.cs">
-      <DependentUpon>201811111708202_goos.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201811111734069_voting.cs" />
-    <Compile Include="Migrations\201811111734069_voting.Designer.cs">
-      <DependentUpon>201811111734069_voting.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -339,10 +302,15 @@
     <Content Include="Content\blog-home.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\dataTables.bootstrap4.css" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Scripts\datatables-demo.js" />
+    <Content Include="Scripts\dataTables.bootstrap4.js" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\font-awesome.min.css" />
-    <Content Include="Content\PagedList.css" />
+    <Content Include="Scripts\jquery.dataTables.js" />
     <Content Include="Content\sb-admin.css" />
+    <Content Include="Content\profile.css" />
     <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -619,7 +587,7 @@
     <Content Include="Views\Post\Delete.cshtml" />
     <Content Include="Views\Post\Edit.cshtml" />
     <Content Include="Views\Post\Index.cshtml" />
-    <Content Include="Views\Shared\_Login.cshtml" />
+    <Content Include="Views\Shared\_Profile.cshtml" />
     <Content Include="Views\Admin\Register.cshtml" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.woff" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.ttf" />
@@ -631,44 +599,21 @@
     <Content Include="Scripts\tinymce\langs\readme.md" />
     <Content Include="Views\HomeBlog\Category.cshtml" />
     <Content Include="Views\HomeBlog\_RenderCategory.cshtml" />
+    <Content Include="Views\Shared\_Login.cshtml" />
+    <Content Include="Views\User\ViewProfile.cshtml" />
+    <Content Include="Views\Admin\AuthenticationLink.cshtml" />
+    <Content Include="Views\User\GetActiveUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Features\Social Media\" />
+    <Folder Include="Image\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201811110836440_init.resx">
-      <DependentUpon>201811110836440_init.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811111611285_user.resx">
-      <DependentUpon>201811111611285_user.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811111613001_OK.resx">
-      <DependentUpon>201811111613001_OK.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811111613319_OI.resx">
-      <DependentUpon>201811111613319_OI.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811111621224_POST.resx">
-      <DependentUpon>201811111621224_POST.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811111652346_POST1.resx">
-      <DependentUpon>201811111652346_POST1.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811111700139_good.resx">
-      <DependentUpon>201811111700139_good.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811111708202_goos.resx">
-      <DependentUpon>201811111708202_goos.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201811111734069_voting.resx">
-      <DependentUpon>201811111734069_voting.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

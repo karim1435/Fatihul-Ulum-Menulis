@@ -1,5 +1,17 @@
-﻿@model ScraBoy.Features.CMS.HomeBlog.VoteViewModel
+﻿@model ScraBoy.Features.CMS.HomeBlog.BlogViewModel
 
-<p class="fa fa-thumbs-up "> @Model.TotalLike</p>
-<p class="fa fa-thumbs-down"> @Model.TotalDislike</p>
+@if(Model.Voted)
+{
+    <a class="fa fa-thumbs-up" 
+       href="@Url.Action("Like",new { controller = "Voting",postId = Model.PostId })">
+        @Model.Voting.TotalLike
+    </a>
+}
+else
+{
 
+    <a class="fa fa-thumbs-o-up"
+       href="@Url.Action("Like",new { controller = "Voting",postId = Model.PostId })">
+        @Model.Voting.TotalLike
+    </a>
+}

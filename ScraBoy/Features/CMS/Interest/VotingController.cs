@@ -15,10 +15,10 @@ namespace ScraBoy.Features.CMS.Interest
         private readonly IVotingRepository votingRepository;
         private readonly IPostRepository postRepository;
         private readonly IUserRepository userRepository;
-        public VotingController():this(new VotingRepository(), new PostRepository(), new UserRepository())
+        public VotingController() : this(new VotingRepository(),new PostRepository(),new UserRepository())
         {
         }
-        public VotingController(IVotingRepository votingRepository, IPostRepository postRepository,IUserRepository userRepository)
+        public VotingController(IVotingRepository votingRepository,IPostRepository postRepository,IUserRepository userRepository)
         {
             this.votingRepository = votingRepository;
             this.postRepository = postRepository;
@@ -33,7 +33,7 @@ namespace ScraBoy.Features.CMS.Interest
         [Route("like/{postId}")]
         public async Task<ActionResult> Like(string postId)
         {
-            var post =  await postRepository.GetAsync(postId);
+            var post = await postRepository.GetAsync(postId);
 
             if(post == null)
                 return HttpNotFound();
@@ -47,7 +47,7 @@ namespace ScraBoy.Features.CMS.Interest
 
             await votingRepository.LikedAsync(model);
 
-            return RedirectToAction("Post","HomeBlog",new { postId = postId});
+            return Redirect(Request.UrlReferrer.ToString());
         }
 
         [Route("dislike/{postId}")]
@@ -67,7 +67,7 @@ namespace ScraBoy.Features.CMS.Interest
 
             await votingRepository.DislikeAsync(model);
 
-            return RedirectToAction("Post","HomeBlog",new { postId = postId});
+            return RedirectToAction("Post","HomeBlog",new { postId = postId });
         }
         private async Task<CMSUser> GetLoggedInUser()
         {

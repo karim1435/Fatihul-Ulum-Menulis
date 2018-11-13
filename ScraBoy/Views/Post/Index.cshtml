@@ -1,53 +1,104 @@
-﻿@model IEnumerable<ScraBoy.Features.CMS.Blog.Post>
+﻿@using PagedList;
+@using PagedList.Mvc; 
+@model PagedList.IPagedList<ScraBoy.Features.CMS.Blog.Post>
 
 @{
     ViewBag.Title = "Index";
     Layout = "~/Views/Post/_PostLayout.cshtml";
 }
 
-<h2>Index</h2>
-
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("New Post","Create","Post",new { @class = "btn btn-success btn-sm",@item = "button" })
 </p>
 @AntiForgery.GetHtml()
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Created)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Published)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Author)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Created)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Published)
-        </td>
-        <td>
-            @Html.DisplayFor(modeitem=>item.Author.Email)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete","Delete",new { id = item.Id },new { data_action = "delete",data_value = item.Title })
-        </td>
-    </tr>
-}
+<!-- DataTables Example -->
+<div class="card mb-3">
+    <div class="card-header">
+        <h2>Posts List</h2>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Author</th>
+                        <th>Categories</th>
+                        <th>Tags</th>
+                        <th>Publihed</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model)
+                    {
+                        <tr>
+                            <td>@Html.ActionLink(item.Title,"post",new { controller = "HomeBlog",postId = item.Id })</td>
+                            <td>@Html.DisplayFor(modelItem => item.Author.UserName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Category.Name)</td>
+                            <td>@String.Join(", ",item.Tags)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Published)</td>
+                            <td>
+                                @Html.ActionLink("Edit","Edit",new { id = item.Id },
+                                new { @class = "btn btn-primary btn-sm",@item = "button" })
+                                @Html.ActionLink("Delete","Delete",new { id = item.Id },
+                               new { @class = "btn btn-danger btn-sm",@item = "button",data_action = "delete",data_value = item.Title })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-</table>
+            @if(Model.Count() > 0)
+            {
+                <text>Page</text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text>Of</text> @Model.PageCount
+                @Html.PagedListPager(Model,page => Url.Action("ChangePage",new { page = page }))
+            }
+        </div>
+
+        </div>
+    </div>
+    <div class="card-footer small text-muted">Updated yesterday @Model.OrderByDescending(a=>a.Created).Select(a=>a.Created).FirstOrDefault()</div>
+</div>
+@*<table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Published)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach(var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Published)
+                </td>
+                <td>
+                    @Html.DisplayFor(modeitem => item.Author.Email)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit","Edit",new { id = item.Id }) |
+                    @Html.ActionLink("Details","Details",new { id = item.Id }) |
+                    @Html.ActionLink("Delete","Delete",new { id = item.Id },new { data_action = "delete",data_value = item.Title })
+                </td>
+            </tr>
+        }
+
+    </table>*@

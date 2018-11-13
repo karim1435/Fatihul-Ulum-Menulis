@@ -1,4 +1,5 @@
-﻿using ScraBoy.Features.CMS.Topic;
+﻿using PagedList;
+using ScraBoy.Features.CMS.Topic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace ScraBoy.Features.CMS.Blog
         Task<IEnumerable<Post>> GetPublishedPostAsync();
         Task<IEnumerable<Post>> GetPostByTagAsync(string tagId);
         Task<IEnumerable<Post>> GetPageAsync(int pageNumber,int pageSize);
-
+        IPagedList<Post> GetPagedList(string search,int page, string userId);
 
     }
 }
