@@ -21,6 +21,7 @@ namespace ScraBoy.Features.CMS.User
             this.rolesRepostitory = roleReporitoy;
             this.modelState = modelState;
         }
+
         public async Task<Boolean> RegisterAsync(RegisterViewModel model)
         {
             if(!modelState.IsValid)
@@ -35,7 +36,16 @@ namespace ScraBoy.Features.CMS.User
                 modelState.AddModelError(string.Empty,"The user already exists");
                 return false;
             }
-
+            if(model.Username.Contains(" "))
+            {
+                modelState.AddModelError(string.Empty,"Cannot contains space");
+                return false;
+            }
+            if(model.Username.Contains("@"))
+            {
+                modelState.AddModelError(string.Empty,"Cannot contains @");
+                return false;
+            }
             if(string.IsNullOrWhiteSpace(model.Password))
             {
                 modelState.AddModelError(string.Empty,"Your must type a password");
@@ -44,7 +54,6 @@ namespace ScraBoy.Features.CMS.User
 
             var newUser = new CMSUser()
             {
-                DisplayName = model.DisplayName,
                 UserName = model.Username,
                 Email = model.Username
             };
@@ -62,7 +71,7 @@ namespace ScraBoy.Features.CMS.User
                 return false;
             }
 
-            var existingUser = await this.usersRepository.GetUserByNameAsync(model.UserName);
+            var existingUser = await this.usersRepository.GetUserByNameAsync(model.Username);
 
             if(existingUser != null)
             {
@@ -78,8 +87,7 @@ namespace ScraBoy.Features.CMS.User
 
             var newUser = new CMSUser()
             {
-                DisplayName = model.DisplayName,
-                UserName = model.UserName,
+                UserName = model.Username,
                 Email = model.Email
             };
 
@@ -101,9 +109,8 @@ namespace ScraBoy.Features.CMS.User
 
             var viewModel = new UserViewModel()
             {
-                UserName = user.UserName,
+                Username = user.UserName,
                 Email = user.Email,
-                DisplayName = user.DisplayName
             };
 
             var userRoles = await usersRepository.GetRolesForUserAsync(user);
@@ -118,7 +125,7 @@ namespace ScraBoy.Features.CMS.User
 
         public async Task<bool> UpdateProfile(UserViewModel model)
         {
-            var user = await this.usersRepository.GetUserByNameAsync(model.UserName);
+            var user = await this.usersRepository.GetUserByNameAsync(model.Username);
 
             //if(user == null)
             //{
@@ -151,10 +158,8 @@ namespace ScraBoy.Features.CMS.User
 
             //    user.PasswordHash = newHashedPassword;
             //}
-
+            user.Description = model.Description;
             user.Email = model.Email;
-            user.DisplayName = model.DisplayName;
-
             await usersRepository.UpdateAsync(user);
 
             //var roles = await usersRepository.GetRolesForUserAsync(user);

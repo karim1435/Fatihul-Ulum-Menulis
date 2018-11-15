@@ -1,34 +1,57 @@
-﻿@model IEnumerable<string>
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<string>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Tag List";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 @AntiForgery.GetHtml()
-<table class="table">
-    <tr>
-        <th>
-            Tag Name
-        </th>
-        <th></th>
-    </tr>
+<!-- DataTables Example -->
+<div class="card mb-3">
+    <div class="card-header">
+        <h2> <i class="fa fa-tags"></i> Tag List</h2>
+        @using(Html.BeginForm("Search","Tag",FormMethod.Get))
+        {
+            @Html.Partial("~/Views/Widgets/_Search.cshtml")
+        }
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item
+                                <br>
+                                <a href=@Url.Action("Edit","Tag",new { tag = item })>
+                                    Edit <i class="fa fa-pencil"></i>
+                                </a>
+                                <a data-action="delete" ,data-value="item" href=@Url.Action("Delete","Tag",new { tag = item })>
+                                    Delete <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @item
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { tag=item }) |
-            @Html.ActionLink("Delete", "Delete", new { tag = item },new { data_action = "delete",data_value = item })
-        </td>
-    </tr>
-}
+            @if(Model.Count() > 0)
+            {
+                <text>Page</text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text>Of</text> @Model.PageCount
+                @Html.PagedListPager(Model,page => Url.Action("Index",new { page = page,currentFilter = ViewBag.Filter }))
+            }
+        </div>
 
-</table>
+    </div>
+</div>

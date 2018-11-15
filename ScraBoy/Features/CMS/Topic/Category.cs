@@ -1,4 +1,6 @@
-﻿using System;
+﻿using ScraBoy.Features.CMS.Blog;
+using ScraBoy.Features.CMS.User;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -15,9 +17,9 @@ namespace ScraBoy.Features.CMS.Topic
         [Column(TypeName = "NVARCHAR")]
         public string Name { get; set; }
         public DateTime CreatedOn { get; set; }
-        public int? ParentId { get; set; }
-        [ForeignKey("ParentId")]
-        public virtual Category Parent { get; set; }
-        public virtual ICollection<Category> Children { get; set; }
+        public string AuthorId { get; set; }
+        [ForeignKey("AuthorId")]
+        public virtual CMSUser Author { get; set; }
+        public virtual ICollection<Post> Posts { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -12,7 +13,7 @@ namespace ScraBoy.Features.CMS.Tag
     [Authorize]
     public class TagController : Controller
     {
-        public TagController():this(new TagRepository()) { }
+        public TagController() : this(new TagRepository()) { }
 
         private readonly ITagRepostory tagRepository;
         public TagController(ITagRepostory repository)
@@ -20,9 +21,12 @@ namespace ScraBoy.Features.CMS.Tag
             this.tagRepository = repository;
         }
         [Route("")]
-        public ActionResult Index()
+        public async Task<ActionResult> Index(int? page,string currentFilter)
         {
-            var tags = tagRepository.GetAll();
+            int pageNumber = (page ?? 1);
+
+            var tags = this.tagRepository.GetPagedList(currentFilter,pageNumber);
+
             if(Request.AcceptTypes.Contains("application/json"))
             {
                 return Json(tags,JsonRequestBehavior.AllowGet);
@@ -32,8 +36,17 @@ namespace ScraBoy.Features.CMS.Tag
             {
                 return new HttpUnauthorizedResult();
             }
-            return View(model:tags);
+
+            return View("Index","",tags);
+
         }
+        public async Task<ViewResult> Search(string search)
+        {
+            ViewBag.Filter = search;
+
+            return View("Index","",this.tagRepository.GetPagedList(search,1));
+        }
+
         [Route("edit/{tag}")]
         [HttpGet]
         [Authorize(Roles = "admin, editor")]
@@ -42,7 +55,7 @@ namespace ScraBoy.Features.CMS.Tag
             try
             {
                 var model = tagRepository.Get(tag);
-                return View(model:model);
+                return View(model: model);
             }
             catch(KeyNotFoundException e)
             {
@@ -91,7 +104,7 @@ namespace ScraBoy.Features.CMS.Tag
             catch(KeyNotFoundException e)
             {
                 return HttpNotFound();
-            } 
+            }
         }
         [Route("delete/{tag}")]
         [HttpPost]
@@ -109,7 +122,7 @@ namespace ScraBoy.Features.CMS.Tag
             {
                 return HttpNotFound();
             }
-            
+
         }
 
     }

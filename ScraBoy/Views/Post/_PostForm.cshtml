@@ -6,54 +6,58 @@
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true,"",new { @class = "text-danger" })
+
         <div class="form-group">
-            @Html.LabelFor(model => model.Title,htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Title,new { htmlAttributes = new { @class = "form-control" } })
+            <div class="form-label-group">
+                @Html.EditorFor(model => model.Title,new { htmlAttributes = new { @class = "form-control",@placeholder = "Enter Title",@autofocus = "autofocus" } })
+                @Html.LabelFor(model => model.Title)
                 @Html.ValidationMessageFor(model => model.Title,"",new { @class = "text-danger" })
             </div>
         </div>
-        <div class="form-group">
-            @Html.LabelFor(model => model.Content,htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
 
-                @Html.TextAreaFor(model => model.Content,10,40,htmlAttributes: new { style = "width: 100%; max-width: 100%;" })
+        <div class="form-group">
+            <div class="form-label-group">
+                @Html.TextAreaFor(model => model.Content,15,40,new { htmlAttributes = new { @class = "form-control",@placeholder = "Enter Title",@autofocus = "autofocus" } })
                 @Html.ValidationMessageFor(model => model.Content,"",new { @class = "text-danger" })
             </div>
         </div>
+
         <div class="form-group">
             @Html.LabelFor(model => model.UrlImage,htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DisplayFor(model => model.UrlImage,new { htmlAttributes = new { @class = "form-control" } })
-                <input type="file" name="ImageFile" class="btn btn-default" />
+                <input type="file" name="ImageFile" class="btn btn-primary" />
+                <p>@Model.UrlImage"</p>
                 @Html.ValidationMessageFor(model => model.UrlImage,"",new { @class = "text-danger" })
             </div>
+
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Published,htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Published,new { htmlAttributes = new { @class = "form-control datepicker" } })
+            <div class="form-label-group">
+                @Html.EditorFor(model => model.Published,new { htmlAttributes = new { @class = "form-control datepicker",@placeholder = "Enter Title",@autofocus = "autofocus" } })
+                @Html.LabelFor(model => model.Published)
                 @Html.ValidationMessageFor(model => model.Published,"",new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Tags,htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Tags,"TagEditor",new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Tags,"",new { @class = "text-danger" })
+            <div class="form-label-group">
+                @Html.EditorFor(model => model.Tags,"TagEditor",new { htmlAttributes = new { @class = "form-control",@placeholder = "Enter Title",@autofocus = "autofocus" } })
+                @Html.LabelFor(model => model.Tags)
+                @Html.ValidationMessageFor(model => model.CombinedTags,"",new { @class = "text-danger" })
+                <p class="text-info">Separate tags with commas</p>
+
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.CategoryId,new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
+            <p>Select Category</p>
+            <div class="form-label-group">
                 @Html.DropDownListFor(
-                        model => model.CategoryId,new SelectList(ViewBag.Categories,"Id","Name"),
-                        new { @class = "form-control" }
-                    )
-                @Html.ValidationMessageFor(model => model.CategoryId)
+                 model => model.CategoryId,new SelectList(ViewBag.Categories,"Id","Name"),
+                 new { @class = "form-control",@placeholder = "Enter Title",@autofocus = "autofocus" }
+             )
+                @Html.ValidationMessageFor(model => model.CategoryId,"",new { @class = "text-danger" })
             </div>
         </div>
 
@@ -63,5 +67,4 @@
             </div>
         </div>
     </div>
-
 }

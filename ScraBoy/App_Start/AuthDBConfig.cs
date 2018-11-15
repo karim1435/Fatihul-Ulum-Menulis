@@ -23,17 +23,14 @@ namespace ScraBoy.App_Start
                 {
                     var adminUser = new CMSUser
                     {
-                        UserName = "admin",
-                        Email = "admin@gmail.com",
-                        DisplayName = "Administrator"
+                        UserName = "karim",
+                        Email = "rim.karim99@gmail.com",
                     };
 
-                    await users.CreateAsync(adminUser,"Passw0rd1234");
-
-                    
-   
+                    await users.CreateAsync(adminUser,"07051999rim");
+                    await users.AddUserToRoleAsync(user,"admin");
                 }
-                await users.AddUserToRoleAsync(user,"admin");
+                
             }
             
             using(var roles = new RoleRepository())

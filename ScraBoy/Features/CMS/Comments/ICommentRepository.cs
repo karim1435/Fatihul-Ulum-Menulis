@@ -1,4 +1,5 @@
-﻿using ScraBoy.Features.CMS.HomeBlog;
+﻿using PagedList;
+using ScraBoy.Features.CMS.HomeBlog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,10 @@ namespace ScraBoy.Features.CMS.Comments
 {
     public interface ICommentRepository
     {
-        Task<IEnumerable<Comment>> GetAllCommentsAsync();
+        IPagedList<Comment> GetPagedList(string search,int page,string userId);
         Task CreateAsync(BlogViewModel model);
         Task<IEnumerable<Comment>> GetCommentByPostIdAsync(string postId);
+        Task<Comment> GetCommentById(int id);
+        Task DeleteCommentAsync(Comment comment);
     }
 }

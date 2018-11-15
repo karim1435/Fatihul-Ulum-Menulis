@@ -12,7 +12,7 @@ namespace ScraBoy.Features.CMS.Blog
     public class PostRepository : IPostRepository
     {
         private CMSContext db;
-
+        private readonly int pageSize = 10;
         public PostRepository(CMSContext db)
         {
             this.db = db;
@@ -43,16 +43,16 @@ namespace ScraBoy.Features.CMS.Blog
             }
             return this.db.Post;
         }
- 
+
         public List<Post> GetPostList(string name)
         {
             return this.GetPosts(name).OrderByDescending(a => a.Created).ToList();
         }
-        public IPagedList<Post> GetPagedList(string search, int currentPage,string userId)
+        public IPagedList<Post> GetPagedList(string search,int currentPage,string userId)
         {
             var model = new List<Post>();
 
-            if(userId==null)
+            if(userId == null)
             {
                 model = GetPostList(search);
             }
@@ -60,7 +60,8 @@ namespace ScraBoy.Features.CMS.Blog
             {
                 model = GetPostList(search).Where(a => a.AuthorId == userId).ToList();
             }
-            return model.ToPagedList(currentPage,10);
+            model = model.OrderByDescending(s => s.Created).ToList();
+            return model.ToPagedList(currentPage,pageSize);
         }
         public void Edit(string id,Post updatedItem)
         {
@@ -78,10 +79,11 @@ namespace ScraBoy.Features.CMS.Blog
             post.Tags = updatedItem.Tags;
             post.UrlImage = updatedItem.UrlImage;
             post.CategoryId = updatedItem.CategoryId;
+            post.UpdatedAt = DateTime.Now;
 
             db.SaveChanges();
         }
-        
+
         public async Task<IEnumerable<Post>> GetAllAsync()
         {
             return await db.Post.Include("Author").OrderByDescending(post => post.Created).ToArrayAsync();
@@ -155,5 +157,6 @@ namespace ScraBoy.Features.CMS.Blog
         {
             return await db.Post.Select(a => a.Category.Name).ToListAsync();
         }
+
     }
 }

@@ -6,11 +6,13 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using PagedList;
 
 namespace ScraBoy.Features.CMS.Comments
 {
     public class CommentRepository : ICommentRepository
     {
+        private readonly int pageSize = 10;
         private readonly CMSContext db;
         public CommentRepository()
         {
@@ -44,6 +46,46 @@ namespace ScraBoy.Features.CMS.Comments
             return await db.Comment.Where(a => a.PostId == postId).
                 OrderByDescending(a=>a.PostedOn).
                 ToArrayAsync();
+        }
+
+        public async Task<Comment> GetCommentById(int id)
+        {
+            return await db.Comment.Where(a => a.Id == id).FirstOrDefaultAsync();
+        }
+        public IQueryable<Comment> GetComments(string name)
+        {
+            if(!string.IsNullOrWhiteSpace(name))
+            {
+                return this.db.Comment.Include("User").Include("Post").Where(a => a.Content.Equals(name) || 
+                a.User.UserName.Equals(name) ||
+                a.Post.Title.Equals(name));
+            }
+            return this.db.Comment.Include("User").Include("Post");
+        }
+        public List<Comment> GetCommentList(string name)
+        {
+            return GetComments(name).OrderByDescending(a => a.PostedOn).ToList();
+        }
+        
+        public async Task DeleteCommentAsync(Comment comment)
+        {
+            this.db.Comment.Remove(comment);
+            await this.db.SaveChangesAsync();
+        }
+        public IPagedList<Comment> GetPagedList(string search,int page, string userId)
+        {
+            var model = new List<Comment>();
+
+            if(userId==null)
+            {
+                model = GetCommentList(search).ToList();
+            }
+            else
+            {
+                model = GetCommentList(search).Where(post => post.Post.AuthorId.Equals(userId)).ToList();
+            }
+
+            return model.ToPagedList(page,pageSize);
         }
     }
 

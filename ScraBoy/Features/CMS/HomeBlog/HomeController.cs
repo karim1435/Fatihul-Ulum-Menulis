@@ -37,25 +37,8 @@ namespace ScraBoy.Features.CMS.HomeBlog
             this.commentRepository = commentRepository;
             this.votingRepository = votingRepository;
         }
-        private async Task SetTags()
-        {
-            ViewBag.Tags = await this.blogService.GetAllTags();
-        }
+       
 
-        private async Task RecentComments()
-        {
-            ViewBag.RecentComments = await this.blogService.GetRecentCommentsAsycn();
-        }
-        private async Task GetCategories()
-        {
-            ViewBag.Categories = await this.blogService.GetAllCategories();
-        }
-        private async Task SetViewBag()
-        {
-            await SetTags();
-            await RecentComments();
-            await GetCategories();
-        }
         [Route("")]
         [AllowAnonymous]
         public async Task<ActionResult> Index()
@@ -103,6 +86,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
         [AllowAnonymous]
         public async Task<ActionResult> Post(string postId)
         {
+
             await SetViewBag();
 
             var blog = await blogService.GetBlogAsync(postId);
@@ -113,7 +97,6 @@ namespace ScraBoy.Features.CMS.HomeBlog
             }
 
             blog.Voted = await StatusVote(blog);
-
             var currentComments = await blogService.GetPostCommentAsync(blog.PostId);
 
             blog.Comments = currentComments.ToList();
@@ -124,6 +107,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
 
         [HttpPost]
         [Route("posts/{postId}")]
+        [Authorize]
         public async Task<ActionResult> Post(BlogViewModel model,string postId)
         {
             await SetViewBag();
@@ -156,7 +140,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
             }
 
         }
-     
+
 
         // root/tags/tag-id
         [Route("tags/{tagId}")]
@@ -204,13 +188,35 @@ namespace ScraBoy.Features.CMS.HomeBlog
             return View(posts);
         }
 
+        private async Task SetTags()
+        {
+            ViewBag.Tags = await this.blogService.GetAllTags();
+        }
+
+        private async Task RecentComments()
+        {
+            ViewBag.RecentComments = await this.blogService.GetRecentCommentsAsycn();
+        }
+        private async Task GetCategories()
+        {
+            ViewBag.Categories = await this.blogService.GetAllCategories();
+        }
+        private async Task SetViewBag()
+        {
+            await SetTags();
+            await RecentComments();
+            await GetCategories();
+        }
         private async Task<bool> StatusVote(BlogViewModel post)
         {
+            if(!User.Identity.IsAuthenticated)
+            {
+                return false;
+            }
             var user = await GetLoggedInUser();
 
             return await this.votingRepository.UserHasLiked(post.PostId,user.Id);
         }
-
         private async Task<CMSUser> GetLoggedInUser()
         {
             return await userRepository.GetUserByNameAsync(User.Identity.Name);

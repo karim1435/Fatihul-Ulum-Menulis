@@ -1,5 +1,6 @@
 ﻿using ScraBoy.Features.CMS.ModelBinders;
 using ScraBoy.Features.CMS.Topic;
+using ScraBoy.Features.CMS.Upload;
 using ScraBoy.Features.CMS.User;
 using ScraBoy.Features.Data;
 using System;
@@ -14,8 +15,9 @@ namespace ScraBoy.Features.CMS.Blog
 {
     [RoutePrefix("Post")]
     [Authorize]
-    public class PostController : Controller
+    public class PostController : UploadController
     {
+        private readonly string pathFolder = "~/Image/";
         private readonly IPostRepository postRepository;
         private readonly IUserRepository userRepository;
         private readonly ICategoryRepository categoryRepositoriy;
@@ -28,84 +30,47 @@ namespace ScraBoy.Features.CMS.Blog
         public PostController() : this(new PostRepository(),new UserRepository(),new CategoryRepository()) { }
 
         [Route("")]
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? page,string currentFilter)
         {
+            int pageNumber = (page ?? 1);
+
             if(!User.IsInRole("author"))
             {
-                var posts = this.postRepository.GetPagedList("",1,null);
-                return View(posts);
+                return View("Index","",this.postRepository.GetPagedList(currentFilter,pageNumber,null));
             }
 
             var user = await GetLoggedInUser();
 
-            var post = this.postRepository.GetPagedList("",1,user.Id);
-
-            return View(post);
-
+            return View("Index","",this.postRepository.GetPagedList(currentFilter,pageNumber,user.Id));
         }
-        public async Task<ActionResult> ChangePage(int page)
+        public async Task<ViewResult> Search(string search)
         {
+            ViewBag.Filter = search;
+
             if(!User.IsInRole("author"))
             {
-                var posts = this.postRepository.GetPagedList("",page,null);
-                return View("Index",posts);
+                return View("Index","",this.postRepository.GetPagedList(search,1,null));
             }
 
             var user = await GetLoggedInUser();
 
-            var post = this.postRepository.GetPagedList("",page,user.Id);
-
-            return View("Index",post);
+            return View("Index","",this.postRepository.GetPagedList(search,1,user.Id));
         }
         private async Task SetViewBag()
         {
             var catRepository = new CategoryRepository();
-            ViewBag.Categories = await categoryRepositoriy.GetAllCategoriesAsync();
+            var user = await GetLoggedInUser();
+            ViewBag.Categories = await categoryRepositoriy.GetByUser(user.Id);
         }
 
-        public string GetFileName(string fileName)
-        {
-            return Path.GetFileNameWithoutExtension(fileName);
-        }
-        public string GetExtension(string fileName)
-        {
-            return Path.GetExtension(fileName);
-        }
-        public string GetFullFile(string fileName)
-        {
-            return GetFileName(fileName) + DateTime.Now.ToString("yymmssfff") + GetExtension(fileName);
-        }
-        bool CheckFileType(string fileName)
-        {
-            string ext = Path.GetExtension(fileName);
-            switch(ext.ToLower())
-            {
-                case ".gif":
-                    return true;
-                case ".jpg":
-                    return true;
-                case ".jpeg":
-                    return true;
-                case ".png":
-                    return true;
-                default:
-                    return false;
-            }
-
-        }
-        private string GetDirPath(string filePath)
-        {
-            return Path.Combine(Server.MapPath("~/Image/"),filePath);
-        }
         [HttpGet]
         [Route("create")]
         public async Task<ActionResult> Create()
         {
             await SetViewBag();
-
             return View(new Post());
         }
-        
+
         [HttpPost]
         [Route("create")]
         [ValidateAntiForgeryToken]
@@ -114,10 +79,9 @@ namespace ScraBoy.Features.CMS.Blog
             if(!ModelState.IsValid)
             {
                 await SetViewBag();
-
                 return View(model);
             }
-            if(model.ImageFile==null)
+            if(model.ImageFile == null)
             {
                 ModelState.AddModelError(String.Empty,"Please Upload image to continue");
                 await SetViewBag();
@@ -132,14 +96,13 @@ namespace ScraBoy.Features.CMS.Blog
                 return View(model);
             }
 
-            SaveImage(model.ImageFile,filePath);
-
-            model.UrlImage = "~/Image/" + filePath;
+            model.UrlImage = pathFolder + filePath;
 
             var user = await GetLoggedInUser();
 
             model.Tags = model.Tags.Select(tag => tag.MakeUrlFriednly()).ToList();
             model.Created = DateTime.Now;
+            model.UpdatedAt = DateTime.Now;
             model.AuthorId = user.Id;
             model.Id = string.Join(model.AuthorId,model.Tags.Distinct()) + "iqro" + "fatihululum" + model.Created.ToString("yymmddss") + model.Title;
             model.Id = model.Id.MakeUrlFriednly();
@@ -147,6 +110,7 @@ namespace ScraBoy.Features.CMS.Blog
             try
             {
                 await postRepository.Create(model);
+                SaveImage(model.ImageFile,pathFolder,filePath);
 
                 return RedirectToAction("Index");
             }
@@ -158,23 +122,28 @@ namespace ScraBoy.Features.CMS.Blog
             }
 
         }
-        private void DeleteOldImage(string image)
-        {
-            var path = Server.MapPath(image);
 
-            if(System.IO.File.Exists(path))
+        [HttpGet]
+        [Route("View/{postId}")]
+        [Authorize]
+        public async Task<ActionResult> Details(string postId)
+        {
+            var post = await this.postRepository.GetAsync(postId);
+            if(post == null)
             {
-                System.IO.File.Delete(path);
+                return HttpNotFound();
             }
+            if(User.IsInRole("author"))
+            {
+                var user = await GetLoggedInUser();
+
+                if(post.AuthorId != user.Id)
+                {
+                    return new HttpUnauthorizedResult();
+                }
+            }
+            return View(post);
         }
-        private void SaveImage(HttpPostedFileBase file,string filePath)
-        {
-            var pathToSave = GetDirPath(filePath);
-
-            file.SaveAs(pathToSave);
-        }
-
-
         [HttpGet]
         [Route("edit/{postId}")]
         public async Task<ActionResult> Edit(string postId)
@@ -239,12 +208,16 @@ namespace ScraBoy.Features.CMS.Blog
                     await SetViewBag();
                     return View(model);
                 }
-                SaveImage(model.ImageFile,filePath);
 
-                model.UrlImage = "~/Image/" + filePath;
+                SaveImage(model.ImageFile,pathFolder,filePath);
+
+                model.UrlImage = pathFolder + filePath;
+            }
+            else
+            {
+                model.UrlImage = post.UrlImage;
             }
 
-            
             model.Tags = model.Tags.Select(tag => tag.MakeUrlFriednly()).ToList();
 
             try
@@ -267,7 +240,7 @@ namespace ScraBoy.Features.CMS.Blog
 
         [HttpGet]
         [Route("delete/{postId}")]
-        [Authorize(Roles = "admin, editor")]
+        [Authorize]
         public async Task<ActionResult> Delete(string postId)
         {
             var post = await postRepository.GetAsync(postId);

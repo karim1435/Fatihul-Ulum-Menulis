@@ -1,4 +1,5 @@
-﻿using ScraBoy.Features.CMS.Tag;
+﻿using PagedList;
+using ScraBoy.Features.CMS.Tag;
 using ScraBoy.Features.Data;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,7 @@ namespace ScraBoy.Features.CMS.Tag
 {
     public class TagRepository : ITagRepostory
     {
+        private readonly int pageSize = 10;
         public void Delete(string tag)
         {
             using(var db = new CMSContext())
@@ -57,7 +59,6 @@ namespace ScraBoy.Features.CMS.Tag
 
             }
         }
-
         public string Get(string tag)
         {
             using(var db = new CMSContext())
@@ -77,6 +78,25 @@ namespace ScraBoy.Features.CMS.Tag
             }
         }
 
+        public IPagedList<string> GetPagedList(string search,int currentPage)
+        {
+            var model = GetTags(search);
+
+            return model.ToPagedList(currentPage,pageSize);
+        }
+        public List<string> GetTags(string name)
+        {
+            using(var db = new CMSContext())
+            {
+                var tagList = GetAll().ToList();
+
+                if(!string.IsNullOrEmpty(name))
+                {
+                    tagList = GetAll().Where(a => a.Contains(name)).ToList();
+                }
+                return tagList;
+            }
+        }
         public IEnumerable<string> GetAll()
         {
             using(var db = new CMSContext())

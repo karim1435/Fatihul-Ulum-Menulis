@@ -4,6 +4,7 @@ using ScraBoy.Features.CMS.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -47,7 +48,7 @@ namespace ScraBoy.Features.CMS.Admin
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
-        public async Task<ActionResult> Login(LoginViewModel model)
+        public async Task<ActionResult> Login(LoginViewModel model,string returnUrl)
         {
             var user = await this.userRepository.GetLoginUserAsync(model.UserName,model.Pasword);
 
@@ -65,7 +66,15 @@ namespace ScraBoy.Features.CMS.Admin
                 IsPersistent = model.RememberMe
             },userIdentity);
 
-            return RedirectToAction("Index");
+            if(Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index","HomeBlog");
+            }
+            
         }
         [AllowAnonymous]
         [Route("register")]
@@ -73,13 +82,15 @@ namespace ScraBoy.Features.CMS.Admin
         {
             return View();
         }
+
         [Route("register")]
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            var completed = await this.userService.RegisterAsync(model);
+            bool completed = await this.userService.RegisterAsync(model);
+
             if(completed)
             {
                 return RedirectToAction("Index");
@@ -108,8 +119,8 @@ namespace ScraBoy.Features.CMS.Admin
                 {
                     Text = "Home",
                     Action = "Index",
-                    Icon = "fa fa-bars",
-                    RouteInfo = new { controller = "admin"}
+                    Icon = "fa fa-home",
+                    RouteInfo = new { controller = "HomeBlog" }
                 });
 
                 if(User.IsInRole("admin"))
@@ -128,7 +139,7 @@ namespace ScraBoy.Features.CMS.Admin
                     {
                         Text = "Profile",
                         Action = "Edit",
-                        Icon = "fa fa-user-edit",
+                        Icon = "fa fa-user",
                         RouteInfo = new { controller = "user",username = User.Identity.Name }
                     });
                 }
@@ -139,22 +150,8 @@ namespace ScraBoy.Features.CMS.Admin
                     {
                         Text = "Tags",
                         Action = "Index",
-                        Icon = "fa fa-paperclip",
+                        Icon = "fa fa-tags",
                         RouteInfo = new { controller = "tag"}
-                    });
-                    items.Add(new AdminMenuItem
-                    {
-                        Text = "Comment",
-                        Action = "Index",
-                        Icon = "fa fa-comment-alt",
-                        RouteInfo = new { controller = "comment"}
-                    });
-                    items.Add(new AdminMenuItem
-                    {
-                        Text = "Category",
-                        Action = "Index",
-                        Icon = "fa fa-paste",
-                        RouteInfo = new { controller = "Category"}
                     });
                 }
 
@@ -162,8 +159,22 @@ namespace ScraBoy.Features.CMS.Admin
                 {
                     Text = "Posts",
                     Action = "Index",
-                    Icon = "fa fa-paste",
+                    Icon = "fa fa-book",
                     RouteInfo = new { controller = "post"}
+                });
+                items.Add(new AdminMenuItem
+                {
+                    Text = "Comment",
+                    Action = "Index",
+                    Icon = "fa fa-comment-alt",
+                    RouteInfo = new { controller = "comment" }
+                });
+                items.Add(new AdminMenuItem
+                {
+                    Text = "Category",
+                    Action = "Index",
+                    Icon = "fa fa-folder-open",
+                    RouteInfo = new { controller = "Category" }
                 });
             }
             return PartialView(items);

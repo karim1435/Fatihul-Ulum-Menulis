@@ -49,17 +49,25 @@ namespace ScraBoy.Features.Data
 
             modelBuilder.Entity<Post>().HasRequired(e => e.Author);
             modelBuilder.Entity<Post>().HasRequired(e => e.Category);
-
+            
             modelBuilder.Entity<Comment>()
                 .HasRequired(s => s.Post)
                 .WithMany(g => g.Comments)
                 .HasForeignKey<string>(s => s.PostId).WillCascadeOnDelete(true);
 
-
             modelBuilder.Entity<Voting>()
-            .HasRequired(s => s.Post)
-            .WithMany(g => g.Votings)
-            .HasForeignKey<string>(s => s.PostId).WillCascadeOnDelete(true);
+           .HasRequired(s => s.Post)
+           .WithMany(g => g.Votings)
+           .HasForeignKey<string>(s => s.PostId).WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Post>()
+               .HasRequired(s => s.Category)
+               .WithMany(g => g.Posts)
+               .HasForeignKey<int>(s => s.CategoryId).WillCascadeOnDelete(false);
+
+
+            modelBuilder.Entity<Category>().HasRequired(e => e.Author);
+
         }
     }
 }

@@ -16,7 +16,7 @@
             @Html.DisplayNameFor(model => model.Post.Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.User.DisplayName)
+            @Html.DisplayNameFor(model => model.User.UserName)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.LikeCount)
@@ -36,7 +36,8 @@
             @Html.DisplayFor(modelItem => item.Post.Title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.User.DisplayName)
+            @Html.DisplayFor(modelItem => item.User.UserName
+       )
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.LikeCount)

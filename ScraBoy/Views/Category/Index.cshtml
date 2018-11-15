@@ -1,46 +1,61 @@
-﻿@model IEnumerable <ScraBoy.Features.CMS.Topic.Category>
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model IPagedList<ScraBoy.Features.CMS.Topic.Category>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Category List";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
+<a href="@Url.Action("Create", "Category")" class="btn btn-success">
+    New Category
+</a>
 
-<h2>Index</h2>
+@AntiForgery.GetHtml()
+<!-- DataTables Example -->
+<div class="card mb-3">
+    <div class="card-header">
+        <h2> <i class="fa fa-folder-open"></i> Category List</h2>
+        @using(Html.BeginForm("Search","Category",FormMethod.Get))
+        {
+            @Html.Partial("~/Views/Widgets/_Search.cshtml")
+        }
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Author</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.Name
+                                <br>
+                                <a href=@Url.Action("Edit","Category",new { id = item.Id })>
+                                    Edit <i class="fa fa-pencil"></i>
+                                </a>
+                                <a data-action="delete" ,data-value="item.Id" href=@Url.Action("Delete","Category",new { id = item.Id })>
+                                    Delete <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                            <td>@Html.DisplayFor(modelItem => item.Author.UserName)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            Parent
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </th>
-        <th></th>
-    </tr>
+            @if(Model.Count() > 0)
+            {
+                <text>Page</text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text>Of</text> @Model.PageCount
+                @Html.PagedListPager(Model,page => Url.Action("Index",new { page = page,currentFilter = ViewBag.Filter }))
+            }
+        </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Parent.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedOn)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { catId=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
-        </td>
-    </tr>
-}
-
-</table>
+    </div>
+</div>

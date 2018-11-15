@@ -23,15 +23,13 @@ namespace ScraBoy.Features.CMS.Topic
         {
             return await db.Category.OrderBy(a => a.Id).ToArrayAsync();
         }
-        public async Task<IEnumerable<Category>> GetCategoryWithParent()
+        public IQueryable<Category> GetCategories(string name)
         {
-            using(var db = new CMSContext())
+            if(!string.IsNullOrEmpty(name))
             {
-                return db.Category.Include(x => x.Children)
-                .AsEnumerable()
-                .Where(x => x.Parent == null)
-                .ToList();
+                return this.db.Category.Where(m => m.Name.Contains(name));
             }
+            return this.db.Category;
         }
         public async Task CreateCategoryAsync(Category model)
         {
@@ -54,7 +52,24 @@ namespace ScraBoy.Features.CMS.Topic
             await db.SaveChangesAsync();
 
         }
+        public async Task<bool> IsExistAsync(string name, int id)
+        {
+            return await this.db.Category.Where(a => a.Name==name && a.Id != id).CountAsync()>0;
+        }
+        public async Task DeleteCategoryAsync(Category model)
+        {
+            this.db.Category.Remove(model);
+            await this.db.SaveChangesAsync();
+        }
+        public async Task<IEnumerable<Category>> GetByUser(string userId)
+        {
+            return await this.db.Category.Where(a => a.AuthorId == userId).ToArrayAsync();
 
-      
+        }
+         public List<Category> GetCategoryByUser(string userId)
+        {
+            var catsByUser = this.db.Category.Where(a => a.AuthorId == userId).ToList();
+            return catsByUser;
+        }
     }
 }

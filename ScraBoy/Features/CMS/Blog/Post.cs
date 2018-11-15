@@ -31,9 +31,16 @@ namespace ScraBoy.Features.CMS.Blog
         [DisplayFormat(DataFormatString = "{0:dd MMMMM yyyy}",ApplyFormatInEditMode = true)]
         [DataType(DataType.Date)]
         public DateTime Created { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:dd MMMMM yyyy}",ApplyFormatInEditMode = true)]
+        [DataType(DataType.Date)]
+        public DateTime? UpdatedAt { get; set; }
+
+        //[DisplayFormat(DataFormatString = "{0:dd MMMMM yyyy}",ApplyFormatInEditMode = false)]
+        //[DataType(DataType.Date)]
         [Display(Name = "Date Published")]
-        [Required]
-        public DateTime? Published { get; set; }
+        [Required(ErrorMessage ="Please Set Date")]
+        public DateTime Published { get; set; }
         private IList<string> _tags = new List<String>();
 
         public IList<string> Tags
@@ -41,6 +48,7 @@ namespace ScraBoy.Features.CMS.Blog
             get { return _tags; }
             set { _tags = value; }
         }
+        [Required(ErrorMessage ="Tag can't be empty")]
         public string CombinedTags
         {
             get

@@ -38,7 +38,7 @@ namespace ScraBoy.Features.CMS.Interest
 
             VoteViewModel model = new VoteViewModel();
 
-            model.LikedUser = votes.Where(p => p.LikeCount ==true).Select(a => a.User.DisplayName).ToList();
+            model.LikedUser = votes.Where(p => p.LikeCount ==true).Select(a => a.User.UserName).ToList();
 
             model.TotalLike = model.LikedUser.Count();
 

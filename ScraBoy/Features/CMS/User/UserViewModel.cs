@@ -11,16 +11,17 @@ namespace ScraBoy.Features.CMS.User
     public class UserViewModel
     {
         [Required]
-        [Display(Name = "UserName")]
-        public string UserName { get; set; }
+        [Display(Name = "Username")]
+        public string Username { get; set; }
 
         [Required]
         public string Email { get; set; }
         [Display(Name = "Current Password")]
         public string CurrentPassword { get; set; }
-        [Required]
-        [Display(Name = " Display Name")]
-        public string DisplayName { get; set; }
+        [AllowHtml]
+        [Display(Name="About Me")]
+        [Required(ErrorMessage ="Say Something About Your Self")]
+        public string Description { get; set; }
 
         [System.ComponentModel.DataAnnotations.Compare("ConfirmPassword",ErrorMessage ="The new password and confirmation password don't match")]
         [Display(Name = "New Password")]

@@ -241,7 +241,6 @@
     <Compile Include="Features\CMS\Interest\VotingRepository.cs" />
     <Compile Include="Features\CMS\ModelBinders\PostModelBinder.cs" />
     <Compile Include="Features\CMS\ModelBinders\StringExtensions.cs" />
-    <Compile Include="Features\CMS\Pagination\Pagination.cs" />
     <Compile Include="Features\CMS\Role\IRoleRepository.cs" />
     <Compile Include="Features\CMS\Role\RoleRepository.cs" />
     <Compile Include="Features\CMS\Tag\TagRepository.cs" />
@@ -252,6 +251,7 @@
     <Compile Include="Features\CMS\Topic\CategoryRepository.cs" />
     <Compile Include="Features\CMS\Topic\CategoryService.cs" />
     <Compile Include="Features\CMS\Topic\ICategoryRepository.cs" />
+    <Compile Include="Features\CMS\Upload\UploadServices.cs" />
     <Compile Include="Features\CMS\User\CMSUser.cs" />
     <Compile Include="Features\CMS\User\IUserRepository.cs" />
     <Compile Include="Features\CMS\User\UserController.cs" />
@@ -293,6 +293,31 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811131816200_update.cs" />
+    <Compile Include="Migrations\201811131816200_update.Designer.cs">
+      <DependentUpon>201811131816200_update.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811141812542_tag.cs" />
+    <Compile Include="Migrations\201811141812542_tag.Designer.cs">
+      <DependentUpon>201811141812542_tag.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811141904583_testnew.cs" />
+    <Compile Include="Migrations\201811141904583_testnew.Designer.cs">
+      <DependentUpon>201811141904583_testnew.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811141915061_testnew1.cs" />
+    <Compile Include="Migrations\201811141915061_testnew1.Designer.cs">
+      <DependentUpon>201811141915061_testnew1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811141922233_CATS.cs" />
+    <Compile Include="Migrations\201811141922233_CATS.Designer.cs">
+      <DependentUpon>201811141922233_CATS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811150205452_remove.cs" />
+    <Compile Include="Migrations\201811150205452_remove.Designer.cs">
+      <DependentUpon>201811150205452_remove.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -602,7 +627,9 @@
     <Content Include="Views\Shared\_Login.cshtml" />
     <Content Include="Views\User\ViewProfile.cshtml" />
     <Content Include="Views\Admin\AuthenticationLink.cshtml" />
-    <Content Include="Views\User\GetActiveUser.cshtml" />
+    <Content Include="Views\Post\Details.cshtml" />
+    <Content Include="Views\Category\_PostForm.cshtml" />
+    <Content Include="Views\Widgets\_Search.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -614,6 +641,26 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201811131816200_update.resx">
+      <DependentUpon>201811131816200_update.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811141812542_tag.resx">
+      <DependentUpon>201811141812542_tag.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811141904583_testnew.resx">
+      <DependentUpon>201811141904583_testnew.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811141915061_testnew1.resx">
+      <DependentUpon>201811141915061_testnew1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811141922233_CATS.resx">
+      <DependentUpon>201811141922233_CATS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811150205452_remove.resx">
+      <DependentUpon>201811150205452_remove.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

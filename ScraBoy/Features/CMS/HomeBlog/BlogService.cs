@@ -110,7 +110,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
             blog.Title = post.Title;
             blog.Content = Formatter.FormatHtml(post.Content);
             blog.PostTags.Tags = post.Tags;
-            blog.Author = post.Author.DisplayName;
+            blog.Author = post.Author.UserName;
             blog.Created = post.Created;
             blog.Published = post.Published;
             blog.Voting = await this.voteRepository.GetVotedPostUser(blog.PostId);
@@ -131,7 +131,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
                 blog.Title = post.Title;
                 blog.Content = Formatter.FormatHtml(post.Content);
                 blog.PostTags.Tags = post.Tags;
-                blog.Author = post.Author.DisplayName;
+                blog.Author = post.Author.UserName;
                 blog.Created = post.Created;
                 blog.Published = post.Published;
                 blog.Voting = await this.voteRepository.GetVotedPostUser(blog.PostId);
@@ -152,7 +152,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
                 var model = new CommentViewModel();
 
                 model.PostedOn = item.PostedOn;
-                model.Author = item.User.DisplayName;
+                model.Author = item.User.UserName;
                 model.Comment = item.Content;
                 model.Post = item.Post.Id;
                 blogComments.Add(model);

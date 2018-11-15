@@ -31,6 +31,7 @@ namespace ScraBoy.Features.CMS.Interest
             return View(votes);
         }
         [Route("like/{postId}")]
+        [Authorize]
         public async Task<ActionResult> Like(string postId)
         {
             var post = await postRepository.GetAsync(postId);
@@ -47,10 +48,11 @@ namespace ScraBoy.Features.CMS.Interest
 
             await votingRepository.LikedAsync(model);
 
-            return Redirect(Request.UrlReferrer.ToString());
+            return RedirectToAction("Post","HomeBlog",new { postId=postId});
         }
 
         [Route("dislike/{postId}")]
+
         public async Task<ActionResult> Dislike(string postId)
         {
             var post = await postRepository.GetAsync(postId);
