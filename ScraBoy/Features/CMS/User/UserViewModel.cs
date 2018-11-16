@@ -41,5 +41,6 @@ namespace ScraBoy.Features.CMS.User
         {
             this.roles.AddRange(roleNames.Select(r => r.Name));
         }
+        
     }
 }

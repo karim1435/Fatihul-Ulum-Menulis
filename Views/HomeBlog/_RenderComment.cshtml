@@ -1,0 +1,13 @@
+﻿@model IEnumerable<ScraBoy.Features.CMS.HomeBlog.CommentViewModel>
+
+@foreach(var item in Model)
+{
+    <div class="media mb-4">
+        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+        <div class="media-body">
+            <h5 class="mt-0">@item.Author</h5>
+            @item.Comment
+        </div>
+    </div>
+
+}

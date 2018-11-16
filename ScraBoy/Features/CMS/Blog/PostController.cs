@@ -17,7 +17,7 @@ namespace ScraBoy.Features.CMS.Blog
     [Authorize]
     public class PostController : UploadController
     {
-        private readonly string pathFolder = "~/Image/";
+        private readonly string pathFolder = "~/Image/post/";
         private readonly IPostRepository postRepository;
         private readonly IUserRepository userRepository;
         private readonly ICategoryRepository categoryRepositoriy;
@@ -102,7 +102,7 @@ namespace ScraBoy.Features.CMS.Blog
 
             model.Tags = model.Tags.Select(tag => tag.MakeUrlFriednly()).ToList();
             model.Created = DateTime.Now;
-            model.UpdatedAt = DateTime.Now;
+            model.Updated = DateTime.Now;
             model.AuthorId = user.Id;
             model.Id = string.Join(model.AuthorId,model.Tags.Distinct()) + "iqro" + "fatihululum" + model.Created.ToString("yymmddss") + model.Title;
             model.Id = model.Id.MakeUrlFriednly();

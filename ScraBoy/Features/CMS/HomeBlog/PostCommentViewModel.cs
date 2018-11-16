@@ -1,4 +1,8 @@
-﻿using ScraBoy.Features.Utility;
+﻿using ScraBoy.Features.CMS.Blog;
+using ScraBoy.Features.CMS.Comments;
+using ScraBoy.Features.CMS.Topic;
+using ScraBoy.Features.CMS.User;
+using ScraBoy.Features.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,29 +16,20 @@ namespace ScraBoy.Features.CMS.HomeBlog
         {
             Comments = new List<CommentViewModel>();
             Voting = new VoteViewModel();
-            PostTags = new TagViewModel();
-            SideBarCategory = new CategoryViewModel();
-            PostCategories = new CategoryViewModel();
             SideBarTags = new TagViewModel();
+            Post = new Post();
+            User = new CMSUser();
+            Category = new Category();
         }
-        public string Title { get; set; }
-        public string Content { get; set; }
-        public string Author { get; set; }
-        public TagViewModel PostTags { get; set; }
-        public CategoryViewModel PostCategories { get; set; }
+        public Post Post { get; set; }
+        public CMSUser User { get; set; }
+        public Category Category { get; set; }
         public string NewComment { get; set; }
-        public string UrlImage { get; set; }
-        public string PostId { get; set; }
-        public string UserId { get; set; }
         public VoteViewModel Voting { get; set; }
         public List<CommentViewModel> Comments { get; set; }
-        public IEnumerable<CommentViewModel> RecentComments { get; set; }
-        public CategoryViewModel SideBarCategory { get; set; }
-        public List<CategoryViewModel> SideBarComments { get; set; }
         public TagViewModel SideBarTags { get; set; }
-        public DateTime Created { get; internal set; }
-        public DateTime? Published { get; internal set; }
         public bool Voted { get; set; }
+        public int ViewCount { get; set; }
     }
     public class TagViewModel
     {
@@ -46,10 +41,15 @@ namespace ScraBoy.Features.CMS.HomeBlog
     }
     public class CommentViewModel
     {
-        public DateTime PostedOn { get; set; }
-        public string Post { get; set; }
-        public string Author { get; set; }
-        public string Comment { get; set; }
+        public CommentViewModel()
+        {
+            User = new CMSUser();
+            Post = new Post();
+            Comment = new Comment();
+        }
+        public Comment Comment { get; set; }
+        public CMSUser User { get; set; }
+        public Post Post { get; set; }
     }
     public class VoteViewModel
     {
@@ -62,9 +62,5 @@ namespace ScraBoy.Features.CMS.HomeBlog
         public List<string> DislikedUser { get; set; }
         public int TotalLike { get; set; }
         public int TotalDislike { get; set; }
-    }
-    public class LikeViewModel
-    {
-        public string Author { get; set; }
     }
 }

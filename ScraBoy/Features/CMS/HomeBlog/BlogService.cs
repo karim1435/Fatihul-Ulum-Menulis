@@ -49,7 +49,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
 
             return await GetBlogListViewModel(posts);
         }
-        
+
         public async Task<IEnumerable<BlogViewModel>> GetPageBlogAsync(int pageNumber,int pageSize)
         {
             var blogs = await this.postRepository.GetPageAsync(pageNumber,pageSize);
@@ -61,12 +61,6 @@ namespace ScraBoy.Features.CMS.HomeBlog
             var blog = await this.postRepository.GetPostByCategories(catName);
 
             return await GetBlogListViewModel(blog);
-        }
-        public async Task<BlogViewModel> GetBlogAsync(string postId)
-        {
-            var blog = await postRepository.GetAsync(postId);
-
-            return await GetBlogViewModel(blog);
         }
         public async Task<IEnumerable<BlogViewModel>> GetBlogByTagAsync(string tagId)
         {
@@ -84,7 +78,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
         {
             using(var db = new CMSContext())
             {
-                var comments = db.Comment.Include("User").OrderByDescending(a=>a.PostedOn).ToList();
+                var comments = db.Comment.Include("User").OrderByDescending(a => a.PostedOn).ToList();
 
                 return GetCommentViewModel(comments).ToList();
             }
@@ -101,25 +95,26 @@ namespace ScraBoy.Features.CMS.HomeBlog
         {
             return tagRepoistory.GetAll().ToList();
         }
- 
+
         public async Task<BlogViewModel> GetBlogViewModel(Post post)
         {
             var blog = new BlogViewModel();
 
-            blog.PostId = post.Id;
-            blog.Title = post.Title;
-            blog.Content = Formatter.FormatHtml(post.Content);
-            blog.PostTags.Tags = post.Tags;
-            blog.Author = post.Author.UserName;
-            blog.Created = post.Created;
-            blog.Published = post.Published;
-            blog.Voting = await this.voteRepository.GetVotedPostUser(blog.PostId);
+            blog.Post.Id = post.Id;
+            blog.Post.Title= post.Title;
+            blog.Post.Content= Formatter.FormatHtml(post.Content);
+            blog.Post.Tags = post.Tags;
+            blog.User.UserName = post.Author.UserName;
+            blog.Post.Created = post.Created;
+            blog.Post.Published= post.Published;
+            blog.Voting = await this.voteRepository.GetVotedPostUser(blog.Post.Id);
             blog.SideBarTags.Tags = tagRepoistory.GetAll().ToList();
-            blog.PostCategories.Names = post.Category.Name;
-            blog.UrlImage = post.UrlImage;
+            blog.Category.Name = post.Category.Name;
+            blog.Post.UrlImage = post.UrlImage;
+            blog.ViewCount = await this.postRepository.CountTotalView(blog.Post.Id);
+
             return blog;
         }
-
         public async Task<IEnumerable<BlogViewModel>> GetBlogListViewModel(IEnumerable<Post> posts)
         {
             var blogs = new List<BlogViewModel>();
@@ -127,17 +122,19 @@ namespace ScraBoy.Features.CMS.HomeBlog
             {
                 var blog = new BlogViewModel();
 
-                blog.PostId = post.Id;
-                blog.Title = post.Title;
-                blog.Content = Formatter.FormatHtml(post.Content);
-                blog.PostTags.Tags = post.Tags;
-                blog.Author = post.Author.UserName;
-                blog.Created = post.Created;
-                blog.Published = post.Published;
-                blog.Voting = await this.voteRepository.GetVotedPostUser(blog.PostId);
+                blog.Post.Id = post.Id;
+                blog.Post.Title = post.Title;
+                blog.Post.Content= Formatter.FormatHtml(post.Content);
+                blog.Post.Tags = post.Tags;
+                blog.User.UserName= post.Author.UserName;
+                blog.Post.Created = post.Created;
+                blog.Post.Published = post.Published;
+                blog.Voting = await this.voteRepository.GetVotedPostUser(blog.Post.Id);
                 blog.SideBarTags.Tags = tagRepoistory.GetAll().ToList();
-                blog.UrlImage = post.UrlImage;
-                blog.PostCategories.Names = post.Category.Name;
+                blog.Post.UrlImage= post.UrlImage;
+                blog.Category.Name = post.Category.Name;
+                blog.ViewCount = await this.postRepository.CountTotalView(blog.Post.Id);
+
                 blogs.Add(blog);
             }
             return blogs;
@@ -151,10 +148,10 @@ namespace ScraBoy.Features.CMS.HomeBlog
             {
                 var model = new CommentViewModel();
 
-                model.PostedOn = item.PostedOn;
-                model.Author = item.User.UserName;
-                model.Comment = item.Content;
-                model.Post = item.Post.Id;
+                model.Comment.PostedOn = item.PostedOn;
+                model.User.UserName = item.User.UserName;
+                model.Comment.Content = item.Content;
+                model.Post.Id = item.Post.Id;
                 blogComments.Add(model);
             }
             return blogComments;

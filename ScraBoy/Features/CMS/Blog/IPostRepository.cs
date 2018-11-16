@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace ScraBoy.Features.CMS.Blog
 {
@@ -23,6 +24,9 @@ namespace ScraBoy.Features.CMS.Blog
         Task<IEnumerable<Post>> GetPostByTagAsync(string tagId);
         Task<IEnumerable<Post>> GetPageAsync(int pageNumber,int pageSize);
         IPagedList<Post> GetPagedList(string search,int page, string userId);
+        void GetCookieView(HttpContextBase http);
+        Task UpdateViewCount(string postId);
+        Task<int> CountTotalView(string PostId);
 
     }
 }

@@ -27,18 +27,11 @@ namespace ScraBoy.Features.CMS.Blog
         [Required]
         [StringLength(int.MaxValue,MinimumLength = 7)]
         public string Content { get; set; }
-        [Display(Name = "Date Created")]
-        [DisplayFormat(DataFormatString = "{0:dd MMMMM yyyy}",ApplyFormatInEditMode = true)]
-        [DataType(DataType.Date)]
+        [Required]
         public DateTime Created { get; set; }
+        [Required]
+        public DateTime Updated { get; set; }
 
-        [DisplayFormat(DataFormatString = "{0:dd MMMMM yyyy}",ApplyFormatInEditMode = true)]
-        [DataType(DataType.Date)]
-        public DateTime? UpdatedAt { get; set; }
-
-        //[DisplayFormat(DataFormatString = "{0:dd MMMMM yyyy}",ApplyFormatInEditMode = false)]
-        //[DataType(DataType.Date)]
-        [Display(Name = "Date Published")]
         [Required(ErrorMessage ="Please Set Date")]
         public DateTime Published { get; set; }
         private IList<string> _tags = new List<String>();
@@ -73,5 +66,17 @@ namespace ScraBoy.Features.CMS.Blog
 
         [NotMapped]
         public HttpPostedFileBase ImageFile { get; set; }
+    }
+    public class ViewPost
+    {
+        [Key]
+        public int id { get; set; }
+        [Required]
+        public string ViewId { get; set; }
+        public int Count { get; set; }
+        public string PostId  { get; set; }
+        [ForeignKey("PostId")]
+        public virtual Post Post { get; set; }
+        public DateTime LastViewed { get; set; }
     }
 }

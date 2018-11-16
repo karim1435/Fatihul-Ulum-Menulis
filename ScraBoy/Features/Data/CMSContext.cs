@@ -37,8 +37,7 @@ namespace ScraBoy.Features.Data
         public DbSet<Comment> Comment { get; set; }
         public DbSet<Voting> Voting { get; set; }
         public DbSet<Category> Category { get; set; }
-        public IEnumerable CMSUsers { get; internal set; }
-
+        public DbSet<ViewPost> ViewPost { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

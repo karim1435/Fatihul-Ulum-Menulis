@@ -85,7 +85,7 @@ namespace ScraBoy.Features.CMS.User
             }
 
             var user = await userservice.GetUserByNameAsync(username);
-
+            
             if(user==null)
             {
                 return HttpNotFound();
@@ -101,6 +101,7 @@ namespace ScraBoy.Features.CMS.User
         [Authorize(Roles = "admin, editor, author")]
         public async Task<ActionResult> Edit(UserViewModel model, string username)
         {
+
             var currentUser = User.Identity.Name;
 
             var isAdmin = User.IsInRole("admin");

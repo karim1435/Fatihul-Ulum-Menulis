@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ScraBoy.Features.CMS.Topic;
 using PagedList;
+using System.Web;
 
 namespace ScraBoy.Features.CMS.Blog
 {
@@ -13,13 +14,14 @@ namespace ScraBoy.Features.CMS.Blog
     {
         private CMSContext db;
         private readonly int pageSize = 10;
+        private string viewId;
         public PostRepository(CMSContext db)
         {
             this.db = db;
+
         }
         public PostRepository() : this(new CMSContext())
         {
-
         }
         public int CountPublished
         {
@@ -29,7 +31,60 @@ namespace ScraBoy.Features.CMS.Blog
                 return db.Post.Where(P => P.Published < DateTime.Now).Count();
             }
         }
+        public async Task UpdateViewCount(string postId)
+        {
+            var view = await this.db.ViewPost.SingleOrDefaultAsync(a => a.ViewId == viewId &&
+            a.PostId==postId);
 
+            if(view != null)
+            {
+                return;
+            }
+
+            ViewPost viewPost = new ViewPost()
+            {
+                PostId = postId,
+                ViewId = viewId,
+                Count = 1,
+                LastViewed = DateTime.Now
+
+            };
+            db.ViewPost.Add(viewPost);
+
+            await this.db.SaveChangesAsync();
+        }
+        public async Task<int> CountTotalView(string PostId)
+        {
+            var posView = await this.db.ViewPost.Where(a => a.PostId == PostId).ToArrayAsync();
+
+            if(posView.Count()<=0)
+            {
+                return 0;
+            }
+            return posView.Sum(a => a.Count); 
+        }
+        public void GetCookieView(HttpContextBase http)
+        {
+            var cookie = http.Request.Cookies.Get("ViewSinglePost");
+            var cookieId = string.Empty;
+
+            if(cookie == null || string.IsNullOrWhiteSpace(cookie.Value))
+            {
+                cookie = new HttpCookie("ViewSinglePost");
+                cookieId = Guid.NewGuid().ToString();
+
+                cookie.Value = cookieId;
+                cookie.Expires = DateTime.Now.AddDays(365);
+
+                http.Response.Cookies.Add(cookie);
+            }
+            else
+            {
+                cookieId = cookie.Value;
+            }
+
+            viewId = cookieId;
+        }
         public async Task<Post> GetAsync(string id)
         {
             return await db.Post.Include("Author")
@@ -79,7 +134,7 @@ namespace ScraBoy.Features.CMS.Blog
             post.Tags = updatedItem.Tags;
             post.UrlImage = updatedItem.UrlImage;
             post.CategoryId = updatedItem.CategoryId;
-            post.UpdatedAt = DateTime.Now;
+            post.Updated = DateTime.Now;
 
             db.SaveChanges();
         }

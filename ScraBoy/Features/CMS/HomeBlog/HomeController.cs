@@ -37,7 +37,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
             this.commentRepository = commentRepository;
             this.votingRepository = votingRepository;
         }
-       
+
 
         [Route("")]
         [AllowAnonymous]
@@ -86,20 +86,26 @@ namespace ScraBoy.Features.CMS.HomeBlog
         [AllowAnonymous]
         public async Task<ActionResult> Post(string postId)
         {
-
             await SetViewBag();
 
-            var blog = await blogService.GetBlogAsync(postId);
+            var post = await this.posRepository.GetAsync(postId);
 
-            if(blog == null)
+            if(post==null)
             {
                 return HttpNotFound();
             }
+               
+            var blog = await blogService.GetBlogViewModel(post);
 
             blog.Voted = await StatusVote(blog);
-            var currentComments = await blogService.GetPostCommentAsync(blog.PostId);
+            var currentComments = await blogService.GetPostCommentAsync(blog.Post.Id);
+
+            this.posRepository.GetCookieView(HttpContext);
+            await this.posRepository.UpdateViewCount(postId);
 
             blog.Comments = currentComments.ToList();
+
+
 
             return View(blog);
         }
@@ -112,20 +118,21 @@ namespace ScraBoy.Features.CMS.HomeBlog
         {
             await SetViewBag();
 
+            var post = await this.posRepository.GetAsync(postId);
 
-            var blog = await blogService.GetBlogAsync(postId);
-
-            if(blog == null)
+            if(post == null)
             {
                 return HttpNotFound();
             }
+
+            var blog = await blogService.GetBlogViewModel(post);
 
             blog.Voted = await StatusVote(blog);
 
             var user = await GetLoggedInUser();
 
-            model.UserId = user.Id;
-            model.PostId = blog.PostId;
+            model.User.Id = user.Id;
+            model.Post.Id = blog.Post.Id;
 
             try
             {
@@ -135,7 +142,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
             }
             catch(Exception e)
             {
-                ModelState.AddModelError("key",e);
+                ModelState.AddModelError(string.Empty,e.Message);
                 return View(model);
             }
 
@@ -215,7 +222,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
             }
             var user = await GetLoggedInUser();
 
-            return await this.votingRepository.UserHasLiked(post.PostId,user.Id);
+            return await this.votingRepository.UserHasLiked(post.Post.Id,user.Id);
         }
         private async Task<CMSUser> GetLoggedInUser()
         {

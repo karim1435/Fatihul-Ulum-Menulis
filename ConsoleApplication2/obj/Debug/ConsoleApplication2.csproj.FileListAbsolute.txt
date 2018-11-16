@@ -1,6 +1,0 @@
-E:\Projects\ScraBoy\ConsoleApplication2\bin\Debug\ConsoleApplication2.exe.config
-E:\Projects\ScraBoy\ConsoleApplication2\bin\Debug\ConsoleApplication2.exe
-E:\Projects\ScraBoy\ConsoleApplication2\bin\Debug\ConsoleApplication2.pdb
-E:\Projects\ScraBoy\ConsoleApplication2\obj\Debug\ConsoleApplication2.exe
-E:\Projects\ScraBoy\ConsoleApplication2\obj\Debug\ConsoleApplication2.pdb
-E:\Projects\ScraBoy\ConsoleApplication2\obj\Debug\ConsoleApplication2.csprojResolveAssemblyReference.cache

@@ -95,17 +95,25 @@ namespace ScraBoy.Features.CMS.Admin
             {
                 return RedirectToAction("Index");
             }
+
             return View(model);
         }
        
         [Route("logout")]
-        public async Task<ActionResult> Logout()
+        public async Task<ActionResult> Logout(string returnUrl)
         {
             var authManager = HttpContext.GetOwinContext().Authentication;
 
             authManager.SignOut();
 
-            return RedirectToAction("Index");
+            if(Url.IsLocalUrl(returnUrl))
+            {
+                return Redirect(returnUrl);
+            }
+            else
+            {
+                return RedirectToAction("Index","HomeBlog");
+            }
         }
 
         [AllowAnonymous]

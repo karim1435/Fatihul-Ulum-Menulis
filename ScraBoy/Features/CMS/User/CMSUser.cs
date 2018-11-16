@@ -14,5 +14,6 @@ namespace ScraBoy.Features.CMS.User
         [Display(Name ="About Me")]
         [AllowHtml]
         public string Description { get; set; }
+        
     }
 }

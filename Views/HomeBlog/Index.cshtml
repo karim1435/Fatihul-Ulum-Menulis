@@ -1,0 +1,176 @@
+﻿@model IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>
+
+@{
+    ViewBag.Title = "Index";
+    ViewBag.IsIndex = true;
+
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="my-4">
+                @*Iqro'
+                <small>Bacalah...!</small>*@
+            </h1>
+            @foreach(var item in Model)
+            {
+                @Html.Partial("_RenderPost",item)
+            }
+
+            <div>
+                <!-- Pagination -->
+                <ul class="pagination justify-content-center mb-4">
+                    @if(ViewBag.PreviousPage > 0)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Page","HomeBlog",new { page = ViewBag.PreviousPage })">
+                                &larr; Older
+                            </a>
+                        </li>
+                    }
+                    @if(ViewBag.NextPage > -1)
+                    {
+                        <li class="page-item">
+                            <a class="page-link" href="@Url.Action("Page","HomeBlog",new { page = ViewBag.NextPage })">
+                                Newer &rarr;
+                            </a>
+                        </li>
+                    }
+                </ul>
+            </div>
+
+        </div>
+        <div class="col-md-4">
+            <!-- Search Widget -->
+            <div class="card my-4">
+                <h5 class="card-header">Search</h5>
+                <div class="card-body">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-secondary" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card my-4">
+                <h5 class="card-header">Tags</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled mb-0">
+                                @foreach(var item in ViewBag.Tags)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Tag",new { tagId = item })">@item</a>
+                                    </li>
+                                }
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card my-4">
+                <h5 class="card-header">Category</h5>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled mb-0">
+                                @foreach(var item in ViewBag.Categories)
+                                {
+                                    <li>
+                                        <a href="@Url.Action("Category",new { catId = item })">@item</a>
+                                    </li>
+                                }
+                            </ul>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card my-4">
+                <div class="profile-sidebar">
+                    <!-- SIDEBAR USERPIC -->
+                    <div class="profile-userpic">
+                        <img src="http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg" class="img-responsive" alt="">
+                    </div>
+                    <!-- END SIDEBAR USERPIC -->
+                    <!-- SIDEBAR USER TITLE -->
+                    <div class="profile-usertitle">
+                        <div class="profile-usertitle-name">
+                            Marcus Doe
+                        </div>
+                        <div class="profile-usertitle-job">
+                            Developer
+                        </div>
+                    </div>
+                    <!-- END SIDEBAR USER TITLE -->
+                    <!-- SIDEBAR BUTTONS -->
+                    <div class="profile-userbuttons">
+                        <button type="button" class="btn btn-success btn-sm">Follow</button>
+                        <button type="button" class="btn btn-danger btn-sm">Message</button>
+                    </div>
+                    <!-- END SIDEBAR BUTTONS -->
+                    <!-- SIDEBAR MENU -->
+                    <div class="profile-usermenu">
+                        <ul class="nav">
+                            <li class="active">
+                                <a href="#">
+                                    <i class="glyphicon glyphicon-home"></i>
+                                    Overview
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="glyphicon glyphicon-user"></i>
+                                    Account Settings
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" target="_blank">
+                                    <i class="glyphicon glyphicon-ok"></i>
+                                    Tasks
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <i class="glyphicon glyphicon-flag"></i>
+                                    Help
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- END MENU -->
+                </div>
+            </div>
+                <div class="card my-4">
+                    <h5 class="card-header">Recent Comments</h5>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                @foreach(var item in ViewBag.RecentComments)
+                                {
+                                    <div class="media mb-4">
+                                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                                        <div class="media-body">
+                                            <h5 class="mt-0">
+                                                <a href="@Url.Action("Post",new { postId = item.Post })">
+                                                    @item.Author
+                                                </a>
+                                            </h5>
+                                            @item.Comment
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+    </div>
+</div>

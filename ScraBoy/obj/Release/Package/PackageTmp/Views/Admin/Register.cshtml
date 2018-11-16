@@ -1,0 +1,51 @@
+﻿@model ScraBoy.Features.CMS.Admin.RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Login.cshtml";
+}
+<div class="container">
+    <div class="card card-register mx-auto mt-5">
+        <div class="card-header">Register an Account</div>
+        <div class="card-body">
+            @using(Html.BeginForm())
+            {
+                @Html.AntiForgeryToken()
+
+                <div class="form-horizontal">
+                    @Html.ValidationSummary(true,"",new { @class = "text-danger" })
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            @Html.EditorFor(model => model.Username,new { htmlAttributes = new { @class = "form-control",@placeholder = "Email",@required = "required",@autofocus = "autofocus" } })
+                            @Html.LabelFor(model => model.Username)
+                            @Html.ValidationMessageFor(model => model.Username,"",new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+     
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            @Html.EditorFor(model => model.Password,new { htmlAttributes = new { @class = "form-control",@placeholder = "Display Name",@required = "required",@autofocus = "autofocus" } })
+                            @Html.LabelFor(model => model.Password)
+                            @Html.ValidationMessageFor(model => model.Password,"",new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="form-label-group">
+                            @Html.EditorFor(model => model.ConfirmPassword,new { htmlAttributes = new { @class = "form-control",@placeholder = "Display Name",@required = "required",@autofocus = "autofocus" } })
+                            @Html.LabelFor(model => model.ConfirmPassword)
+                            @Html.ValidationMessageFor(model => model.ConfirmPassword,"",new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <input type="submit" value="Register" class="btn btn-primary btn-block" />
+                </div>
+            }
+            <div class="text-center">
+                <a class="d-block small mt-3" href="@Url.Action("Login","Admin")">Login Page</a>
+                <a class="d-block small mt-3" href="@Url.Action("Index","HomeBlog")">Home</a>
+            </div>
+        </div>
+    </div>
+</div>

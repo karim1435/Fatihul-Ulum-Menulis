@@ -31,12 +31,12 @@
                 <br>
                 <b>Product Price</b>
                 <br>
-                @item.Quantity Item x  @String.Format("{0:n}",@item.Product.UnitPrice);  = @String.Format("{0:n}",@item.TotalProductPrice); 
+                @item.Quantity Item x  @String.Format("{0:n}",@item.Product.UnitPrice);  = @String.Format("{0:n}",@item.TotalProductPrice);
                 <br>
                 <b>Shipment Cost</b>
                 <br>
                 @item.Quantity Item x  Rp @String.Format("{0:n}",@item.Product.ShipmentPrice) = @String.Format("{0:n}",@item.TotalShipmentPrice);
-                </td>
+            </td>
             <td>
                 Shop: <a href=@item.Product.Shop.ShopLink>@item.Product.Shop.ShopName</a>
                 <br>
@@ -60,7 +60,7 @@
             <b>Total Products Price</b>
         </th>
         <td>
-            @String.Format("{0:n}",@Model.ItemsTotal); 
+            @String.Format("{0:n}",@Model.ItemsTotal);
         </td>
     </tr>
 
@@ -69,7 +69,7 @@
             <b>Total Shipments Cost</b>
         </th>
         <td>
-            @String.Format("{0:n}",@Model.ShipmentsTotal); 
+            @String.Format("{0:n}",@Model.ShipmentsTotal);
         </td>
     </tr>
 
@@ -78,7 +78,7 @@
             <b>Final Total Price</b>
         </th>
         <td>
-            @String.Format("{0:n}", @Model.ProductsTotal); 
+            @String.Format("{0:n}",@Model.ProductsTotal);
         </td>
     </tr>
 </table>

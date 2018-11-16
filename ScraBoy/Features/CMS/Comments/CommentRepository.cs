@@ -29,11 +29,12 @@ namespace ScraBoy.Features.CMS.Comments
         {
             using(var db = new CMSContext())
             {
+
                 Comment comment = new Comment();
 
                 comment.Content = model.NewComment;
-                comment.UserId = model.UserId;
-                comment.PostId = model.PostId;
+                comment.UserId = model.User.Id;
+                comment.PostId = model.Post.Id;
                 comment.PostedOn = DateTime.Now;
 
                 db.Comment.Add(comment);

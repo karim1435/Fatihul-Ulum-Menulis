@@ -3,7 +3,7 @@
 @if(Model.Voted)
 {
     <a class="fa fa-thumbs-up" 
-       href="@Url.Action("Like",new { controller = "Voting",postId = Model.PostId })">
+       href="@Url.Action("Like",new { controller = "Voting",postId = Model.Post.Id })">
         @Model.Voting.TotalLike
     </a>
 }
@@ -11,7 +11,7 @@ else
 {
 
     <a class="fa fa-thumbs-o-up"
-       href="@Url.Action("Like",new { controller = "Voting",postId = Model.PostId })">
+       href="@Url.Action("Like",new { controller = "Voting",postId =  Model.Post.Id })">
         @Model.Voting.TotalLike
     </a>
 }

@@ -6,44 +6,44 @@
     <div class="card mb-4">
 
         <div class="card-text text-muted">
-            Posted by <a href="#">@Model.Author</a> on @Model.Published.Value.ToString("yyyy-MM-dd")
+            Posted by <a href="#">@Model.User.UserName</a> on @Model.Post.Published.FormatDate()
         </div>
-        <img class="card-img-top" src="@Url.Content(Model.UrlImage)" style="height: 380px;" alt="Card image cap">
+        <img class="card-img-top" src="@Url.Content(Model.Post.UrlImage)" style="height: 380px;" alt="Card image cap">
         <div class="card-body">
             <h2 class="card-title">
-                @Html.ActionLink(Model.Title,"post",new { controller = "HomeBlog",postId = Model.PostId })
+                @Html.ActionLink(Model.Post.Title,"post",new { controller = "HomeBlog",postId = Model.Post.Id })
             </h2>
-            <p class="card-text">@Html.Raw(Model.Content)</p>
-            <a href="@Url.Action("Post",new { controller="HomeBlog", postId=Model.PostId})" class="btn btn-primary">Read More &rarr;</a>
+            <p class="card-text">@Html.Raw(!String.IsNullOrEmpty(Model.Post.Content) ? Model.Post.Content.Substring(0,Math.Min(Model.Post.Content.Length,750)) + "..." : Model.Post.Content)</p>
+            <a href="@Url.Action("Post",new { controller = "HomeBlog",postId = Model.Post.Id })" class="btn btn-primary">Read More &rarr;</a>
         </div>
         <div class="card-footer text-muted">
-
             @Html.Partial("_RenderVoting",Model)
-            Topics @Html.Partial("_RenderTags",Model.PostTags.Tags.Distinct())
+            @Html.Partial("_RenderViewCount",Model.ViewCount)
+            Topics @Html.Partial("_RenderTags",Model.Post.Tags.Distinct())
+            Category: @Html.Partial("_RenderCategory",Model.Category.Name)
         </div>
     </div>
 }
 else
 {
     <div class="col-lg-8">
-
-
         <!-- Title -->
-        <h1 class="mt-4">@Model.Title</h1>
+        <h1 class="mt-4">@Model.Post.Title</h1>
         <!-- Author -->
         <p class="lead">
-            Topics: @Html.Partial("_RenderTags",Model.PostTags.Tags.Distinct())
-            Category: @Html.Partial("_RenderCategory",Model.PostCategories.Names)
+            Topics: @Html.Partial("_RenderTags",Model.Post.Tags.Distinct())
+            Category: @Html.Partial("_RenderCategory",Model.Category.Name)
         </p>
         <hr>
         <!-- Preview Image -->
-        <img class="img-fluid rounded" style="height" src="@Url.Content(Model.UrlImage)" alt="">
+        <img class="img-fluid rounded" style="height" src="@Url.Content(Model.Post.UrlImage)" alt="">
         <hr>
         <!-- Post Content -->
-        @Html.Raw(Model.Content)
+        @Html.Raw(Model.Post.Content)
         <hr>
         <div class="card-login text-success">
             @Html.Partial("_RenderVoting",Model)
+            @Html.Partial("_RenderViewCount",Model.ViewCount)
         </div>
         @Html.Partial("_CommentForm",Model)
 
