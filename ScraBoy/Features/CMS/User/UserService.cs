@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 using ScraBoy.Features.CMS.Role;
 using ScraBoy.Features.CMS.Admin;
 using ScraBoy.Features.Utility;
+using ScraBoy.Features.CMS.HomeBlog;
+using ScraBoy.Features.CMS.Blog;
+using ScraBoy.Features.Data;
+using System.Data.Entity;
 
 namespace ScraBoy.Features.CMS.User
 {
@@ -15,7 +19,9 @@ namespace ScraBoy.Features.CMS.User
         private readonly IUserRepository usersRepository;
         private readonly IRoleRepository rolesRepostitory;
         private readonly ModelStateDictionary modelState;
-        public UserService(ModelStateDictionary modelState,IUserRepository userRepository,IRoleRepository roleReporitoy)
+        public UserService(ModelStateDictionary modelState,
+            IUserRepository userRepository,
+            IRoleRepository roleReporitoy)
         {
             this.usersRepository = userRepository;
             this.rolesRepostitory = roleReporitoy;
@@ -97,7 +103,45 @@ namespace ScraBoy.Features.CMS.User
 
             return true;
         }
+        public async Task<IEnumerable<Post>> GetPostByUserId(string userName)
+        {
+            using(var db = new CMSContext())
+            {
+                 return await db.Post.Include("Author").
+                    Where(a => a.Author.UserName.Equals(userName)).
+                    Where(p=>p.Published<DateTime.Now).
+                    OrderByDescending(a=>a.Published).
+                    ToArrayAsync();
+            }
+        }
+        public async Task<CMSUser> GetUser(string username)
+        {
+            using(var db = new CMSContext())
+            {
+                return await db.Users.Where(a => a.UserName.Equals(username)).FirstOrDefaultAsync();
+            }
+        }
+        public async Task<UserProfileModel> GetProfileModel(string username)
+        {
+            var user =  await GetUser(username);
 
+            if(user == null)
+            {
+                return null;
+            }
+
+            var role = await this.usersRepository.GetRolesForUserAsync(user);
+            var posts = await GetPostByUserId(username);
+            
+            var userModel = new UserProfileModel();
+
+            userModel.User = user;
+            userModel.Role = role.FirstOrDefault();
+            userModel.Posts = posts;
+
+            return userModel;
+
+        }
         public async Task<UserViewModel> GetUserByNameAsync(string name)
         {
             var user = await this.usersRepository.GetUserByNameAsync(name);

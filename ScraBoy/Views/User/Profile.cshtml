@@ -1,0 +1,63 @@
+﻿@model ScraBoy.Features.CMS.User.UserProfileModel
+
+    @{
+        ViewBag.Title = "ViewProfile";
+        Layout = "~/Views/Shared/_BlogLayout.cshtml";
+    }
+    <link href="~/Content/profile.css" rel="stylesheet" />
+    <script type="text/javascript" src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+    <div id="topbar">
+        <a href="http://designshack.net">Back to Design Shack</a>
+    </div>
+
+    <div id="w">
+        <div id="content" class="clearfix">
+            <div id="userphoto"><img src="http://placehold.it/50x50" alt="default avatar"></div>
+            <h1>@Model.User.UserName 's Profile</h1>
+            <nav id="profiletabs">
+                <ul class="clearfix">
+                    <li><a href="#bio" class="sel">About</a></li>
+                    <li><a href="#posts">Posts by @Model.User.UserName</a></li>
+                </ul>
+            </nav>
+
+            <section id="bio">
+                <p class="bio"><span><b>Name: </b></span> @Model.User.UserName</p>
+                <hr />
+                <p class="bio"><span><b>Level: </b> </span> @Model.Role</p>
+                <hr />
+                <p class="bio"><span><b>About: </b> </span>@Model.User.Description</p>
+                
+            </section>
+
+            <section id="posts" class="hidden">
+                @foreach(var item in Model.Posts)
+                {
+                    <p>
+                        <a href="@Url.Action("Post","HomeBlog",new { postId=item.Id})">@item.Title</a>
+                    </p>
+                   
+                    <p class="posts">@item.Content.ReadMore(90)</p>
+                    <hr />
+                }
+            </section>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $(function () {
+            $('#profiletabs ul li a').on('click', function (e) {
+                e.preventDefault();
+                var newcontent = $(this).attr('href');
+
+                $('#profiletabs ul li a').removeClass('sel');
+                $(this).addClass('sel');
+
+                $('#content section').each(function () {
+                    if (!$(this).hasClass('hidden')) { $(this).addClass('hidden'); }
+                });
+
+                $(newcontent).removeClass('hidden');
+            });
+        });
+    </script>

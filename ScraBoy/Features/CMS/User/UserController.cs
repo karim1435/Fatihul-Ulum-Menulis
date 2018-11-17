@@ -65,10 +65,19 @@ namespace ScraBoy.Features.CMS.User
 
             return View(model);
         }
-        [Route("profile")]
-        public async Task<ActionResult> ViewProfile()
+        [Route("profile/{username}")]
+        public async Task<ActionResult> Profile(string username)
         {
-            return View();
+            var user = await userservice.GetUserByNameAsync(username);
+
+            if(user == null)
+            {
+                return HttpNotFound();
+            }
+
+            var profile = await userservice.GetProfileModel(username);
+
+            return View(profile);
         }
 
         [HttpGet]

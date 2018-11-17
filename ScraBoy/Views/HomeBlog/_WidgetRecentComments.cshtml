@@ -10,7 +10,7 @@
                     <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
                     <div class="media-body">
                         <h5 class="mt-0">
-                            <a href="@Url.Action("Post",new { postId = item.Post })">
+                            <a href="@Url.Action("Profile","User",new { username= item.User.UserName})">
                                 @item.User.UserName
                             </a>
                         </h5>  @item.Comment.PostedOn.TimeAgo()
@@ -19,16 +19,7 @@
                 </div>
 
 
-                @*<div class="media mb-4">
-                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                        <div class="media-body">
-                            <h5 class="mt-0">
-
-                            </h5>
-                            @item.Comment.Content @item.Comment.PostedOn.TimeAgo()
-
-                        </div>
-                    </div>*@
+    
             }
         </div>
     </div>

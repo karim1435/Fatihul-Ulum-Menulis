@@ -6,7 +6,7 @@
     <div class="card mb-4">
 
         <div class="card-text text-muted">
-            Posted by <a href="#">@Model.User.UserName</a> on @Model.Post.Published.FormatDate()
+            Posted by <a href="@Url.Action("Profile","User",new { username= Model.User.UserName})">@Model.User.UserName</a> on @Model.Post.Published.FormatDate()
             Category: @Html.Partial("_RenderCategory",Model.Category.Name)
         </div>
         <img class="card-img-top" src="@Url.Content(Model.Post.UrlImage)" style="height: 380px;" alt="Card image cap">
@@ -31,7 +31,7 @@ else
         <h1 class="mt-4">@Model.Post.Title</h1>
         <!-- Author -->
         <p class="lead">
-            Posted by <a href="#">@Model.User.UserName</a> on @Model.Post.Published.FormatDate()
+            Posted by <a href="@Url.Action("Profile","User",new { username= Model.User.UserName})">@Model.User.UserName</a> on @Model.Post.Published.FormatDate()
             Category: @Html.Partial("_RenderCategory",Model.Category.Name)
             Topics: @Html.Partial("_RenderTags",Model.Post.Tags.Distinct())
         </p>

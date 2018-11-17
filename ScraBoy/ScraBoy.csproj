@@ -255,6 +255,7 @@
     <Compile Include="Features\CMS\User\CMSUser.cs" />
     <Compile Include="Features\CMS\User\IUserRepository.cs" />
     <Compile Include="Features\CMS\User\UserController.cs" />
+    <Compile Include="Features\CMS\User\UserProfileModel.cs" />
     <Compile Include="Features\CMS\User\UserRepository.cs" />
     <Compile Include="Features\CMS\User\UserService.cs" />
     <Compile Include="Features\CMS\User\UserViewModel.cs" />
@@ -641,7 +642,7 @@
     <Content Include="Views\HomeBlog\Category.cshtml" />
     <Content Include="Views\HomeBlog\_RenderCategory.cshtml" />
     <Content Include="Views\Shared\_Login.cshtml" />
-    <Content Include="Views\User\ViewProfile.cshtml" />
+    <Content Include="Views\User\Profile.cshtml" />
     <Content Include="Views\Admin\AuthenticationLink.cshtml" />
     <Content Include="Views\Post\Details.cshtml" />
     <Content Include="Views\Category\_PostForm.cshtml" />
