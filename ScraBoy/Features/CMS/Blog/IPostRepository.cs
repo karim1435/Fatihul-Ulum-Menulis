@@ -26,7 +26,7 @@ namespace ScraBoy.Features.CMS.Blog
         IPagedList<Post> GetPagedList(string search,int page, string userId);
         void GetCookieView(HttpContextBase http);
         Task UpdateViewCount(string postId);
-        Task<int> CountTotalView(string PostId);
+        Task<IEnumerable<Post>> SortByViews();
 
     }
 }

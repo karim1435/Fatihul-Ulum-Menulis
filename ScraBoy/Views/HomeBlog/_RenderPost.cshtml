@@ -7,20 +7,20 @@
 
         <div class="card-text text-muted">
             Posted by <a href="#">@Model.User.UserName</a> on @Model.Post.Published.FormatDate()
+            Category: @Html.Partial("_RenderCategory",Model.Category.Name)
         </div>
         <img class="card-img-top" src="@Url.Content(Model.Post.UrlImage)" style="height: 380px;" alt="Card image cap">
         <div class="card-body">
             <h2 class="card-title">
                 @Html.ActionLink(Model.Post.Title,"post",new { controller = "HomeBlog",postId = Model.Post.Id })
             </h2>
-            <p class="card-text">@Html.Raw(!String.IsNullOrEmpty(Model.Post.Content) ? Model.Post.Content.Substring(0,Math.Min(Model.Post.Content.Length,750)) + "..." : Model.Post.Content)</p>
+            <p class="card-text">@Model.Post.Content.ReadMore()</p>
             <a href="@Url.Action("Post",new { controller = "HomeBlog",postId = Model.Post.Id })" class="btn btn-primary">Read More &rarr;</a>
         </div>
         <div class="card-footer text-muted">
             @Html.Partial("_RenderVoting",Model)
             @Html.Partial("_RenderViewCount",Model.ViewCount)
             Topics @Html.Partial("_RenderTags",Model.Post.Tags.Distinct())
-            Category: @Html.Partial("_RenderCategory",Model.Category.Name)
         </div>
     </div>
 }
@@ -31,8 +31,9 @@ else
         <h1 class="mt-4">@Model.Post.Title</h1>
         <!-- Author -->
         <p class="lead">
-            Topics: @Html.Partial("_RenderTags",Model.Post.Tags.Distinct())
+            Posted by <a href="#">@Model.User.UserName</a> on @Model.Post.Published.FormatDate()
             Category: @Html.Partial("_RenderCategory",Model.Category.Name)
+            Topics: @Html.Partial("_RenderTags",Model.Post.Tags.Distinct())
         </p>
         <hr>
         <!-- Preview Image -->

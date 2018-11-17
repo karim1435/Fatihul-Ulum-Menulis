@@ -50,7 +50,7 @@
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                         @if(User.Identity.IsAuthenticated)
                         {
-                            <a class="dropdown-item" href="#">Settings</a>
+                        <a class="dropdown-item" href="@Url.Action("Edit","User",new {username = User.Identity.Name })">Setting <i class="fa fa-cog"></i></a>
                         }
                         else
                         {

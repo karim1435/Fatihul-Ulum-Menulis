@@ -23,7 +23,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
 
         private BlogService blogService = new BlogService();
 
-        private readonly int pageSize = 2;
+        private readonly int pageSize = 5;
         public HomeBlogController() : this(new PostRepository(),
             new UserRepository(),new CommentRepository(),new VotingRepository())
         { }
@@ -95,7 +95,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
                 return HttpNotFound();
             }
                
-            var blog = await blogService.GetBlogViewModel(post);
+            var blog = blogService.GetBlogViewModel(post);
 
             blog.Voted = await StatusVote(blog);
             var currentComments = await blogService.GetPostCommentAsync(blog.Post.Id);
@@ -125,7 +125,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
                 return HttpNotFound();
             }
 
-            var blog = await blogService.GetBlogViewModel(post);
+            var blog = blogService.GetBlogViewModel(post);
 
             blog.Voted = await StatusVote(blog);
 
@@ -145,10 +145,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
                 ModelState.AddModelError(string.Empty,e.Message);
                 return View(model);
             }
-
         }
-
-
         // root/tags/tag-id
         [Route("tags/{tagId}")]
         [AllowAnonymous]
@@ -194,7 +191,10 @@ namespace ScraBoy.Features.CMS.HomeBlog
 
             return View(posts);
         }
-
+        private async Task PopularPostByView()
+        {
+            ViewBag.PopularView = await this.blogService.GetPopularPostByView();
+        }
         private async Task SetTags()
         {
             ViewBag.Tags = await this.blogService.GetAllTags();
@@ -210,9 +210,15 @@ namespace ScraBoy.Features.CMS.HomeBlog
         }
         private async Task SetViewBag()
         {
+            await PopularPostByView();
             await SetTags();
             await RecentComments();
             await GetCategories();
+            await MostCommented();
+        }
+        public async Task MostCommented()
+        {
+            ViewBag.Commented = await blogService.SortByCommented(); 
         }
         private async Task<bool> StatusVote(BlogViewModel post)
         {

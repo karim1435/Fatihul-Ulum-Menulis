@@ -53,16 +53,6 @@ namespace ScraBoy.Features.CMS.Blog
 
             await this.db.SaveChangesAsync();
         }
-        public async Task<int> CountTotalView(string PostId)
-        {
-            var posView = await this.db.ViewPost.Where(a => a.PostId == PostId).ToArrayAsync();
-
-            if(posView.Count()<=0)
-            {
-                return 0;
-            }
-            return posView.Sum(a => a.Count); 
-        }
         public void GetCookieView(HttpContextBase http)
         {
             var cookie = http.Request.Cookies.Get("ViewSinglePost");
@@ -84,6 +74,10 @@ namespace ScraBoy.Features.CMS.Blog
             }
 
             viewId = cookieId;
+        }
+        public async Task<IEnumerable<Post>> SortByViews()
+        {
+            return await this.db.Post.OrderByDescending(a => a.TotalViews).ToArrayAsync();
         }
         public async Task<Post> GetAsync(string id)
         {
@@ -141,7 +135,7 @@ namespace ScraBoy.Features.CMS.Blog
 
         public async Task<IEnumerable<Post>> GetAllAsync()
         {
-            return await db.Post.Include("Author").OrderByDescending(post => post.Created).ToArrayAsync();
+            return await db.Post.Include("Author").ToArrayAsync();
         }
         public async Task Create(Post model)
         {

@@ -30,6 +30,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
         public TagViewModel SideBarTags { get; set; }
         public bool Voted { get; set; }
         public int ViewCount { get; set; }
+        public int TotalComment { get; set; }
     }
     public class TagViewModel
     {
@@ -55,12 +56,10 @@ namespace ScraBoy.Features.CMS.HomeBlog
     {
         public VoteViewModel()
         {
-            LikedUser = new List<string>();
-            DislikedUser = new List<string>();
+            LikedUser = new List<CMSUser>();
         }
-        public List<string> LikedUser { get; set; }
-        public List<string> DislikedUser { get; set; }
+        public List<CMSUser> LikedUser { get; set; }
         public int TotalLike { get; set; }
-        public int TotalDislike { get; set; }
+
     }
 }

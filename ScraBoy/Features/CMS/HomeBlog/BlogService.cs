@@ -16,6 +16,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
 {
     public class BlogService
     {
+        private readonly int showLimit = 5;
         private readonly IPostRepository postRepository;
         private readonly ICommentRepository commenRepository;
         private readonly IVotingRepository voteRepository;
@@ -43,30 +44,23 @@ namespace ScraBoy.Features.CMS.HomeBlog
             this.tagRepoistory = tagRepository;
             this.categoryRepository = categoryRepository;
         }
-        public async Task<IEnumerable<BlogViewModel>> GetBlogs()
-        {
-            var posts = await this.postRepository.GetAllAsync();
-
-            return await GetBlogListViewModel(posts);
-        }
-
         public async Task<IEnumerable<BlogViewModel>> GetPageBlogAsync(int pageNumber,int pageSize)
         {
             var blogs = await this.postRepository.GetPageAsync(pageNumber,pageSize);
 
-            return await GetBlogListViewModel(blogs);
+            return  GetBlogListViewModel(blogs).OrderByDescending(a=>a.Post.Published);
         }
         public async Task<IEnumerable<BlogViewModel>> GetBlogByCategoryAsync(string catName)
         {
             var blog = await this.postRepository.GetPostByCategories(catName);
 
-            return await GetBlogListViewModel(blog);
+            return GetBlogListViewModel(blog);
         }
         public async Task<IEnumerable<BlogViewModel>> GetBlogByTagAsync(string tagId)
         {
             var blogs = await postRepository.GetPostByTagAsync(tagId);
 
-            return await GetBlogListViewModel(blogs);
+            return GetBlogListViewModel(blogs);
         }
         public async Task<IEnumerable<CommentViewModel>> GetPostCommentAsync(string posId)
         {
@@ -80,8 +74,18 @@ namespace ScraBoy.Features.CMS.HomeBlog
             {
                 var comments = db.Comment.Include("User").OrderByDescending(a => a.PostedOn).ToList();
 
-                return GetCommentViewModel(comments).ToList();
+                return GetCommentViewModel(comments).ToList().Take(showLimit);
             }
+        }
+        public async Task<IEnumerable<BlogViewModel>> SortByCommented()
+        {
+            var post = await this.postRepository.GetAllAsync();
+            return GetBlogListViewModel(post).OrderByDescending(a => a.TotalComment).Take(showLimit);
+        }
+        public async Task<IEnumerable<BlogViewModel>> GetPopularPostByView()
+        {
+            var post = await this.postRepository.GetAllAsync();
+            return GetBlogListViewModel(post).OrderByDescending(a=>a.ViewCount).Take(showLimit); ;
         }
         public async Task<IEnumerable<string>> GetAllCategories()
         {
@@ -96,7 +100,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
             return tagRepoistory.GetAll().ToList();
         }
 
-        public async Task<BlogViewModel> GetBlogViewModel(Post post)
+        public BlogViewModel GetBlogViewModel(Post post)
         {
             var blog = new BlogViewModel();
 
@@ -107,15 +111,17 @@ namespace ScraBoy.Features.CMS.HomeBlog
             blog.User.UserName = post.Author.UserName;
             blog.Post.Created = post.Created;
             blog.Post.Published= post.Published;
-            blog.Voting = await this.voteRepository.GetVotedPostUser(blog.Post.Id);
+            blog.Voting.LikedUser = this.voteRepository.UserLiked(blog.Post.Id);
+            blog.Voting.TotalLike = post.TotalVote;
             blog.SideBarTags.Tags = tagRepoistory.GetAll().ToList();
             blog.Category.Name = post.Category.Name;
             blog.Post.UrlImage = post.UrlImage;
-            blog.ViewCount = await this.postRepository.CountTotalView(blog.Post.Id);
+            blog.ViewCount = post.TotalViews;
+            blog.TotalComment = post.TotalComment;
 
             return blog;
         }
-        public async Task<IEnumerable<BlogViewModel>> GetBlogListViewModel(IEnumerable<Post> posts)
+        public IEnumerable<BlogViewModel> GetBlogListViewModel(IEnumerable<Post> posts)
         {
             var blogs = new List<BlogViewModel>();
             foreach(var post in posts)
@@ -129,11 +135,13 @@ namespace ScraBoy.Features.CMS.HomeBlog
                 blog.User.UserName= post.Author.UserName;
                 blog.Post.Created = post.Created;
                 blog.Post.Published = post.Published;
-                blog.Voting = await this.voteRepository.GetVotedPostUser(blog.Post.Id);
+                blog.Voting.LikedUser = this.voteRepository.UserLiked(blog.Post.Id);
+                blog.Voting.TotalLike = post.TotalVote;
                 blog.SideBarTags.Tags = tagRepoistory.GetAll().ToList();
                 blog.Post.UrlImage= post.UrlImage;
                 blog.Category.Name = post.Category.Name;
-                blog.ViewCount = await this.postRepository.CountTotalView(blog.Post.Id);
+                blog.ViewCount = post.TotalViews;
+                blog.TotalComment = post.TotalComment;
 
                 blogs.Add(blog);
             }

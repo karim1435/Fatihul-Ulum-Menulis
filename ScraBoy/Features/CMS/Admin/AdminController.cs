@@ -198,13 +198,13 @@ namespace ScraBoy.Features.CMS.Admin
             if(User.Identity.IsAuthenticated)
             {
                 item.Text = "Logout";
+                item.Icon = "fa fa-sign-out";
                 item.Action = "Logout";
-                item.Icon = "fa fa-sign-out-alt";
             }
             else
             {
                 item.Text = "Login";
-                item.Icon = "fa fa-bars";
+                item.Icon = "fa fa-sign-in";
                 item.Action = "Login";
             }
 

@@ -1,4 +1,5 @@
 ﻿using ScraBoy.Features.CMS.HomeBlog;
+using ScraBoy.Features.CMS.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace ScraBoy.Features.CMS.Interest
         Task LikedAsync(Voting model);
         Task<Voting> UserHasVoted(string postId, string userId);
         Task DislikeAsync(Voting model);
-        Task<VoteViewModel> GetVotedPostUser(string id);
         Task<bool> UserHasLiked(string postId,string userId);
+        List<CMSUser> UserLiked(string id);
     }
 }

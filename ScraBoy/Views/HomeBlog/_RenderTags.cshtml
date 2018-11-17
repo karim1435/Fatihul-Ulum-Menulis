@@ -1,5 +1,4 @@
 ﻿@model IEnumerable<string>
-
 @Html.Raw(string.Join(", ",Model.Select(s =>
-   Html.ActionLink(s,"tag",new { controller = "homeBlog",tagId = s },
+   Html.ActionLink(s,"tag",new { controller = "HomeBlog",tagId = s },
    new { @class = "text-success"}))))

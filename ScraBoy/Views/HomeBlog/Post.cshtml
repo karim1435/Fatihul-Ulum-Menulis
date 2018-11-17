@@ -24,24 +24,33 @@
                 </div>
             </div>
 
+
+            <div class="card my-4">
+                <h5 class="card-header">Popular Posts</h5>
+                @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>)ViewBag.PopularView)
+            </div>
+
+            <div class="card my-4">
+                <h5 class="card-header">Most Commented Posts</h5>
+                @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>)ViewBag.Commented)
+            </div>
+
+            <div class="card my-4">
+                <h5 class="card-header">Tags</h5>
+                @Html.Partial("_WidgetTags",(IEnumerable<String>)ViewBag.Tags)
+            </div>
+
             <div class="card my-4">
                 <h5 class="card-header">Categories</h5>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled mb-0">
-                                @foreach(var item in ViewBag.Tags)
-                                {
-                                    <li>
-                                        <a href="@Url.Action("Tag",new { tagId = item })">@item</a>
-                                    </li>
-                                }
-                            </ul>
-
-                        </div>
-                    </div>
-                </div>
+                @Html.Partial("_WidgetCategory",(IEnumerable<String>)ViewBag.Categories)
             </div>
+
+
+            <div class="card my-4">
+                <h5 class="card-header">Recent Comments</h5>
+                @Html.Partial("_WidgetRecentComments",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.CommentViewModel>)ViewBag.RecentComments)
+            </div>
+            
         </div>
     </div>
 </div>

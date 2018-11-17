@@ -1,0 +1,18 @@
+﻿@model IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-lg-6">
+                @foreach(var item in Model)
+                {
+                    <div class="media-body">
+                        <h5 class="mt-0">
+                            <a href="@Url.Action("Post",new { postId = item.Post.Id })">
+                                @item.Post.Title
+                            </a>
+                        </h5>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>

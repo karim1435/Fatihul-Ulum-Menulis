@@ -32,19 +32,13 @@ namespace ScraBoy.Features.CMS.Interest
         {
             return await db.Voting.OrderByDescending(a => a.PostedOn).ToArrayAsync();
         }
-        public async Task<VoteViewModel> GetVotedPostUser(string id)
+
+        public List<CMSUser> UserLiked(string id)
         {
-            var votes = await db.Voting.Where(a => a.PostId == id).ToArrayAsync();
+            var votes = db.Voting.Where(a => a.PostId == id).ToList();
 
-            VoteViewModel model = new VoteViewModel();
-
-            model.LikedUser = votes.Where(p => p.LikeCount ==true).Select(a => a.User.UserName).ToList();
-
-            model.TotalLike = model.LikedUser.Count();
-
-            return model;
+            return votes.Where(a => a.LikeCount == true).Select(a => a.User).ToList();
         }
-
         public async Task<Voting> UserHasVoted(string postId,string userId)
         {
             var postVoted = db.Voting.Where(a => a.PostId == postId);

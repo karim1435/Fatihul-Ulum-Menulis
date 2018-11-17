@@ -1,0 +1,6 @@
+E:\Projects\ScraBoy\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe.config
+E:\Projects\ScraBoy\ConsoleApplication1\bin\Debug\ConsoleApplication1.exe
+E:\Projects\ScraBoy\ConsoleApplication1\bin\Debug\ConsoleApplication1.pdb
+E:\Projects\ScraBoy\ConsoleApplication1\obj\Debug\ConsoleApplication1.exe
+E:\Projects\ScraBoy\ConsoleApplication1\obj\Debug\ConsoleApplication1.pdb
+E:\Projects\ScraBoy\ConsoleApplication1\obj\Debug\ConsoleApplication1.csprojResolveAssemblyReference.cache

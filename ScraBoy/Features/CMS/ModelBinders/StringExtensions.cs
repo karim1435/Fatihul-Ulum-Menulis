@@ -1,6 +1,9 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using ScraBoy.Features.Utility;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
 
@@ -8,6 +11,38 @@ namespace ScraBoy.Features.CMS.ModelBinders
 {
     public static class StringExtensions
     {
+        public static String ReadMore(this string content,int length=300,string ommission = "...")
+        {
+            HtmlDocument doc = new HtmlDocument();
+
+            string test = Formatter.FormatHtml(content);
+            doc.LoadHtml(test);
+
+            string s = "";
+            StringBuilder sb = new StringBuilder();
+            foreach(HtmlTextNode node in doc.DocumentNode.SelectNodes("//text()"))
+            {
+                sb.AppendLine(node.InnerText.TrimEnd() + " ");
+            }
+            s += sb;
+
+            return s.Replace(System.Environment.NewLine,string.Empty)
+                .Replace("\t",string.Empty)
+                .TruncateHtml(length,ommission);
+        }
+        /// <summary>
+        /// remove html 
+        /// </summary>
+        public static string TruncateHtml(this string input,int length = 300,
+                                           string ommission = "...")
+        {
+            // s.Substring(0, Math.Min(150, s.Length - 1))
+            if(input == null || input.Length < length)
+                return input;
+            int iNextSpace = input.LastIndexOf(" ",length);
+            return string.Format("{0}" + ommission,input.Substring(0,(iNextSpace > 0) ?
+                                                                  iNextSpace : length).Trim());
+        }
         public static string MakeUrlFriednly(this string value)
         {
             value = value.ToLowerInvariant().Replace(","," ");

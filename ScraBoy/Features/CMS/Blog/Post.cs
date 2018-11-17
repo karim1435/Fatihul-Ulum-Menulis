@@ -25,7 +25,7 @@ namespace ScraBoy.Features.CMS.Blog
         [AllowHtml]
         [Display(Name = "Post Content")]
         [Required]
-        [StringLength(int.MaxValue,MinimumLength = 7)]
+        [StringLength(int.MaxValue,MinimumLength =400)]
         public string Content { get; set; }
         [Required]
         public DateTime Created { get; set; }
@@ -61,11 +61,48 @@ namespace ScraBoy.Features.CMS.Blog
         public virtual Category Category { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Voting> Votings { get; set; }
+        public virtual ICollection<ViewPost> ViewPosts { get; set; }
         [Display(Name = "Upload Image")]
         public string UrlImage { get; set; }
 
         [NotMapped]
         public HttpPostedFileBase ImageFile { get; set; }
+        [NotMapped]
+        public int TotalViews
+        {
+            get
+            {
+                if(ViewPosts==null)
+                {
+                    return 0;
+                }
+                return ViewPosts.Sum(a => a.Count);
+            }
+        }
+        [NotMapped]
+        public int TotalVote
+        {
+            get
+            {
+                if(Votings== null)
+                {
+                    return 0;
+                }
+                return Votings.Where(p => p.LikeCount == true).Count();
+            }
+        }
+        [NotMapped]
+        public int TotalComment
+        {
+            get
+            {
+                if(Comments == null)
+                {
+                    return 0;
+                }
+                return Comments.Count();
+            }
+        }
     }
     public class ViewPost
     {

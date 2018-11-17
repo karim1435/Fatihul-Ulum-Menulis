@@ -329,6 +329,10 @@
     <Compile Include="Migrations\201811160832531_view.Designer.cs">
       <DependentUpon>201811160832531_view.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811161022057_viewposts.cs" />
+    <Compile Include="Migrations\201811161022057_viewposts.Designer.cs">
+      <DependentUpon>201811161022057_viewposts.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -643,6 +647,10 @@
     <Content Include="Views\Category\_PostForm.cshtml" />
     <Content Include="Views\Widgets\_Search.cshtml" />
     <Content Include="Views\HomeBlog\_RenderViewCount.cshtml" />
+    <Content Include="Views\HomeBlog\_WidgetPost.cshtml" />
+    <Content Include="Views\HomeBlog\_WidgetCategory.cshtml" />
+    <Content Include="Views\HomeBlog\_WidgetTags.cshtml" />
+    <Content Include="Views\HomeBlog\_WidgetRecentComments.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -683,6 +691,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811160832531_view.resx">
       <DependentUpon>201811160832531_view.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811161022057_viewposts.resx">
+      <DependentUpon>201811161022057_viewposts.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
