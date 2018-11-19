@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace ScraBoy.Features.CMS.User
 {
-    //
+    
     [RoutePrefix("user")]
     [Authorize]
     public class UserController : Controller
@@ -28,14 +28,27 @@ namespace ScraBoy.Features.CMS.User
 
         [Route("")]
         [Authorize(Roles ="admin")]
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? page,string currentFilter)
         {
-            var users = await this.usersRepository.GetAllUsersAsync();
+            int pageNumber = (page ?? 1);
 
-            return View(users);
+            var users = this.userservice.GetPagedList(currentFilter,pageNumber);
 
+            foreach(var item in users)
+            {
+                var role = await this.usersRepository.GetRolesForUserAsync(item);
+                item.CurrentRole = role.FirstOrDefault();
+            }
+            return View("Index","",users);
         }
-    
+        public async Task<ViewResult> Search(string search)
+        {
+            ViewBag.Filter = search;
+
+            var users = this.userservice.GetPagedList(search,1);
+
+            return View("Index","",users);
+        }
         [HttpGet]
         [Route("Create")]
         [Authorize(Roles = "admin")]
@@ -65,21 +78,22 @@ namespace ScraBoy.Features.CMS.User
 
             return View(model);
         }
-        [Route("profile/{username}")]
-        public async Task<ActionResult> Profile(string username)
+        [Route("profile/{userId}")]
+        [AllowAnonymous]
+        public async Task<ActionResult> Profile(string userId)
         {
-            var user = await userservice.GetUserByNameAsync(username);
+            var user = await userservice.GetUser(userId);
 
             if(user == null)
             {
                 return HttpNotFound();
             }
 
-            var profile = await userservice.GetProfileModel(username);
+            var profile = await userservice.GetProfileModel(userId);
 
             return View(profile);
         }
-
+       
         [HttpGet]
         [Route("edit/{username}")]
         [Authorize(Roles = "admin, editor, author")]
@@ -102,15 +116,13 @@ namespace ScraBoy.Features.CMS.User
             return View(user);
 
         }
-    
-
+     
         [HttpPost]
         [Route("edit/{username}")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin, editor, author")]
         public async Task<ActionResult> Edit(UserViewModel model, string username)
-        {
-
+        { 
             var currentUser = User.Identity.Name;
 
             var isAdmin = User.IsInRole("admin");

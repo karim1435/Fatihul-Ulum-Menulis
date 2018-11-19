@@ -1,7 +1,7 @@
 ﻿@model ScraBoy.Features.CMS.HomeBlog.BlogViewModel
 
 @{
-    ViewBag.Title = "Post";
+    ViewBag.Title = Model.Post.Title;
 
     ViewBag.IsIndex = false;
     Layout = "~/Views/Shared/_BlogLayout.cshtml";
@@ -12,45 +12,9 @@
 
         <div class="col-md-4">
             <!-- Search Widget -->
-            <div class="card my-4">
-                <h5 class="card-header">Search</h5>
-                <div class="card-body">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-secondary" type="button">Go!</button>
-                        </span>
-                    </div>
-                </div>
-            </div>
+           @Html.Partial("_Search")
+            @Html.Partial("_WidgetSidebar")
 
-
-            <div class="card my-4">
-                <h5 class="card-header">Popular Posts</h5>
-                @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>)ViewBag.PopularView)
-            </div>
-
-            <div class="card my-4">
-                <h5 class="card-header">Most Commented Posts</h5>
-                @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>)ViewBag.Commented)
-            </div>
-
-            <div class="card my-4">
-                <h5 class="card-header">Tags</h5>
-                @Html.Partial("_WidgetTags",(IEnumerable<String>)ViewBag.Tags)
-            </div>
-
-            <div class="card my-4">
-                <h5 class="card-header">Categories</h5>
-                @Html.Partial("_WidgetCategory",(IEnumerable<String>)ViewBag.Categories)
-            </div>
-
-
-            <div class="card my-4">
-                <h5 class="card-header">Recent Comments</h5>
-                @Html.Partial("_WidgetRecentComments",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.CommentViewModel>)ViewBag.RecentComments)
-            </div>
-            
         </div>
     </div>
 </div>

@@ -3,24 +3,19 @@
 
 <div class="card-body">
     <div class="row">
-        <div class="col-lg-6">
             @foreach(var item in Model)
             {
+
                 <div class="media mb-4">
                     <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
                     <div class="media-body">
-                        <h5 class="mt-0">
-                            <a href="@Url.Action("Profile","User",new { username= item.User.UserName})">
-                                @item.User.UserName
-                            </a>
-                        </h5>  @item.Comment.PostedOn.TimeAgo()
+                        <a href="@Url.Action("Profile","User",new { userId = item.User.SlugUrl })">
+                            <h5 class="mt-0">@item.User.DisplayName</h5>
+                        </a> <span>Commented on</span>
+                        <a href="@Url.Action("Post","HomeBlog",new { postId = item.Post.Id })">@item.Post.Title</a>   @item.Comment.PostedOn.TimeAgo()
                         <p><a href="@Url.Action("Post",new { postId = item.Post.Id })">@item.Comment.Content</a> </p>
                     </div>
                 </div>
-
-
-    
             }
         </div>
     </div>
-</div>

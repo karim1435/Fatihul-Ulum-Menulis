@@ -1,7 +1,10 @@
-﻿@model IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model PagedList.IPagedList<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Home";
     ViewBag.IsIndex = true;
 
     Layout = "~/Views/Shared/_BlogLayout.cshtml";
@@ -21,21 +24,9 @@
             <div>
                 <!-- Pagination -->
                 <ul class="pagination justify-content-center mb-4">
-                    @if(ViewBag.PreviousPage > 0)
+                    @if(Model.Count() > 0)
                     {
-                        <li class="page-item">
-                            <a class="page-link" href="@Url.Action("Page","HomeBlog",new { page = ViewBag.PreviousPage })">
-                                &larr; Older
-                            </a>
-                        </li>
-                    }
-                    @if(ViewBag.NextPage > -1)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" href="@Url.Action("Page","HomeBlog",new { page = ViewBag.NextPage })">
-                                Newer &rarr;
-                            </a>
-                        </li>
+                        @Html.PagedListPager(Model,page => Url.Action("Index",new { page = page,currentFilter = ViewBag.Filter }))
                     }
                 </ul>
             </div>
@@ -43,45 +34,8 @@
         </div>
         <div class="col-md-4">
             <!-- Search Widget -->
-            <div class="card my-4">
-                <h5 class="card-header">Search</h5>
-                <div class="card-body">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-secondary" type="button">Go!</button>
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="card my-4">
-                <h5 class="card-header">Popular Posts</h5>
-                @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>)ViewBag.PopularView)
-            </div>
-
-            <div class="card my-4">
-                <h5 class="card-header">Most Commented Posts</h5>
-                @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>)ViewBag.Commented)
-            </div>
-
-            <div class="card my-4">
-                <h5 class="card-header">Tags</h5>
-                @Html.Partial("_WidgetTags",(IEnumerable<String>)ViewBag.Tags)
-            </div>
-
-            <div class="card my-4">
-                <h5 class="card-header">Categories</h5>
-                @Html.Partial("_WidgetCategory",(IEnumerable<String>)ViewBag.Categories)
-            </div>
-
-
-            <div class="card my-4">
-                <h5 class="card-header">Recent Comments</h5>
-                @Html.Partial("_WidgetRecentComments",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.CommentViewModel>)ViewBag.RecentComments)
-            </div>
-
+           @Html.Partial("_Search")
+            @Html.Partial("_WidgetSidebar")
 
         </div>
     </div>

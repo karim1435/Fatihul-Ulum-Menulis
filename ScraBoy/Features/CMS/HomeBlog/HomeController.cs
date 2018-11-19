@@ -12,8 +12,6 @@ using System.Web.Mvc;
 
 namespace ScraBoy.Features.CMS.HomeBlog
 {
-    [RoutePrefix("root")]
-    [Authorize]
     public class HomeBlogController : Controller
     {
         private readonly IPostRepository posRepository;
@@ -40,50 +38,41 @@ namespace ScraBoy.Features.CMS.HomeBlog
 
 
         [Route("")]
-        [AllowAnonymous]
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? page,string currentFilter)
+        {
+            await SetViewBag();
+            int pageNumber = (page ?? 1);
+
+            var blogs = blogService.GetPagedList(currentFilter,"","",pageNumber);
+
+        
+            foreach(var blog in blogs)
+            {
+                blog.Voted = await StatusVote(blog);
+            }
+            return View("Index","",blogs);
+        }
+        public async Task<ActionResult> Search(string search)
         {
             await SetViewBag();
 
-            var blogs = await blogService.GetPageBlogAsync(1,pageSize);
+            ViewBag.Filter = search;
+
+            var blogs = blogService.GetPagedList(search,"","",1);
+            if(blogs.Count() <= 0)
+            {
+                return View("~/Views/HomeBlog/_NotFoundPage.cshtml");
+            }
 
             foreach(var blog in blogs)
             {
                 blog.Voted = await StatusVote(blog);
             }
-
-            ViewBag.PreviousPage = 0;
-            ViewBag.NextPage = (Decimal.Divide(posRepository.CountPublished,pageSize) > 1) ? 2 : -1;
-
-            return View(blogs);
+            return View("Index","",blogs);
         }
-        [Route("page/{page:int}")]
-        [AllowAnonymous]
-        public async Task<ActionResult> Page(int page = 1)
-        {
-            await SetViewBag();
-
-            if(page < 2)
-            {
-                RedirectToAction("Index");
-            }
-            var blogs = await blogService.GetPageBlogAsync(page,pageSize);
-
-            foreach(var blog in blogs)
-            {
-                blog.Voted = await StatusVote(blog);
-            }
-
-            ViewBag.PreviousPage = page - 1;
-            ViewBag.NextPage = (Decimal.Divide(posRepository.CountPublished,pageSize) > page) ? page + 1 : -1;
-
-            return View("Index",blogs);
-        }
-
         // root/posts/post-id
         [HttpGet]
         [Route("posts/{postId}")]
-        [AllowAnonymous]
         public async Task<ActionResult> Post(string postId)
         {
             await SetViewBag();
@@ -148,12 +137,12 @@ namespace ScraBoy.Features.CMS.HomeBlog
         }
         // root/tags/tag-id
         [Route("tags/{tagId}")]
-        [AllowAnonymous]
-        public async Task<ActionResult> Tag(string tagId)
+        public async Task<ActionResult> Tag(int? page, string tagId)
         {
+            int pageNumber = (page ?? 1);
             await SetViewBag();
 
-            var posts = await blogService.GetBlogByTagAsync(tagId);
+            var posts = blogService.GetPagedList("",tagId,"",pageNumber);
 
             foreach(var blog in posts)
             {
@@ -171,12 +160,11 @@ namespace ScraBoy.Features.CMS.HomeBlog
         }
 
         [Route("category/{catId}")]
-        [AllowAnonymous]
         public async Task<ActionResult> Category(string catId)
         {
             await SetViewBag();
 
-            var posts = await blogService.GetBlogByCategoryAsync(catId);
+            var posts = blogService.GetPagedList("","",catId,1);
 
             foreach(var blog in posts)
             {
@@ -191,6 +179,10 @@ namespace ScraBoy.Features.CMS.HomeBlog
 
             return View(posts);
         }
+        public async Task RecentPost()
+        {
+            ViewBag.NewPosts = await this.blogService.MostNewPosts();
+        }
         private async Task PopularPostByView()
         {
             ViewBag.PopularView = await this.blogService.GetPopularPostByView();
@@ -199,7 +191,10 @@ namespace ScraBoy.Features.CMS.HomeBlog
         {
             ViewBag.Tags = await this.blogService.GetAllTags();
         }
-
+        private async Task MostLikedPost()
+        {
+            ViewBag.TopLikes = await this.blogService.MostLiked();
+        }
         private async Task RecentComments()
         {
             ViewBag.RecentComments = await this.blogService.GetRecentCommentsAsycn();
@@ -210,6 +205,8 @@ namespace ScraBoy.Features.CMS.HomeBlog
         }
         private async Task SetViewBag()
         {
+            await MostLikedPost();
+            await RecentPost();
             await PopularPostByView();
             await SetTags();
             await RecentComments();

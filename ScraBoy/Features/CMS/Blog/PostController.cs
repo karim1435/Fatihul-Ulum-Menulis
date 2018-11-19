@@ -38,6 +38,7 @@ namespace ScraBoy.Features.CMS.Blog
             {
                 return View("Index","",this.postRepository.GetPagedList(currentFilter,pageNumber,null));
             }
+            var test = this.postRepository.GetPagedList(currentFilter,pageNumber,null);
 
             var user = await GetLoggedInUser();
 

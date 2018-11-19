@@ -10,6 +10,7 @@ using System.Web.Mvc;
 namespace ScraBoy.Features.CMS.Interest
 {
     [RoutePrefix("voting")]
+    [Authorize]
     public class VotingController : Controller
     {
         private readonly IVotingRepository votingRepository;
@@ -25,11 +26,35 @@ namespace ScraBoy.Features.CMS.Interest
             this.userRepository = userRepository;
         }
         [Route("")]
-        public async Task<ActionResult> Index()
+        public async Task<ActionResult> Index(int? page,string currentFilter)
         {
-            var votes = await this.votingRepository.GetAllVotingAsync();
-            return View(votes);
+            int pageNumber = (page ?? 1);
+
+            if(!User.IsInRole("author"))
+            {
+                return View("Index","",this.votingRepository.GetPagedList(currentFilter,pageNumber,null));
+            }
+
+            var user = await GetLoggedInUser();
+
+            return View("Index","",this.votingRepository.GetPagedList(currentFilter,pageNumber,user.Id));
+
         }
+        public async Task<ViewResult> Search(string search)
+        {
+            ViewBag.Filter = search;
+
+            if(!User.IsInRole("author"))
+            {
+                return View("Index","",this.votingRepository.GetPagedList(search,1,null));
+            }
+
+            var user = await GetLoggedInUser();
+
+            return View("Index","",this.votingRepository.GetPagedList(search,1,user.Id));
+        }
+
+
         [Route("like/{postId}")]
         [Authorize]
         public async Task<ActionResult> Like(string postId)

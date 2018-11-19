@@ -8,7 +8,6 @@ using System.Web.Mvc;
 
 namespace ScraBoy.Features.CMS.Tag
 {
-    //
     [RoutePrefix("tag")]
     [Authorize]
     public class TagController : Controller

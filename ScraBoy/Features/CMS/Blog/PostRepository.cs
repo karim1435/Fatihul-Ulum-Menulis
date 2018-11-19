@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ScraBoy.Features.CMS.Topic;
 using PagedList;
 using System.Web;
+using ScraBoy.Features.CMS.ModelBinders;
 
 namespace ScraBoy.Features.CMS.Blog
 {
@@ -84,6 +85,31 @@ namespace ScraBoy.Features.CMS.Blog
             return await db.Post.Include("Author")
                 .SingleOrDefaultAsync(post => post.Id == id);
         }
+
+        public IQueryable<Post> GetBlogs(string name,string tagId,string categoryId)
+        {
+            if(!string.IsNullOrEmpty(name))
+            {
+                return this.db.Post.Where(m => m.Title.Contains(name) || 
+                m.Content.Contains(name) || 
+                m.Author.UserName.Contains(name));
+            }
+            if(!string.IsNullOrEmpty(tagId))
+            {
+                return GetPostByTagAsync(tagId).AsQueryable();
+            }
+            if(!string.IsNullOrEmpty(categoryId))
+            {
+                return GetPostByCategories(categoryId).AsQueryable();
+            }
+            return this.db.Post;
+        }
+
+        public List<Post> GetBlogList(string name,string tagId,string categoryId)
+        {
+            return this.GetBlogs(name,tagId,categoryId).OrderByDescending(a => a.Created).ToList();
+        }
+
         public IQueryable<Post> GetPosts(string name)
         {
             if(!string.IsNullOrEmpty(name))
@@ -103,11 +129,11 @@ namespace ScraBoy.Features.CMS.Blog
 
             if(userId == null)
             {
-                model = GetPostList(search);
+                model = GetBlogList(search,"","");
             }
             else
             {
-                model = GetPostList(search).Where(a => a.AuthorId == userId).ToList();
+                model = GetBlogList(search,"","").Where(a => a.AuthorId == userId).ToList();
             }
             model = model.OrderByDescending(s => s.Created).ToList();
             return model.ToPagedList(currentPage,pageSize);
@@ -175,12 +201,12 @@ namespace ScraBoy.Features.CMS.Blog
                 ToArrayAsync();
         }
 
-        public async Task<IEnumerable<Post>> GetPostByTagAsync(string tag)
+        public IEnumerable<Post> GetPostByTagAsync(string tag)
         {
-            var posts = await db.Post
+            var posts = db.Post
                 .Include("Author")
                 .Where(post => post.CombinedTags.Contains(tag))
-                .ToListAsync();
+                .ToList();
 
             return posts.Where(post =>
                 post.Tags.Contains(tag,StringComparer.CurrentCultureIgnoreCase))
@@ -198,9 +224,9 @@ namespace ScraBoy.Features.CMS.Blog
                 Take(pageSize).
                 ToArrayAsync();
         }
-        public async Task<IEnumerable<Post>> GetPostByCategories(string category)
+        public  IEnumerable<Post> GetPostByCategories(string category)
         {
-            return await db.Post.Where(a => a.Category.Name.Equals(category)).ToArrayAsync();
+            return  db.Post.Where(a => a.Category.Name.Equals(category)).ToList();
         }
         public async Task<IEnumerable<string>> GetAllCategories()
         {

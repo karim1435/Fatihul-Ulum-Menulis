@@ -1,0 +1,35 @@
+﻿  <div class="card my-4">
+                <h5 class="card-header">Newest Posts</h5>
+                @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>)ViewBag.NewPosts)
+            </div>
+
+            <div class="card my-4">
+                <h5 class="card-header">Popular Posts</h5>
+                @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>)ViewBag.PopularView)
+            </div>
+            <div class="card my-4">
+                <h5 class="card-header">Top Liked Posts</h5>
+                @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>)ViewBag.TopLikes)
+            </div>
+
+            <div class="card my-4">
+                <h5 class="card-header">Most Commented Posts</h5>
+                @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>)ViewBag.Commented)
+            </div>
+
+            <div class="card my-4">
+                <h5 class="card-header">Tags</h5>
+                @Html.Partial("_WidgetTags",(IEnumerable<String>)ViewBag.Tags)
+            </div>
+
+            <div class="card my-4">
+                <h5 class="card-header">Categories</h5>
+                @Html.Partial("_WidgetCategory",(IEnumerable<String>)ViewBag.Categories)
+            </div>
+
+
+            <div class="card my-4">
+                <h5 class="card-header">Recent Comments</h5>
+                @Html.Partial("_WidgetRecentComments",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.CommentViewModel>)ViewBag.RecentComments)
+            </div>
+

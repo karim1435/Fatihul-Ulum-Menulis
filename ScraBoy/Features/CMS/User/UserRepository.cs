@@ -20,15 +20,30 @@ namespace ScraBoy.Features.CMS.User
             store = new CmsUserStore();
             manager = new CmsUserManager(store);
         }
-
+        public async Task<CMSUser> GetUserById(string userId)
+        {
+            return await store.FindByIdAsync(userId);
+        }
         public async Task<CMSUser> GetUserByNameAsync(string username)
         {
             return await store.FindByNameAsync(username);
         }
-
-        public async Task<IEnumerable<CMSUser>> GetAllUsersAsync()
+        public async Task<IdentityResult> ResetPasswordAsync(string userid, string code, string password)
         {
-            return await store.Users.ToArrayAsync();
+            return await manager.ResetPasswordAsync(userid,code,password);
+        }
+    
+        public IQueryable<CMSUser> GetPosts(string name)
+        {
+            if(!string.IsNullOrEmpty(name))
+            {
+                return this.GetAllUsersAsync(name).Where(a => a.UserName.Contains(name)).AsQueryable();
+            }
+            return store.Users;
+        }
+        public  IEnumerable<CMSUser> GetAllUsersAsync(string userName)
+        {
+            return store.Users.Where(a=>a.UserName.Contains(userName)).ToList();
         }
 
         public async Task CreateAsync(CMSUser user,string password)

@@ -50,7 +50,7 @@
                                     View <i class="fa fa-eye"></i>
                                 </a>
                             </td>
-                            <td>@Html.DisplayFor(modelItem => item.Author.UserName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Author.DisplayName)</td>
                             <td>@Html.DisplayFor(modelItem => item.Category.Name)</td>
                             <td>@String.Join(", ",item.Tags)</td>
                             <td>
@@ -65,11 +65,11 @@
                                         info = "Will be Published On :";
                                     }
                                 }
-                                @info <b>@item.Published.FormatDate()</b>
+                                @info <b>@item.Published.Value.FormatDate()</b>
                                 <br />
                                 Created on :<b>@item.Created.FormatDate()</b>
                                 <br />
-                                Last Updated : <b>@item.Updated.FormatDate()</b>
+                                Last Updated : <b>@item.Updated.TimeAgo()</b>
                             </td>
                         </tr>
                                     }

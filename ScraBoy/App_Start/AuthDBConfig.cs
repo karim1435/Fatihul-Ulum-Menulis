@@ -18,17 +18,34 @@ namespace ScraBoy.App_Start
         {
             using(var users = new UserRepository())
             {
-                var user = await users.GetUserByNameAsync("admin");
+                var user = await users.GetUserByNameAsync("karim");
+
                 if(user == null)
                 {
                     var adminUser = new CMSUser
                     {
                         UserName = "karim",
                         Email = "rim.karim99@gmail.com",
+                        Born=DateTime.Now,
+                        DisplayName="Ainul Karim"
                     };
 
                     await users.CreateAsync(adminUser,"07051999rim");
-                    await users.AddUserToRoleAsync(user,"admin");
+                    await users.AddUserToRoleAsync(adminUser,"admin");
+                    ICategoryRepository catRepo = new CategoryRepository();
+                    await catRepo.CreateDefaultCategory(adminUser.UserName);
+
+                    var authorUser = new CMSUser
+                    {
+                        UserName = "Ainul",
+                        Email = "rim.karim99@gmail.com",
+                        Born = DateTime.Now,
+                        DisplayName = "Ainul"
+                    };
+
+                    await users.CreateAsync(authorUser,"07051999rim");
+                    await users.AddUserToRoleAsync(authorUser,"author");
+                    await catRepo.CreateDefaultCategory(authorUser.UserName);
                 }
                 
             }

@@ -33,7 +33,8 @@ namespace ScraBoy.Features.CMS.Blog
         public DateTime Updated { get; set; }
 
         [Required(ErrorMessage ="Please Set Date")]
-        public DateTime Published { get; set; }
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}",ApplyFormatInEditMode = true)]
+        public DateTime? Published { get; set; }
         private IList<string> _tags = new List<String>();
 
         public IList<string> Tags
@@ -56,6 +57,7 @@ namespace ScraBoy.Features.CMS.Blog
         public string AuthorId { get; set; }
         [ForeignKey("AuthorId")]
         public virtual CMSUser Author { get; set; }
+        [Required(ErrorMessage ="Please Select Category")]
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }

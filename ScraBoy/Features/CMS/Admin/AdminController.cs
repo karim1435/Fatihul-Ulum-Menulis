@@ -1,5 +1,6 @@
 ﻿using Microsoft.Owin.Security;
 using ScraBoy.Features.CMS.Role;
+using ScraBoy.Features.CMS.Topic;
 using ScraBoy.Features.CMS.User;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,10 @@ namespace ScraBoy.Features.CMS.Admin
 {
     [RoutePrefix("admin")]
     [Authorize]
-
+    
     public class AdminController : Controller
     {
+        private readonly ICategoryRepository categoryRepository;
         private readonly IUserRepository userRepository;
         private readonly IRoleRepository roleRepository;
         private readonly UserService userService;
@@ -23,7 +25,7 @@ namespace ScraBoy.Features.CMS.Admin
         {
             this.roleRepository = new RoleRepository();
             this.userRepository = new UserRepository();
-
+            this.categoryRepository = new CategoryRepository();
             this.userService = new UserService(ModelState,userRepository,roleRepository);
         }
 
@@ -74,7 +76,6 @@ namespace ScraBoy.Features.CMS.Admin
             {
                 return RedirectToAction("Index","HomeBlog");
             }
-            
         }
         [AllowAnonymous]
         [Route("register")]
@@ -93,12 +94,34 @@ namespace ScraBoy.Features.CMS.Admin
 
             if(completed)
             {
+                await this.categoryRepository.CreateDefaultCategory(model.Username);
+
                 return RedirectToAction("Index");
             }
 
             return View(model);
         }
+
        
+
+        [AllowAnonymous]
+        public async Task<ActionResult> ResetPassword()
+        {
+            return View();
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            var result = await this.userService.ResetPassword(model);
+
+            if(result)
+            {
+                return RedirectToAction("Login");
+            }
+            return View(model);
+        }
         [Route("logout")]
         public async Task<ActionResult> Logout(string returnUrl)
         {
@@ -115,7 +138,55 @@ namespace ScraBoy.Features.CMS.Admin
                 return RedirectToAction("Index","HomeBlog");
             }
         }
+        [Route("manage/{username}")]
+        [HttpGet]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> Manage(string username)
+        {
+            var currentUser = User.Identity.Name;
 
+            if(!User.IsInRole("admin") &&
+                !string.Equals(currentUser,username,StringComparison.CurrentCultureIgnoreCase))
+            {
+                return new HttpUnauthorizedResult();
+            }
+
+            var user = await userService.GetUserByNameAsync(username);
+
+            if(user == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View("~/Views/User/Edit.cshtml",user);
+        }
+
+        [Route("manage/{username}")]
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> Manage(UserViewModel model,string username)
+        {
+            var currentUser = User.Identity.Name;
+            var isAdmin = User.IsInRole("admin");
+
+            if(!isAdmin &&
+                !string.Equals(currentUser,username,StringComparison.CurrentCultureIgnoreCase))
+            {
+                return new HttpUnauthorizedResult();
+            }
+
+            var userUpdated = await userService.ManageProfile(model);
+
+            if(userUpdated)
+            {
+                if(isAdmin)
+                {
+                    return RedirectToAction("index","User");
+                }
+            }
+
+            return View("~/Views/User/Edit.cshtml",model);
+        }
         [AllowAnonymous]
         public async Task<PartialViewResult> AdminMenu()
         {
@@ -125,12 +196,11 @@ namespace ScraBoy.Features.CMS.Admin
             {
                 items.Add(new AdminMenuItem
                 {
-                    Text = "Home",
+                    Text = "My Site",
                     Action = "Index",
-                    Icon = "fa fa-home",
+                    Icon = "fa fa-globe",
                     RouteInfo = new { controller = "HomeBlog" }
                 });
-
                 if(User.IsInRole("admin"))
                 {
                     items.Add(new AdminMenuItem
@@ -141,17 +211,6 @@ namespace ScraBoy.Features.CMS.Admin
                         RouteInfo = new { controller = "user"}
                     });
                 }
-                else
-                {
-                    items.Add(new AdminMenuItem
-                    {
-                        Text = "Profile",
-                        Action = "Edit",
-                        Icon = "fa fa-user",
-                        RouteInfo = new { controller = "user",username = User.Identity.Name }
-                    });
-                }
-
                 if(!User.IsInRole("author"))
                 {
                     items.Add(new AdminMenuItem
@@ -172,6 +231,13 @@ namespace ScraBoy.Features.CMS.Admin
                 });
                 items.Add(new AdminMenuItem
                 {
+                    Text = "Category",
+                    Action = "Index",
+                    Icon = "fa fa-thumb-tack",
+                    RouteInfo = new { controller = "Category" }
+                });
+                items.Add(new AdminMenuItem
+                {
                     Text = "Comment",
                     Action = "Index",
                     Icon = "fa fa-comment-alt",
@@ -179,10 +245,18 @@ namespace ScraBoy.Features.CMS.Admin
                 });
                 items.Add(new AdminMenuItem
                 {
-                    Text = "Category",
+                    Text = "Activity",
                     Action = "Index",
-                    Icon = "fa fa-folder-open",
-                    RouteInfo = new { controller = "Category" }
+                    Icon = "fa fa-history",
+                    RouteInfo = new { controller = "Voting" }
+                });
+
+                items.Add(new AdminMenuItem
+                {
+                    Text = "Report",
+                    Action = "Index",
+                    Icon = "fa fa-tasks",
+                    RouteInfo = new { controller = "Report" }
                 });
             }
             return PartialView(items);

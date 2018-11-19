@@ -18,45 +18,27 @@
         }
     </div>
     <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                <thead>
-                    <tr>
-                        <th>Content</th>
-                        <th>Author</th>
-                        <th>Post</th>
-                        <th>Posted On</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach(var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                <a href=@Url.Action("Post","HomeBlog",new { postId = item.Id })><b>@item.Content</b></a>
-                                <br>
-                                <a data-action="delete" ,data-value="item.Id" href=@Url.Action("Delete","Comment",new { id = item.Id })>
-                                    Delete <i class="fa fa-trash"></i>
-                                </a>
-                                <a href=@Url.Action("Post","HomeBlog",new { postId = item.PostId })>
-                                View <i class="fa fa-eye"></i>
-                                </a>
-                            </td>
-                            <td>@Html.DisplayFor(modelItem => item.User.UserName)</td>
-                            <td><a href=@Url.Action("Post","HomeBlog",new { postId = item.PostId })><b>@item.Post.Title</b></a></td>
-                            <td>@item.PostedOn.TimeAgo()</td>
-
-                        </tr>
-                    }
-                </tbody>
-            </table>
-
+            @foreach(var item in Model)
+            {
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                    <div class="media-body">
+                        <a href="@Url.Action("Profile","User",new { userId= item.User.SlugUrl})"><h5 class="mt-0">@item.User.DisplayName</h5> 
+                         </a>Commented On <a href="@Url.Action("Post","HomeBlog",new { postId = item.PostId })">@item.Post.Title</a>   @item.PostedOn.TimeAgo()
+                        <p><b>@item.Content</b> </p>
+                        <a data-action="delete" ,data-value="item.Id" href=@Url.Action("Delete","Comment",new { id = item.Id })>
+                            Delete <i class="fa fa-trash"></i>
+                        </a>
+                        <a href=@Url.Action("Post","HomeBlog",new { postId = item.PostId })>
+                            View <i class="fa fa-eye"></i>
+                        </a>
+                    </div>
+                </div>
+            }
             @if(Model.Count() > 0)
             {
                 <text>Page</text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text>Of</text> @Model.PageCount
                 @Html.PagedListPager(Model,page => Url.Action("Index",new { page = page,currentFilter = ViewBag.Filter }))
             }
-        </div>
-
     </div>
 </div>

@@ -1,4 +1,5 @@
-﻿using ScraBoy.Features.CMS.HomeBlog;
+﻿using PagedList;
+using ScraBoy.Features.CMS.HomeBlog;
 using ScraBoy.Features.CMS.User;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,6 @@ namespace ScraBoy.Features.CMS.Interest
         Task DislikeAsync(Voting model);
         Task<bool> UserHasLiked(string postId,string userId);
         List<CMSUser> UserLiked(string id);
+        IPagedList<Voting> GetPagedList(string search,int currentPage,string userId);
     }
 }

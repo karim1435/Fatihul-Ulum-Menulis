@@ -13,15 +13,18 @@ namespace ScraBoy.Features.CMS.User
         [Required]
         [Display(Name = "Username")]
         public string Username { get; set; }
-
-        [Required]
+        [AllowHtml]
+        [Display(Name = "Description")]
+        public string Description { get; set; }
+        [Display(Name = "Birth Day")]
+        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}",ApplyFormatInEditMode = true)]
+        public DateTime? Born { get; set; }
+        [Display(Name ="Full Name")]
+        public string SlugUrl { get; set; }
+        public string DisplayName { get; set; }
         public string Email { get; set; }
         [Display(Name = "Current Password")]
         public string CurrentPassword { get; set; }
-        [AllowHtml]
-        [Display(Name="About Me")]
-        [Required(ErrorMessage ="Say Something About Your Self")]
-        public string Description { get; set; }
 
         [System.ComponentModel.DataAnnotations.Compare("ConfirmPassword",ErrorMessage ="The new password and confirmation password don't match")]
         [Display(Name = "New Password")]

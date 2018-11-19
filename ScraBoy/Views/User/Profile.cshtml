@@ -1,7 +1,7 @@
 ﻿@model ScraBoy.Features.CMS.User.UserProfileModel
 
     @{
-        ViewBag.Title = "ViewProfile";
+        ViewBag.Title = Model.User.DisplayName +"'s " +"Profile";
         Layout = "~/Views/Shared/_BlogLayout.cshtml";
     }
     <link href="~/Content/profile.css" rel="stylesheet" />
@@ -14,20 +14,22 @@
     <div id="w">
         <div id="content" class="clearfix">
             <div id="userphoto"><img src="http://placehold.it/50x50" alt="default avatar"></div>
-            <h1>@Model.User.UserName 's Profile</h1>
+            <h1>@Model.User.DisplayName's Profile</h1>
             <nav id="profiletabs">
                 <ul class="clearfix">
                     <li><a href="#bio" class="sel">About</a></li>
-                    <li><a href="#posts">Posts by @Model.User.UserName</a></li>
+                    <li><a href="#posts">Posts by @Model.User.DisplayName</a></li>
                 </ul>
             </nav>
 
             <section id="bio">
-                <p class="bio"><span><b>Name: </b></span> @Model.User.UserName</p>
+                <p class="bio"><span><b>Name: </b></span> @Model.User.DisplayName</p>
+                <hr />
+                <p class="bio"><span><b>Birth Day: </b></span> @Model.User.Born.Value.FormatDate()</p>
                 <hr />
                 <p class="bio"><span><b>Level: </b> </span> @Model.Role</p>
                 <hr />
-                <p class="bio"><span><b>About: </b> </span>@Model.User.Description</p>
+                <p class="bio"><span><b>About: </b> </span>@Html.Raw(@Model.User.Description)</p>
                 
             </section>
 
@@ -38,7 +40,7 @@
                         <a href="@Url.Action("Post","HomeBlog",new { postId=item.Id})">@item.Title</a>
                     </p>
                    
-                    <p class="posts">@item.Content.ReadMore(90)</p>
+                    <p class="posts">@item.Content.ReadMore(90) </p>
                     <hr />
                 }
             </section>

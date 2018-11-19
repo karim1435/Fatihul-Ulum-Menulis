@@ -7,7 +7,7 @@
     ViewBag.Title = "Category List";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<a href="@Url.Action("Create", "Category")" class="btn btn-success">
+<a href="@Url.Action("Create","Category")" class="btn btn-success">
     New Category
 </a>
 
@@ -15,7 +15,7 @@
 <!-- DataTables Example -->
 <div class="card mb-3">
     <div class="card-header">
-        <h2> <i class="fa fa-folder-open"></i> Category List</h2>
+        <h2> <i class="fa fa-thumb-tack"></i> Category List</h2>
         @using(Html.BeginForm("Search","Category",FormMethod.Get))
         {
             @Html.Partial("~/Views/Widgets/_Search.cshtml")

@@ -8,6 +8,7 @@ namespace ScraBoy.Features.CMS.Topic
 {
     public interface ICategoryRepository
     {
+        Task CreateDefaultCategory(string name);
         Task<IEnumerable<Category>> GetAllCategoriesAsync();
         Task CreateCategoryAsync(Category model);
         Task<bool> IsExist(string name);

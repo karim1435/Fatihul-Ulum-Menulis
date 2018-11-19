@@ -17,16 +17,18 @@ namespace ScraBoy.Features.CMS.Blog
         Task Create(Post model);
         void Delete(string id);
         Task<IEnumerable<Post>> GetAllAsync();
-        Task<IEnumerable<Post>> GetPostByCategories(string category);
+        IEnumerable<Post> GetPostByCategories(string category);
         Task<IEnumerable<string>> GetAllCategories();
         Task<IEnumerable<Post>> GetPostsByAuthorAsync(string userId);
         Task<IEnumerable<Post>> GetPublishedPostAsync();
-        Task<IEnumerable<Post>> GetPostByTagAsync(string tagId);
+        IEnumerable<Post> GetPostByTagAsync(string tagId);
         Task<IEnumerable<Post>> GetPageAsync(int pageNumber,int pageSize);
         IPagedList<Post> GetPagedList(string search,int page, string userId);
         void GetCookieView(HttpContextBase http);
         Task UpdateViewCount(string postId);
         Task<IEnumerable<Post>> SortByViews();
+        List<Post> GetBlogList(string name,string tagId,string categoryId);
+        List<Post> GetPostList(string name);
 
     }
 }

@@ -220,7 +220,6 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\PostingController.cs" />
     <Compile Include="Features\CMS\Blog\PostRepository.cs" />
-    <Compile Include="Features\CMS\Home\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Features\CMS\Admin\AdminController.cs" />
     <Compile Include="Features\CMS\Admin\AdminMenuItem.cs" />
@@ -241,6 +240,10 @@
     <Compile Include="Features\CMS\Interest\VotingRepository.cs" />
     <Compile Include="Features\CMS\ModelBinders\PostModelBinder.cs" />
     <Compile Include="Features\CMS\ModelBinders\StringExtensions.cs" />
+    <Compile Include="Features\CMS\Nws\Report.cs" />
+    <Compile Include="Features\CMS\Nws\ReportController.cs" />
+    <Compile Include="Features\CMS\Nws\IReportRepository.cs" />
+    <Compile Include="Features\CMS\Nws\ReportRepoitory.cs" />
     <Compile Include="Features\CMS\Role\IRoleRepository.cs" />
     <Compile Include="Features\CMS\Role\RoleRepository.cs" />
     <Compile Include="Features\CMS\Tag\TagRepository.cs" />
@@ -334,6 +337,46 @@
     <Compile Include="Migrations\201811161022057_viewposts.Designer.cs">
       <DependentUpon>201811161022057_viewposts.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811171006168_desc.cs" />
+    <Compile Include="Migrations\201811171006168_desc.Designer.cs">
+      <DependentUpon>201811171006168_desc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811171011191_etc.cs" />
+    <Compile Include="Migrations\201811171011191_etc.Designer.cs">
+      <DependentUpon>201811171011191_etc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811171026578_error.cs" />
+    <Compile Include="Migrations\201811171026578_error.Designer.cs">
+      <DependentUpon>201811171026578_error.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811182347506_dn.cs" />
+    <Compile Include="Migrations\201811182347506_dn.Designer.cs">
+      <DependentUpon>201811182347506_dn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811190017415_slug.cs" />
+    <Compile Include="Migrations\201811190017415_slug.Designer.cs">
+      <DependentUpon>201811190017415_slug.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811190128499_cu.cs" />
+    <Compile Include="Migrations\201811190128499_cu.Designer.cs">
+      <DependentUpon>201811190128499_cu.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811190236146_report.cs" />
+    <Compile Include="Migrations\201811190236146_report.Designer.cs">
+      <DependentUpon>201811190236146_report.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811190326536_userreport.cs" />
+    <Compile Include="Migrations\201811190326536_userreport.Designer.cs">
+      <DependentUpon>201811190326536_userreport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811190521039_ureport.cs" />
+    <Compile Include="Migrations\201811190521039_ureport.Designer.cs">
+      <DependentUpon>201811190521039_ureport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811190522335_urep.cs" />
+    <Compile Include="Migrations\201811190522335_urep.Designer.cs">
+      <DependentUpon>201811190522335_urep.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -346,6 +389,7 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dataTables.bootstrap4.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\quote.css" />
     <Content Include="Scripts\datatables-demo.js" />
     <Content Include="Scripts\dataTables.bootstrap4.js" />
     <Content Include="Content\font-awesome.css" />
@@ -652,6 +696,14 @@
     <Content Include="Views\HomeBlog\_WidgetCategory.cshtml" />
     <Content Include="Views\HomeBlog\_WidgetTags.cshtml" />
     <Content Include="Views\HomeBlog\_WidgetRecentComments.cshtml" />
+    <Content Include="Views\HomeBlog\_WidgetSidebar.cshtml" />
+    <Content Include="Views\HomeBlog\_Search.cshtml" />
+    <Content Include="Views\HomeBlog\_NotFoundPage.cshtml" />
+    <Content Include="Views\Admin\ResetPassword.cshtml" />
+    <Content Include="Views\Report\Create.cshtml" />
+    <Content Include="Views\Report\_PostForm.cshtml" />
+    <Content Include="Views\Report\Edit.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -695,6 +747,36 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811161022057_viewposts.resx">
       <DependentUpon>201811161022057_viewposts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811171006168_desc.resx">
+      <DependentUpon>201811171006168_desc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811171011191_etc.resx">
+      <DependentUpon>201811171011191_etc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811171026578_error.resx">
+      <DependentUpon>201811171026578_error.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811182347506_dn.resx">
+      <DependentUpon>201811182347506_dn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811190017415_slug.resx">
+      <DependentUpon>201811190017415_slug.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811190128499_cu.resx">
+      <DependentUpon>201811190128499_cu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811190236146_report.resx">
+      <DependentUpon>201811190236146_report.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811190326536_userreport.resx">
+      <DependentUpon>201811190326536_userreport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811190521039_ureport.resx">
+      <DependentUpon>201811190521039_ureport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811190522335_urep.resx">
+      <DependentUpon>201811190522335_urep.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

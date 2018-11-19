@@ -16,7 +16,8 @@ namespace ScraBoy.Features.CMS.HomeBlog
 {
     public class BlogService
     {
-        private readonly int showLimit = 5;
+        private readonly int pageSize = 4;
+        private readonly int showLimit = 3;
         private readonly IPostRepository postRepository;
         private readonly ICommentRepository commenRepository;
         private readonly IVotingRepository voteRepository;
@@ -44,24 +45,20 @@ namespace ScraBoy.Features.CMS.HomeBlog
             this.tagRepoistory = tagRepository;
             this.categoryRepository = categoryRepository;
         }
-        public async Task<IEnumerable<BlogViewModel>> GetPageBlogAsync(int pageNumber,int pageSize)
-        {
-            var blogs = await this.postRepository.GetPageAsync(pageNumber,pageSize);
 
-            return  GetBlogListViewModel(blogs).OrderByDescending(a=>a.Post.Published);
-        }
-        public async Task<IEnumerable<BlogViewModel>> GetBlogByCategoryAsync(string catName)
+        public IPagedList<BlogViewModel> GetPagedList(string search,string tagId,string catId,int currentPage)
         {
-            var blog = await this.postRepository.GetPostByCategories(catName);
+            var model = new List<Post>();
 
-            return GetBlogListViewModel(blog);
-        }
-        public async Task<IEnumerable<BlogViewModel>> GetBlogByTagAsync(string tagId)
-        {
-            var blogs = await postRepository.GetPostByTagAsync(tagId);
+            model = this.postRepository.GetBlogList(search,tagId,catId);
 
-            return GetBlogListViewModel(blogs);
+            model = model.OrderByDescending(s => s.Published).ToList();
+
+            var posts = GetBlogListViewModel(model).ToList().Where(a=>a.Post.Published<DateTime.Now);
+
+            return posts.ToPagedList(currentPage,pageSize);
         }
+ 
         public async Task<IEnumerable<CommentViewModel>> GetPostCommentAsync(string posId)
         {
             var comments = await commenRepository.GetCommentByPostIdAsync(posId);
@@ -77,6 +74,16 @@ namespace ScraBoy.Features.CMS.HomeBlog
                 return GetCommentViewModel(comments).ToList().Take(showLimit);
             }
         }
+        public async Task<IEnumerable<BlogViewModel>> MostNewPosts()
+        {
+            var post = await this.postRepository.GetAllAsync();
+            return GetBlogListViewModel(post).OrderByDescending(a => a.Post.Published).Take(showLimit);
+        }
+        public async Task<IEnumerable<BlogViewModel>> MostLiked()
+        {
+            var post = await this.postRepository.GetAllAsync();
+            return GetBlogListViewModel(post).OrderByDescending(a => a.Voting.TotalLike).Take(showLimit);
+        }
         public async Task<IEnumerable<BlogViewModel>> SortByCommented()
         {
             var post = await this.postRepository.GetAllAsync();
@@ -85,7 +92,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
         public async Task<IEnumerable<BlogViewModel>> GetPopularPostByView()
         {
             var post = await this.postRepository.GetAllAsync();
-            return GetBlogListViewModel(post).OrderByDescending(a=>a.ViewCount).Take(showLimit); ;
+            return GetBlogListViewModel(post).OrderByDescending(a => a.ViewCount).Take(showLimit); ;
         }
         public async Task<IEnumerable<string>> GetAllCategories()
         {
@@ -105,12 +112,15 @@ namespace ScraBoy.Features.CMS.HomeBlog
             var blog = new BlogViewModel();
 
             blog.Post.Id = post.Id;
-            blog.Post.Title= post.Title;
-            blog.Post.Content= Formatter.FormatHtml(post.Content);
+            blog.Post.Title = post.Title;
+            blog.Post.Content = Formatter.FormatHtml(post.Content);
             blog.Post.Tags = post.Tags;
             blog.User.UserName = post.Author.UserName;
+            blog.User.Id = post.Author.Id;
+            blog.User.SlugUrl = post.Author.SlugUrl;
+            blog.User.DisplayName = post.Author.DisplayName;
             blog.Post.Created = post.Created;
-            blog.Post.Published= post.Published;
+            blog.Post.Published = post.Published;
             blog.Voting.LikedUser = this.voteRepository.UserLiked(blog.Post.Id);
             blog.Voting.TotalLike = post.TotalVote;
             blog.SideBarTags.Tags = tagRepoistory.GetAll().ToList();
@@ -130,15 +140,18 @@ namespace ScraBoy.Features.CMS.HomeBlog
 
                 blog.Post.Id = post.Id;
                 blog.Post.Title = post.Title;
-                blog.Post.Content= Formatter.FormatHtml(post.Content);
+                blog.Post.Content = Formatter.FormatHtml(post.Content);
                 blog.Post.Tags = post.Tags;
-                blog.User.UserName= post.Author.UserName;
+                blog.User.UserName = post.Author.UserName;
+                blog.User.DisplayName = post.Author.DisplayName;
+                blog.User.Id = post.Author.Id;
+                blog.User.SlugUrl = post.Author.SlugUrl;
                 blog.Post.Created = post.Created;
                 blog.Post.Published = post.Published;
                 blog.Voting.LikedUser = this.voteRepository.UserLiked(blog.Post.Id);
                 blog.Voting.TotalLike = post.TotalVote;
                 blog.SideBarTags.Tags = tagRepoistory.GetAll().ToList();
-                blog.Post.UrlImage= post.UrlImage;
+                blog.Post.UrlImage = post.UrlImage;
                 blog.Category.Name = post.Category.Name;
                 blog.ViewCount = post.TotalViews;
                 blog.TotalComment = post.TotalComment;
@@ -157,7 +170,11 @@ namespace ScraBoy.Features.CMS.HomeBlog
                 var model = new CommentViewModel();
 
                 model.Comment.PostedOn = item.PostedOn;
+                model.Post.Title = item.Post.Title;
                 model.User.UserName = item.User.UserName;
+                model.User.Id = item.User.Id;
+                model.User.SlugUrl = item.User.SlugUrl;
+                model.User.DisplayName = item.User.DisplayName;
                 model.Comment.Content = item.Content;
                 model.Post.Id = item.Post.Id;
                 blogComments.Add(model);

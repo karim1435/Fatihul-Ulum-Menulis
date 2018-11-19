@@ -11,11 +11,13 @@ using ScraBoy.Features.CMS.HomeBlog;
 using ScraBoy.Features.CMS.Blog;
 using ScraBoy.Features.Data;
 using System.Data.Entity;
+using PagedList;
 
 namespace ScraBoy.Features.CMS.User
 {
     public class UserService
     {
+        private readonly int pageSize = 10;
         private readonly IUserRepository usersRepository;
         private readonly IRoleRepository rolesRepostitory;
         private readonly ModelStateDictionary modelState;
@@ -61,7 +63,10 @@ namespace ScraBoy.Features.CMS.User
             var newUser = new CMSUser()
             {
                 UserName = model.Username,
-                Email = model.Username
+                Email = model.Username,
+                Born = DateTime.Now,
+                DisplayName = model.DisplayName,
+                SlugUrl ="fuuser"+Guid.NewGuid().ToString() + DateTime.Now.ToString("yymmssfff")
             };
 
             await usersRepository.CreateAsync(newUser,model.Password);
@@ -94,7 +99,10 @@ namespace ScraBoy.Features.CMS.User
             var newUser = new CMSUser()
             {
                 UserName = model.Username,
-                Email = model.Email
+                Email = model.Username,
+                Born = DateTime.Now,
+                DisplayName = model.DisplayName,
+                SlugUrl = "fuuser" + Guid.NewGuid().ToString() + DateTime.Now.ToString("yymmssfff")
             };
 
             await usersRepository.CreateAsync(newUser,model.NewPassword);
@@ -103,27 +111,28 @@ namespace ScraBoy.Features.CMS.User
 
             return true;
         }
+
         public async Task<IEnumerable<Post>> GetPostByUserId(string userName)
         {
             using(var db = new CMSContext())
             {
-                 return await db.Post.Include("Author").
-                    Where(a => a.Author.UserName.Equals(userName)).
-                    Where(p=>p.Published<DateTime.Now).
-                    OrderByDescending(a=>a.Published).
-                    ToArrayAsync();
+                return await db.Post.Include("Author").
+                   Where(a => a.Author.UserName.Equals(userName)).
+                   Where(p => p.Published < DateTime.Now).
+                   OrderByDescending(a => a.Published).
+                   ToArrayAsync();
             }
         }
-        public async Task<CMSUser> GetUser(string username)
+        public async Task<CMSUser> GetUser(string userId)
         {
             using(var db = new CMSContext())
             {
-                return await db.Users.Where(a => a.UserName.Equals(username)).FirstOrDefaultAsync();
+                return await db.Users.Where(a => a.SlugUrl==userId).FirstOrDefaultAsync();
             }
         }
-        public async Task<UserProfileModel> GetProfileModel(string username)
+        public async Task<UserProfileModel> GetProfileModel(string userId)
         {
-            var user =  await GetUser(username);
+            CMSUser user = await GetUser(userId);
 
             if(user == null)
             {
@@ -131,8 +140,8 @@ namespace ScraBoy.Features.CMS.User
             }
 
             var role = await this.usersRepository.GetRolesForUserAsync(user);
-            var posts = await GetPostByUserId(username);
-            
+            var posts = await GetPostByUserId(user.UserName);
+
             var userModel = new UserProfileModel();
 
             userModel.User = user;
@@ -141,6 +150,19 @@ namespace ScraBoy.Features.CMS.User
 
             return userModel;
 
+        }
+
+        public List<CMSUser> GetPostsList(string name)
+        {
+            return this.usersRepository.GetPosts(name).OrderByDescending(a => a.UserName).ToList();
+        }
+
+        public IPagedList<CMSUser> GetPagedList(string search,int currentPage)
+        {
+            var model = new List<CMSUser>();
+            model = GetPostsList(search);
+
+            return model.ToPagedList(currentPage,pageSize);
         }
         public async Task<UserViewModel> GetUserByNameAsync(string name)
         {
@@ -155,6 +177,10 @@ namespace ScraBoy.Features.CMS.User
             {
                 Username = user.UserName,
                 Email = user.Email,
+                Description = user.Description,
+                DisplayName = user.DisplayName,
+                Born = user.Born
+                
             };
 
             var userRoles = await usersRepository.GetRolesForUserAsync(user);
@@ -166,51 +192,116 @@ namespace ScraBoy.Features.CMS.User
 
             return viewModel;
         }
+        public async Task<bool> ResetPassword(ResetPasswordViewModel model)
+        {
+            var user = await usersRepository.GetUserByNameAsync(model.Username);
 
+            if(user == null)
+            {
+                modelState.AddModelError(string.Empty,"The specified user does not exist.");
+                return false;
+            }
+
+            if(!modelState.IsValid)
+            {
+                return false;
+            }
+
+            if(string.IsNullOrWhiteSpace(model.Password))
+            {
+                modelState.AddModelError(string.Empty,"The password must be supplied");
+                return false;
+            }
+
+            var newHashedPassword = usersRepository.HashPassword(model.Password);
+
+            user.PasswordHash = newHashedPassword;
+
+            await usersRepository.UpdateAsync(user);
+            return true;
+
+        }
+        public async Task<bool> ManageProfile(UserViewModel model)
+        {
+            var user = await usersRepository.GetUserByNameAsync(model.Username);
+
+            if(user == null)
+            {
+                modelState.AddModelError(string.Empty,"The specified user does not exist.");
+                return false;
+            }
+
+            if(!modelState.IsValid)
+            {
+                return false;
+            }
+
+            if(string.IsNullOrWhiteSpace(model.CurrentPassword))
+            {
+                modelState.AddModelError(string.Empty,"The current password must be supplied");
+                return false;
+            }
+
+            var passwordVerified = usersRepository.VerifyUserPassword(user.PasswordHash,model.CurrentPassword);
+
+            if(!passwordVerified)
+            {
+                modelState.AddModelError(string.Empty,"You entered wrong password.");
+                return false;
+            }
+
+        
+            user.Email = model.Email;
+            user.Description = model.Description;
+            user.Born = model.Born;
+            user.DisplayName = model.DisplayName;
+
+            await usersRepository.UpdateAsync(user);
+
+            var roles = await usersRepository.GetRolesForUserAsync(user);
+
+            await usersRepository.RemoveUserFromRoleAsync(user,roles.ToArray());
+
+            await usersRepository.AddUserToRoleAsync(user,model.SelectedRole);
+
+            return true;
+        }
         public async Task<bool> UpdateProfile(UserViewModel model)
         {
             var user = await this.usersRepository.GetUserByNameAsync(model.Username);
 
-            //if(user == null)
-            //{
-            //    modelState.AddModelError(string.Empty,"The specified user does not ecist.");
-            //    return false;
-            //}
+            if(user == null)
+            {
+                modelState.AddModelError(string.Empty,"The specified user does not ecist.");
+                return false;
+            }
 
-            //if(!modelState.IsValid)
-            //{
-            //    return false;
-            //}
+            if(!modelState.IsValid)
+            {
+                return false;
+            }
 
-            //if(!string.IsNullOrWhiteSpace(model.NewPassword))
-            //{
-            //    if(string.IsNullOrWhiteSpace(model.CurrentPassword))
-            //    {
-            //        modelState.AddModelError(string.Empty,"The current password must be supplied");
-            //        return false;
-            //    }
+            if(string.IsNullOrWhiteSpace(model.CurrentPassword))
+            {
+                modelState.AddModelError(string.Empty,"The current password must be supplied");
+                return false;
+            }
 
-            //    bool passwordVerified = usersRepository.VerifyUserPassword(user.PasswordHash,model.CurrentPassword);
+            var passwordVerified = usersRepository.VerifyUserPassword(user.PasswordHash,model.CurrentPassword);
 
-            //    if(!passwordVerified)
-            //    {
-            //        modelState.AddModelError(string.Empty,"The current password does not match our records");
-            //        return false;
-            //    }
+            if(!passwordVerified)
+            {
+                modelState.AddModelError(string.Empty,"You entered wrong password.");
+                return false;
+            }
 
-            //    var newHashedPassword = usersRepository.HashPassword(model.NewPassword);
 
-            //    user.PasswordHash = newHashedPassword;
-            //}
             user.Description = model.Description;
             user.Email = model.Email;
+            user.Born = model.Born;
+            user.DisplayName = model.DisplayName;
+
             await usersRepository.UpdateAsync(user);
-
-            //var roles = await usersRepository.GetRolesForUserAsync(user);
-
-            //await usersRepository.RemoveUserFromRoleAsync(user,roles.ToArray());
-
-            //await usersRepository.AddUserToRoleAsync(user,model.SelectedRole);
 
             return true;
         }
@@ -218,7 +309,7 @@ namespace ScraBoy.Features.CMS.User
         public async Task DeleteAsync(string username)
         {
             var user = await this.usersRepository.GetUserByNameAsync(username);
-            if(user==null)
+            if(user == null)
             {
                 return;
             }

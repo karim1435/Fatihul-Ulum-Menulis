@@ -1,4 +1,5 @@
-﻿using ScraBoy.Features.CMS.Blog;
+﻿using PagedList;
+using ScraBoy.Features.CMS.Blog;
 using ScraBoy.Features.CMS.HomeBlog;
 using ScraBoy.Features.CMS.User;
 using ScraBoy.Features.Data;
@@ -14,13 +15,13 @@ namespace ScraBoy.Features.CMS.Interest
 {
     public class VotingRepository : IVotingRepository
     {
+        private readonly int pageSize = 10;
         private CMSContext db;
         private readonly IPostRepository postRepository;
         private IUserRepository userRepository;
 
         public VotingRepository() : this(new CMSContext(),new PostRepository(),new UserRepository())
         {
-
         }
         public VotingRepository(CMSContext db,IPostRepository postRepo,IUserRepository userRepository)
         {
@@ -32,7 +33,36 @@ namespace ScraBoy.Features.CMS.Interest
         {
             return await db.Voting.OrderByDescending(a => a.PostedOn).ToArrayAsync();
         }
+        public IQueryable<Voting> GetVotings(string name)
+        {
+            if(!string.IsNullOrWhiteSpace(name))
+            {
+                return this.db.Voting.Include("User").Include("Post").Where(a=>a.LikeCount==true).
+                    Where(a => a.Post.Title.Contains(name) ||
+                a.User.UserName.Equals(name));
+            }
+            return this.db.Voting.Include("User").Include("Post").Where(a => a.LikeCount == true);
+        }
+        public List<Voting> GetVotingList(string name)
+        {
+            return GetVotings(name).OrderByDescending(a => a.PostedOn).ToList();
+        }
 
+        public IPagedList<Voting> GetPagedList(string search,int page,string userId)
+        {
+            var model = new List<Voting>();
+
+            if(userId == null)
+            {
+                model = GetVotingList(search).ToList();
+            }
+            else
+            {
+                model = GetVotingList(search).Where(post => post.Post.AuthorId.Equals(userId)).ToList();
+            }
+
+            return model.ToPagedList(page,pageSize);
+        }
         public List<CMSUser> UserLiked(string id)
         {
             var votes = db.Voting.Where(a => a.PostId == id).ToList();
@@ -63,6 +93,7 @@ namespace ScraBoy.Features.CMS.Interest
             if(vote!=null)
             {
                 vote.LikeCount = !vote.LikeCount;
+                model.PostedOn = DateTime.Now;
             }
             if(vote == null)
             {

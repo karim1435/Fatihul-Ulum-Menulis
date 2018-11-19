@@ -1,0 +1,52 @@
+﻿@model ScraBoy.Features.CMS.Nws.Report
+
+@using(Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true,"",new { @class = "text-danger" })
+
+        <div class="form-group">
+            <div class="form-label-group">
+                @Html.EditorFor(model => model.Title,new { htmlAttributes = new { @class = "form-control",@placeholder = "Enter Title",@autofocus = "autofocus" } })
+                @Html.LabelFor(model => model.Title)
+                @Html.ValidationMessageFor(model => model.Title,"",new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="form-label-group">
+                @Html.TextAreaFor(model => model.Description,15,40,new { htmlAttributes = new { @class = "form-control",@placeholder = "Enter Title",@autofocus = "autofocus" } })
+                @Html.ValidationMessageFor(model => model.Description,"",new { @class = "text-danger" })
+            </div>
+        </div>
+        @if(User.IsInRole("admin"))
+        {
+            <div class="form-group">
+                <p>Solved?</p>
+                <div class="form-label-group">
+                    <div class="checkbox">
+                        @Html.EditorFor(model => model.Fixed)
+                        @Html.ValidationMessageFor(model => model.Fixed,"",new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            <p>Select Type Of Report</p>
+            <div class="form-label-group">
+                @Html.EnumDropDownListFor(model => model.ReportType,htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ReportType,"",new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Create" class="btn btn-success" />
+        </div>
+    </div>
+}

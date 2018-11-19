@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace ScraBoy.Features.CMS.Topic
 {
-    [RoutePrefix("category")]
+    [RoutePrefix("Topic")]
     [Authorize]
     public class CategoryController : Controller
     {
@@ -50,12 +50,6 @@ namespace ScraBoy.Features.CMS.Topic
             var user = await GetLoggedInUser();
 
             return View("Index","",this.categoryService.GetPagedList(search,1,user.Id));
-        }
-        public async Task SetViewBag()
-        {
-            var user = await GetLoggedInUser();
-
-            ViewBag.Categories = await categoryService.GetByUserId(user.Id);
         }
 
         [HttpGet]
@@ -191,7 +185,13 @@ namespace ScraBoy.Features.CMS.Topic
                 return RedirectToAction("Index");
             }
         }
+       
+        public async Task SetViewBag()
+        {
+            var user = await GetLoggedInUser();
 
+            ViewBag.Categories = await categoryService.GetByUserId(user.Id);
+        }
         private async Task<CMSUser> GetLoggedInUser()
         {
             return await userRepository.GetUserByNameAsync(User.Identity.Name);

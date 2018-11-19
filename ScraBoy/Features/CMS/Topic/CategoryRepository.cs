@@ -1,4 +1,6 @@
-﻿using ScraBoy.Features.Data;
+﻿using PagedList;
+using ScraBoy.Features.CMS.User;
+using ScraBoy.Features.Data;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,10 +13,12 @@ namespace ScraBoy.Features.CMS.Topic
 {
     public class CategoryRepository : ICategoryRepository
     {
+        private IUserRepository userRepository;
         private readonly CMSContext db;
         public CategoryRepository(CMSContext context)
         {
             this.db = context;
+            this.userRepository = new UserRepository();
         }
         public CategoryRepository() : this(new CMSContext())
         {
@@ -22,6 +26,17 @@ namespace ScraBoy.Features.CMS.Topic
         public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
         {
             return await db.Category.OrderBy(a => a.Id).ToArrayAsync();
+        }
+        public async Task CreateDefaultCategory(string name)
+        {
+            var user = await this.userRepository.GetUserByNameAsync(name);
+
+            var category = new Category()
+            {
+                Name = "uncategorized",
+                AuthorId = user.Id
+            };
+            await CreateCategoryAsync(category);
         }
         public IQueryable<Category> GetCategories(string name)
         {
@@ -31,6 +46,9 @@ namespace ScraBoy.Features.CMS.Topic
             }
             return this.db.Category;
         }
+
+      
+
         public async Task CreateCategoryAsync(Category model)
         {
             model.CreatedOn = DateTime.Now;

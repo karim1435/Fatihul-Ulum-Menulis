@@ -57,9 +57,8 @@ namespace ScraBoy.Features.CMS.Comments
         {
             if(!string.IsNullOrWhiteSpace(name))
             {
-                return this.db.Comment.Include("User").Include("Post").Where(a => a.Content.Equals(name) || 
-                a.User.UserName.Equals(name) ||
-                a.Post.Title.Equals(name));
+                return this.db.Comment.Include("User").Include("Post").Where(a => a.User.UserName.Contains(name) || 
+                a.Post.Title.Contains(name));
             }
             return this.db.Comment.Include("User").Include("Post");
         }

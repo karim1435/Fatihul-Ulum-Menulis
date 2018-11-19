@@ -1,41 +1,61 @@
-﻿@model IEnumerable<ScraBoy.Features.CMS.User.CMSUser>
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model IPagedList<ScraBoy.Features.CMS.User.CMSUser>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "User List";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
+
 }
 
-<h2>Index</h2>
+<a href="@Url.Action("Create", "User")" class="btn btn-success">
+    New User
+</a>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 @AntiForgery.GetHtml()
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Email)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UserName)
-        </th>
-        <th></th>
-    </tr>
+<div class="card mb-3">
+    <div class="card-header">
+        <h2> <i class="fa fa-user-secret""></i> User List</h2>
+        @using(Html.BeginForm("Search","User",FormMethod.Get))
+        {
+            @Html.Partial("~/Views/Widgets/_Search.cshtml")
+        }
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Displayname</th>
+                        <th>Birth Date</th>
+                        <th>Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.DisplayName
+                                <br>
+                                @Html.ActionLink(" View","Profile","User",new { userId = item.Id },new { @class = "fa fa-eye" })
+                                @Html.ActionLink(" Manage","Manage","Admin",new { username = item.UserName },new { @class = "fa fa-cog" }) 
+                                @Html.ActionLink(" Delete","Delete",new { username = item.UserName },new { @class = "fa fa-trash", data_action = "delete",data_value = item.UserName })                               
+                            </td>
+                            <td>@item.Born.Value.FormatDate()</td>
+                            <td>@item.CurrentRole</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Email)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UserName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit","Edit",new { username = item.UserName }) |
-            @Html.ActionLink("Delete","Delete",new { username = item.UserName},new { data_action = "delete",data_value = item.UserName })
-        </td>
+            @if(Model.Count() > 0)
+            {
+                <text>Page</text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text>Of</text> @Model.PageCount
+                @Html.PagedListPager(Model,page => Url.Action("Index",new { page = page,currentFilter = ViewBag.Filter }))
+            }
+        </div>
 
-    </tr>
-}
-
-</table>
+    </div>
+</div>

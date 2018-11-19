@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "_NotFoundPage";
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <div id="content-wrapper">
+                <div class="container-fluid">
+                    <!-- Page Content -->
+                    <h1 class="display-1">404</h1>
+                    <p class="lead">
+                        Page not found. You can
+                        <a href="javascript:history.back()">go back</a>
+                        to the previous page, or
+                        <a href="@Url.Action("Index","HomeBlog")">return home</a>.
+                    </p>
+                </div>
+ 
+            </div>
+            <!-- /.content-wrapper -->
+            </div>
+            <div class="col-md-4">
+                <!-- Search Widget -->
+                @Html.Partial("_Search")
+                @Html.Partial("_WidgetSidebar")
+
+            </div>
+        </div>
+
+</div>

@@ -18,6 +18,7 @@ using ScraBoy.Features.CMS.Interest;
 using ScraBoy.Features.CMS.Topic;
 using ScraBoy.Features.CMS.User;
 using System.Collections;
+using ScraBoy.Features.CMS.Nws;
 
 namespace ScraBoy.Features.Data
 {
@@ -38,6 +39,7 @@ namespace ScraBoy.Features.Data
         public DbSet<Voting> Voting { get; set; }
         public DbSet<Category> Category { get; set; }
         public DbSet<ViewPost> ViewPost { get; set; }
+        public DbSet<Report> Report { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -54,22 +56,35 @@ namespace ScraBoy.Features.Data
                 .WithMany(g => g.Comments)
                 .HasForeignKey<string>(s => s.PostId).WillCascadeOnDelete(true);
 
+            modelBuilder.Entity<Comment>()
+                .HasRequired(s => s.User)
+                .WithMany(g => g.Comments)
+                .HasForeignKey<string>(s => s.UserId).WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Report>()
+               .HasRequired(s => s.User)
+               .WithMany(g => g.Reports)
+               .HasForeignKey<string>(s => s.UserId).WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Voting>()
+                .HasRequired(s => s.User)
+                .WithMany(g => g.Votings)
+                .HasForeignKey<string>(s => s.UserId).WillCascadeOnDelete(false);
+
             modelBuilder.Entity<Voting>()
            .HasRequired(s => s.Post)
            .WithMany(g => g.Votings)
            .HasForeignKey<string>(s => s.PostId).WillCascadeOnDelete(true);
 
             modelBuilder.Entity<ViewPost>()
-        .HasRequired(s => s.Post)
-        .WithMany(g => g.ViewPosts)
-        .HasForeignKey<string>(s => s.PostId).WillCascadeOnDelete(true);
+            .HasRequired(s => s.Post)
+            .WithMany(g => g.ViewPosts)
+            .HasForeignKey<string>(s => s.PostId).WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Post>()
                .HasRequired(s => s.Category)
                .WithMany(g => g.Posts)
                .HasForeignKey<int>(s => s.CategoryId).WillCascadeOnDelete(false);
-
-
             modelBuilder.Entity<Category>().HasRequired(e => e.Author);
 
         }
