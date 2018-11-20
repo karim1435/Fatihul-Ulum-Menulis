@@ -103,10 +103,6 @@ E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.viewposts.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.desc.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.etc.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.error.resources
-E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.csproj.GenerateResource.Cache
-E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.dll
-E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.pdb
-E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.csprojResolveAssemblyReference.cache
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.dn.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.slug.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.cu.resources
@@ -114,3 +110,6 @@ E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.report.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.userreport.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.ureport.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.urep.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.csproj.GenerateResource.Cache
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.dll
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.pdb

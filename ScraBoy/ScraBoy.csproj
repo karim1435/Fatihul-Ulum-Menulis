@@ -232,7 +232,7 @@
     <Compile Include="Features\CMS\Comments\CommentRepository.cs" />
     <Compile Include="Features\CMS\Comments\ICommentRepository.cs" />
     <Compile Include="Features\CMS\HomeBlog\BlogService.cs" />
-    <Compile Include="Features\CMS\HomeBlog\HomeController.cs" />
+    <Compile Include="Features\CMS\HomeBlog\HomeBlogController.cs" />
     <Compile Include="Features\CMS\HomeBlog\PostCommentViewModel.cs" />
     <Compile Include="Features\CMS\Interest\IVotingRepository.cs" />
     <Compile Include="Features\CMS\Interest\Voting.cs" />

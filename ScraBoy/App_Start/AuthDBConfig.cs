@@ -27,7 +27,8 @@ namespace ScraBoy.App_Start
                         UserName = "karim",
                         Email = "rim.karim99@gmail.com",
                         Born=DateTime.Now,
-                        DisplayName="Ainul Karim"
+                        DisplayName="Ainul Karim",
+                        SlugUrl = "fuuser" + Guid.NewGuid().ToString() + DateTime.Now.ToString("yymmssfff")
                     };
 
                     await users.CreateAsync(adminUser,"07051999rim");
@@ -40,7 +41,8 @@ namespace ScraBoy.App_Start
                         UserName = "Ainul",
                         Email = "rim.karim99@gmail.com",
                         Born = DateTime.Now,
-                        DisplayName = "Ainul"
+                        DisplayName = "Ainul",
+                        SlugUrl = "fuuser" + Guid.NewGuid().ToString() + DateTime.Now.ToString("yymmssfff")
                     };
 
                     await users.CreateAsync(authorUser,"07051999rim");

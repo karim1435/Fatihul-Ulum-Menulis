@@ -10,7 +10,7 @@ using System.Web.Mvc;
 
 namespace ScraBoy.Features.CMS.Topic
 {
-    [RoutePrefix("Topic")]
+    [RoutePrefix("category")]
     [Authorize]
     public class CategoryController : Controller
     {
@@ -44,7 +44,7 @@ namespace ScraBoy.Features.CMS.Topic
 
             if(!User.IsInRole("author"))
             {
-                return View("Index","",this.categoryService.GetPagedList(search,1,null));
+                return View("Index",this.categoryService.GetPagedList(search,1,null));
             }
 
             var user = await GetLoggedInUser();

@@ -136,7 +136,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
             }
         }
         // root/tags/tag-id
-        [Route("tags/{tagId}")]
+        [Route("bytags/{tagId}")]
         public async Task<ActionResult> Tag(int? page, string tagId)
         {
             int pageNumber = (page ?? 1);
@@ -159,7 +159,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
             return View(posts);
         }
 
-        [Route("category/{catId}")]
+        [Route("bycategory/{catId}")]
         public async Task<ActionResult> Category(string catId)
         {
             await SetViewBag();
