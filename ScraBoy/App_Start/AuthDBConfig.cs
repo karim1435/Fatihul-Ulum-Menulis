@@ -26,15 +26,15 @@ namespace ScraBoy.App_Start
                     {
                         UserName = "karim",
                         Email = "rim.karim99@gmail.com",
-                        Born=DateTime.Now,
-                        DisplayName="Ainul Karim",
+                        Born = DateTime.Now,
+                        DisplayName = "Ainul Karim",
+                        UrlImage = "~/Image/profile/default.jpg",
                         SlugUrl = "fuuser" + Guid.NewGuid().ToString() + DateTime.Now.ToString("yymmssfff")
                     };
 
                     await users.CreateAsync(adminUser,"07051999rim");
                     await users.AddUserToRoleAsync(adminUser,"admin");
                     ICategoryRepository catRepo = new CategoryRepository();
-                    await catRepo.CreateDefaultCategory(adminUser.UserName);
 
                     var authorUser = new CMSUser
                     {
@@ -42,16 +42,16 @@ namespace ScraBoy.App_Start
                         Email = "rim.karim99@gmail.com",
                         Born = DateTime.Now,
                         DisplayName = "Ainul",
+                        UrlImage = "~/Image/profile/default.jpg",
                         SlugUrl = "fuuser" + Guid.NewGuid().ToString() + DateTime.Now.ToString("yymmssfff")
                     };
 
                     await users.CreateAsync(authorUser,"07051999rim");
                     await users.AddUserToRoleAsync(authorUser,"author");
-                    await catRepo.CreateDefaultCategory(authorUser.UserName);
                 }
-                
+
             }
-            
+
             using(var roles = new RoleRepository())
             {
                 if(await roles.GetRoleByNameAsync("admin") == null)

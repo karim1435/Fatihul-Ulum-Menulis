@@ -45,7 +45,6 @@ namespace ScraBoy.Features.CMS.User
         {
             return store.Users.Where(a=>a.UserName.Contains(userName)).ToList();
         }
-
         public async Task CreateAsync(CMSUser user,string password)
         {
             await manager.CreateAsync(user,password);
@@ -107,7 +106,5 @@ namespace ScraBoy.Features.CMS.User
 
             _disposed = true;
         }
-
-        
     }
 }

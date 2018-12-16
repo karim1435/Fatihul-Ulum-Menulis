@@ -2,33 +2,30 @@
 
 @if(Model.Voted)
 {
-    <a class="fa fa-thumbs-up"
+    <a class="@(@Model.Voted ? "fa fa-thumbs-up" : "fa fa-thumbs-o-up")"
        href="@Url.Action("Like",new { controller = "Voting",postId = Model.Post.Id })">
-
-        @foreach(var item in Model.Voting.LikedUser)
-        {
-            if(item.UserName.Equals(User.Identity.Name))
-            {
-                if(Model.Voting.LikedUser.Count() == 1)
-                {
-                    <a> You</a>
-                }
-                else
-                {
-                    <a> You and @(Model.Voting.TotalLike - 1) others</a>
-                }
-                break;
-            }
-        }
-
-
     </a>
+
+    foreach(var item in Model.Voting.LikedUser)
+    {
+        if(item.User.UserName.Equals(User.Identity.Name))
+        {
+            <a href="@Url.Action("ShowWhoVote",new { controller = "HomeBlog",postId = Model.Post.Id })" class="text-primary">
+                @(@Model.Voting.LikedUser.Count() == 1 ? "You" : "You and " + (Model.Voting.TotalLike - 1) + " others")
+            </a>
+        }
+    }
+
 }
 else
 {
-    <a class="fa fa-thumbs-o-up"
-       href="@Url.Action("Like",new { controller = "Voting",postId =  Model.Post.Id })">
+
+    <a class="@(@Model.Voted ? "fa fa-thumbs-up" : "fa fa-thumbs-o-up")"
+       href="@Url.Action("Like",new { controller = "Voting",postId = Model.Post.Id })">
+    </a>
+
+    <a href="@Url.Action("ShowWhoVote",new { controller = "HomeBlog",postId = Model.Post.Id })">
         @Model.Voting.TotalLike
     </a>
-}
 
+}

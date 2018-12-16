@@ -1,0 +1,33 @@
+﻿@model ScraBoy.Features.CMS.Comments.Comment
+<br />
+<div class="card">
+    <div class="card-body">
+        <div class="media-body">
+            <div class="media mb-4">
+                <img class="d-flex mr-3 rounded-circle" src="@Url.Content(Model.User.UrlImage)" style="height: 80px; width:80px" alt="">
+                <div class="media-body">
+                    <a href="@Url.Action("Profile","User",new { userId = Model.User.SlugUrl })">
+                        <h5 class="mt-0">@Model.User.DisplayName</h5>
+                    </a> <span class="text-muted">@Model.PostedOn.TimeAgo() on</span>
+                    <a href="@Url.Action("Post","HomeBlog",new { postId = Model.Post.Id })">@Model.Post.Title</a>
+                    <p>@Html.Raw(Model.Content)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@using(Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="card my-4">
+        <h5 class="card-header">@ViewBag.Title</h5>
+        <div class="form-group">
+            <div class="form-label-group">
+                @Html.TextAreaFor(model => model.Content,10,40,new { htmlAttributes = new { @class = "form-control",@placeholder = "Enter Title",@autofocus = "autofocus" } })
+                @Html.ValidationMessageFor(model => model.Content,"",new { @class = "text-danger" })
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+}

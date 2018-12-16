@@ -1,5 +1,23 @@
-﻿@model IEnumerable<string>
+﻿@model ScraBoy.Features.CMS.HomeBlog.BlogViewModel
 
-@Html.Raw(string.Join(", ",Model.Select(s =>
-   Html.ActionLink(s,"tag",new { controller = "homeBlog",tagId = s },
-   new { @class = "text-success"}))))
+@if(ViewBag.Single)
+{
+    foreach(var item in Model.Post.Tags.Distinct())
+    {
+        <a target="_blank" class="label label-success" href="@Url.Action("Tag",new { tagId = item })" rel="nofollow">@item</a>
+    }
+}
+else
+{
+    foreach(var item in Model.Post.Tags.Distinct().Take(3))
+    {
+        <a target="_blank" class="label label-success" href="@Url.Action("Tag",new { tagId = item })" rel="nofollow">@item</a>
+    }
+    if(Model.Post.Tags.Distinct().Count() > 3)
+    {
+        <a class="text-muted" target="_blank" href=@Url.Action("Post","Homeblog",new { postId = Model.Post.Id })>
+            +@(Model.Post.Tags.Distinct().Count() - 3) more
+        </a>
+
+    }
+}

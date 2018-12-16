@@ -1,0 +1,12 @@
+﻿@model ScraBoy.Features.CMS.HomeBlog.BlogViewModel
+
+
+
+    @Html.Partial("_RenderVoting",Model)
+    @Html.Partial("_RenderViewCount",Model.ViewCount)
+     @Html.Partial("_RenderCommentCount",Model.TotalComment)
+    <div>
+        @Html.Partial("_RenderTags",Model)
+    </div>
+   
+<br />

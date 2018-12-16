@@ -1,176 +1,115 @@
-﻿@model IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>
+﻿
+@using PagedList;
+@using PagedList.Mvc;
+
+@model PagedList.IPagedList<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>
+
 
 @{
-    ViewBag.Title = "Index";
-    ViewBag.IsIndex = true;
+    ViewBag.Title = "Fatihul Ulum Menulis - Share Your Idea";
+    ViewBag.Single = false;
 
     Layout = "~/Views/Shared/_BlogLayout.cshtml";
 }
+@section seoSection{
+    <meta name="description" content="Fatihul Ulum Menulis is an Online Platform that Provide Writing Features for someone who want to share their idea. So What Are you waiting for. Let's begin to write!.">
+    <meta name="keywords" content="Fatihul ulum, Menulis,cerpen,santri,politik,novel,Writer,Tulisan,Karya,Karangan,Puisi, Presiden" />
+    <meta name="robots" content="index">
+    <link rel="canonical" href="http://www.fatihululum.site" />
+    <link rel="alternate" href="http://www.fatihululum.site" hreflang="id" />
+    <link rel="alternate" href="http://www.fatihululum.site" hreflang="x-default" />
+}
+<style>
+    body {
+        background: #F7F7F7 !important;
+    }
+
+    .text-success {
+        color: #14B796 !important;
+    }
+    /* Make the image fully responsive */
+    .carousel-inner img {
+        width: 100%;
+        height: 100%;
+    }
+</style>
 <div class="container">
+    <br />
     <div class="row">
         <div class="col-md-8">
-            <h1 class="my-4">
-                @*Iqro'
-                <small>Bacalah...!</small>*@
-            </h1>
-            @foreach(var item in Model)
-            {
-                @Html.Partial("_RenderPost",item)
-            }
-
             <div>
-                <!-- Pagination -->
-                <ul class="pagination justify-content-center mb-4">
-                    @if(ViewBag.PreviousPage > 0)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" href="@Url.Action("Page","HomeBlog",new { page = ViewBag.PreviousPage })">
-                                &larr; Older
-                            </a>
-                        </li>
-                    }
-                    @if(ViewBag.NextPage > -1)
-                    {
-                        <li class="page-item">
-                            <a class="page-link" href="@Url.Action("Page","HomeBlog",new { page = ViewBag.NextPage })">
-                                Newer &rarr;
-                            </a>
-                        </li>
-                    }
-                </ul>
-            </div>
+                <div id="demo" class="carousel slide" data-ride="carousel">
+                    <ul class="carousel-indicators">
+                        <li data-target="#demo" data-slide-to="0" class="active"></li>
+                        <li data-target="#demo" data-slide-to="1"></li>
+                        <li data-target="#demo" data-slide-to="2"></li>
+                    </ul>
+                    <div class="carousel-inner">
+                        @foreach(var item in (ViewBag.PopularView as IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>).Take(3))
+                        {
+                            <div class="@(item == (ViewBag.PopularView as IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>).First() ?
+                                "carousel-item active" : "carousel-item")">
+                                <img src="@Url.Content(item.Post.UrlImage)" style="height:400px;">
+                                <div class="carousel-caption">
+                                    <h2 class="group card-title inner list-group-item-heading ">
+                                        @Html.ActionLink(item.Post.Title,"post",new { controller = "HomeBlog",postId = item.Post.Id },new { @class = "bg-dark text-light",target = "_blank" })
+                                    </h2>
+                                </div>
+                            </div>
 
-        </div>
-        <div class="col-md-4">
-            <!-- Search Widget -->
-            <div class="card my-4">
-                <h5 class="card-header">Search</h5>
-                <div class="card-body">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for...">
-                        <span class="input-group-btn">
-                            <button class="btn btn-secondary" type="button">Go!</button>
-                        </span>
+                        }
                     </div>
+                    <a class="carousel-control-prev" href="#demo" data-slide="prev">
+                        <span class="carousel-control-prev-icon"></span>
+                    </a>
+                    <a class="carousel-control-next" href="#demo" data-slide="next">
+                        <span class="carousel-control-next-icon"></span>
+                    </a>
                 </div>
             </div>
-
-            <div class="card my-4">
-                <h5 class="card-header">Tags</h5>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled mb-0">
-                                @foreach(var item in ViewBag.Tags)
-                                {
-                                    <li>
-                                        <a href="@Url.Action("Tag",new { tagId = item })">@item</a>
-                                    </li>
-                                }
-                            </ul>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="card my-4">
-                <h5 class="card-header">Category</h5>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled mb-0">
-                                @foreach(var item in ViewBag.Categories)
-                                {
-                                    <li>
-                                        <a href="@Url.Action("Category",new { catId = item })">@item</a>
-                                    </li>
-                                }
-                            </ul>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="card my-4">
-                <div class="profile-sidebar">
-                    <!-- SIDEBAR USERPIC -->
-                    <div class="profile-userpic">
-                        <img src="http://keenthemes.com/preview/metronic/theme/assets/admin/pages/media/profile/profile_user.jpg" class="img-responsive" alt="">
-                    </div>
-                    <!-- END SIDEBAR USERPIC -->
-                    <!-- SIDEBAR USER TITLE -->
-                    <div class="profile-usertitle">
-                        <div class="profile-usertitle-name">
-                            Marcus Doe
-                        </div>
-                        <div class="profile-usertitle-job">
-                            Developer
-                        </div>
-                    </div>
-                    <!-- END SIDEBAR USER TITLE -->
-                    <!-- SIDEBAR BUTTONS -->
-                    <div class="profile-userbuttons">
-                        <button type="button" class="btn btn-success btn-sm">Follow</button>
-                        <button type="button" class="btn btn-danger btn-sm">Message</button>
-                    </div>
-                    <!-- END SIDEBAR BUTTONS -->
-                    <!-- SIDEBAR MENU -->
-                    <div class="profile-usermenu">
-                        <ul class="nav">
-                            <li class="active">
-                                <a href="#">
-                                    <i class="glyphicon glyphicon-home"></i>
-                                    Overview
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="glyphicon glyphicon-user"></i>
-                                    Account Settings
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" target="_blank">
-                                    <i class="glyphicon glyphicon-ok"></i>
-                                    Tasks
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <i class="glyphicon glyphicon-flag"></i>
-                                    Help
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- END MENU -->
-                </div>
-            </div>
-                <div class="card my-4">
-                    <h5 class="card-header">Recent Comments</h5>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                @foreach(var item in ViewBag.RecentComments)
-                                {
-                                    <div class="media mb-4">
-                                        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-                                        <div class="media-body">
-                                            <h5 class="mt-0">
-                                                <a href="@Url.Action("Post",new { postId = item.Post })">
-                                                    @item.Author
-                                                </a>
-                                            </h5>
-                                            @item.Comment
-                                        </div>
-                                    </div>
-                                }
+            <br />
+            <div>
+                <div id="products" class="row view-group">
+                    @foreach(var item in (ViewBag.PopularView as IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>).Skip(3).Take(9))
+            {
+                        <div class="item grid-group-item col-xs-4 col-lg-4">
+                            <div class="media mb-4">
+                                <img class="d-flex mr-3 " src="@Url.Content(item.Post.UrlImage)" style="height: 50px; width:50px" alt="">
+                                <div class="media-body">
+                                    <h5 class="group card-title inner list-group-item-heading">
+                                        @Html.ActionLink(item.Post.Title,"post",new { controller = "HomeBlog",postId = item.Post.Id },new { @class = "text-dark",target = "_blank" })
+                                    </h5>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    }
                 </div>
-
             </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 class="card-header">Top Writters</h5>
+                    @Html.Partial("_WidgetTopUsers",(ViewBag.TopUser as IEnumerable<ScraBoy.Features.CMS.HomeBlog.RankingViewModel>).Take(5))
+                    <a target="_blank" href="@Url.Action("RankingTopUser",new { controller = "HomeBlog"})" class="btn btn-block" style="background-color:#ffffff"><h5 class="mt-0 text-success"> View Ranking</h5></a>
+                    <hr />
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+    <div id="products" class="container row view-group">
+        <div class="about">
+            <div class="content line"></div>
+            <div class="content text">Latest</div>
+            <div class="content line"></div>
+        </div>
+        @Html.Partial("_RenderIndex",(ViewBag.NewPosts as IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>).Take(9))
+        <a target="_blank" href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "latestpost" })" class="btn btn-block" style="background-color:#ffffff"><h5 class="mt-0 text-success">Show More</h5></a>
+        <div class="about">
+            <div class="content line"></div>
+            <div class="content text">Comments</div>
+            <div class="content line"></div>
+        </div>
+        @Html.Partial("_WidgetRecentComments",(ViewBag.RecentComments as IEnumerable<ScraBoy.Features.CMS.HomeBlog.CommentViewModel>).Take(9))
+    </div>

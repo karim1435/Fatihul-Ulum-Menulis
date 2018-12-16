@@ -2,10 +2,9 @@
 
 @{
     ViewBag.Title = "Index";
-
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="container">
-
     <div class="navbar-form navbar-left" role="search">
         @using(Html.BeginForm("Search","Ranking",FormMethod.Get))
         {

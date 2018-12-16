@@ -63,11 +63,11 @@ namespace ScraBoy.Features.CMS.Interest
 
             return model.ToPagedList(page,pageSize);
         }
-        public List<CMSUser> UserLiked(string id)
+        public List<Voting> UserLiked(string id)
         {
             var votes = db.Voting.Where(a => a.PostId == id).ToList();
 
-            return votes.Where(a => a.LikeCount == true).Select(a => a.User).ToList();
+            return votes.Where(a => a.LikeCount == true).ToList();
         }
         public async Task<Voting> UserHasVoted(string postId,string userId)
         {
@@ -92,9 +92,9 @@ namespace ScraBoy.Features.CMS.Interest
 
             if(vote!=null)
             {
-                vote.LikeCount = !vote.LikeCount;
-                model.PostedOn = DateTime.Now;
+                this.db.Voting.Remove(vote);
             }
+
             if(vote == null)
             {
                 model.LikeCount = true;

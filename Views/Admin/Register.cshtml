@@ -15,26 +15,41 @@
                 <div class="form-horizontal">
                     @Html.ValidationSummary(true,"",new { @class = "text-danger" })
                     <div class="form-group">
-                        <div class="form-label-group">
-                            @Html.EditorFor(model => model.Username,new { htmlAttributes = new { @class = "form-control",@placeholder = "Email",@required = "required",@autofocus = "autofocus" } })
+                        <div class="label">
                             @Html.LabelFor(model => model.Username)
+                            @Html.EditorFor(model => model.Username,new { htmlAttributes = new { @class = "form-control",@placeholder = "Username",@required = "required",@autofocus = "autofocus" } })
                             @Html.ValidationMessageFor(model => model.Username,"",new { @class = "text-danger" })
                         </div>
                     </div>
 
-     
                     <div class="form-group">
-                        <div class="form-label-group">
-                            @Html.EditorFor(model => model.Password,new { htmlAttributes = new { @class = "form-control",@placeholder = "Display Name",@required = "required",@autofocus = "autofocus" } })
+                        <div class="label">
+                            @Html.LabelFor(model => model.DisplayName)
+                            @Html.EditorFor(model => model.DisplayName,new { htmlAttributes = new { @class = "form-control",@placeholder = "Display Name",@required = "required",@autofocus = "autofocus" } })
+                            @Html.ValidationMessageFor(model => model.DisplayName,"",new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label">
+                            @Html.LabelFor(model => model.Security)
+                            @Html.EditorFor(model => model.Security,new { htmlAttributes = new { @class = "form-control",@placeholder = "Hal yang paling penting dalam hidup mu adalah...",@required = "required",@autofocus = "autofocus" } })
+                            @Html.ValidationMessageFor(model => model.Security,"",new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="label">
                             @Html.LabelFor(model => model.Password)
+                            @Html.EditorFor(model => model.Password,new { htmlAttributes = new { @class = "form-control",@placeholder = "Password",@required = "required",@autofocus = "autofocus" } })
                             @Html.ValidationMessageFor(model => model.Password,"",new { @class = "text-danger" })
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <div class="form-label-group">
-                            @Html.EditorFor(model => model.ConfirmPassword,new { htmlAttributes = new { @class = "form-control",@placeholder = "Display Name",@required = "required",@autofocus = "autofocus" } })
+                        <div class="label">
                             @Html.LabelFor(model => model.ConfirmPassword)
+                            @Html.EditorFor(model => model.ConfirmPassword,new { htmlAttributes = new { @class = "form-control",@placeholder = "Confirm Password",@required = "required",@autofocus = "autofocus" } })
                             @Html.ValidationMessageFor(model => model.ConfirmPassword,"",new { @class = "text-danger" })
                         </div>
                     </div>
@@ -43,7 +58,7 @@
                 </div>
             }
             <div class="text-center">
-                <a class="d-block small mt-3" href="@Url.Action("Login","Admin")">Login Page</a>
+                <a class="d-block small mt-3" href="@Url.Action("Login","Admin")">Login</a>
                 <a class="d-block small mt-3" href="@Url.Action("Index","HomeBlog")">Home</a>
             </div>
         </div>

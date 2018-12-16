@@ -44,6 +44,81 @@ namespace ScraBoy.Features.CMS.Comments
             return View("Index","",this.commentRepository.GetPagedList(currentFilter,pageNumber,user.Id));
 
         }
+        [HttpGet]
+        [Route("reply/{commentId}")]
+        public async Task<ActionResult> Reply(int commentId)
+        {
+            var comment = await commentRepository.GetCommentById(commentId);
+
+            if(comment==null)
+            {
+                return HttpNotFound();
+            }
+            comment.Content = "";
+            return View(comment);
+        }
+
+        [HttpPost]
+        [Route("reply/{commentId}")]
+        public async Task<ActionResult> Reply(Comment model,int commentId)
+        {
+            var comment = await commentRepository.GetCommentById(commentId);
+
+            if(comment == null)
+            {
+                return HttpNotFound();
+            }
+            if(!ModelState.IsValid)
+            {
+                return View(comment);
+            }
+            var user = await GetLoggedInUser();
+
+            model.ParentId = comment.Id;
+            model.PostId = comment.PostId;
+            model.PostedOn = DateTime.Now;
+            model.UserId = user.Id;
+            
+            await this.commentRepository.ReplyAsync(model);
+
+            return RedirectToAction("Post","HomeBlog",new { postId = comment.PostId});
+        }
+
+        [HttpGet]
+        [Route("edit/{commentId}")]
+        public async Task<ActionResult> Edit(int commentId)
+        {
+            var comment = await commentRepository.GetCommentById(commentId);
+
+            if(comment == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(comment);
+        }
+        [HttpPost]
+        [Route("edit/{commentId}")]
+        public async Task<ActionResult> Edit(Comment model,int commentId)
+        {
+           
+            var comment = await commentRepository.GetCommentById(commentId);
+
+            if(comment == null)
+            {
+                return HttpNotFound();
+            }
+            if(!ModelState.IsValid)
+            {
+                return View(comment);
+            }
+
+
+            await this.commentRepository.EditAsync(model,commentId);
+
+            return RedirectToAction("Post","HomeBlog",new { postId = comment.PostId });
+        }
+
         public async Task<ViewResult> Search(string search)
         {
             ViewBag.Filter = search;
@@ -77,7 +152,7 @@ namespace ScraBoy.Features.CMS.Comments
 
             try
             {
-                await this.commentRepository.DeleteCommentAsync(comment);
+                 await this.commentRepository.DeleteCommentAsync(comment);
                 return RedirectToAction("Index");
             }
             catch(KeyNotFoundException e)

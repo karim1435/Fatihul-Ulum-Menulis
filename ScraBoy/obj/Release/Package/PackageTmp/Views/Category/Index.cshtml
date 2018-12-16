@@ -7,7 +7,7 @@
     ViewBag.Title = "Category List";
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
 }
-<a href="@Url.Action("Create", "Category")" class="btn btn-success">
+<a href="@Url.Action("Create","Category")" class="btn btn-success">
     New Category
 </a>
 
@@ -15,7 +15,7 @@
 <!-- DataTables Example -->
 <div class="card mb-3">
     <div class="card-header">
-        <h2> <i class="fa fa-folder-open"></i> Category List</h2>
+        <h2> <i class="fa fa-thumb-tack"></i> Category List</h2>
         @using(Html.BeginForm("Search","Category",FormMethod.Get))
         {
             @Html.Partial("~/Views/Widgets/_Search.cshtml")
@@ -27,7 +27,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Author</th>
+                        <th>Total Use</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,14 +37,21 @@
                             <td>
                                 @item.Name
                                 <br>
-                                <a href=@Url.Action("Edit","Category",new { id = item.Id })>
-                                    Edit <i class="fa fa-pencil"></i>
-                                </a>
-                                <a data-action="delete" ,data-value="item.Id" href=@Url.Action("Delete","Category",new { id = item.Id })>
-                                    Delete <i class="fa fa-trash"></i>
-                                </a>
+                                @if(User.IsInRole("admin"))
+                                {
+                                    <a href=@Url.Action("Edit","Category",new { id = item.Id })>
+                                        Edit <i class="fa fa-pencil"></i>
+                                    </a>
+                                }
+                                @if(User.IsInRole("admin"))
+                                {
+                                   <a data-action="delete" ,data-value="item.Id" href=@Url.Action("Delete","Category",new { id = item.Id })>
+                                        Delete <i class="fa fa-trash"></i>
+                                    </a>
+                                }
+                                
                             </td>
-                            <td>@Html.DisplayFor(modelItem => item.Author.UserName)</td>
+                            <td>@item.Posts.Count()</td>
                         </tr>
                     }
                 </tbody>

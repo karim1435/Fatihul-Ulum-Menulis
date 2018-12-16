@@ -27,17 +27,6 @@ namespace ScraBoy.Features.CMS.Topic
         {
             return await db.Category.OrderBy(a => a.Id).ToArrayAsync();
         }
-        public async Task CreateDefaultCategory(string name)
-        {
-            var user = await this.userRepository.GetUserByNameAsync(name);
-
-            var category = new Category()
-            {
-                Name = "uncategorized",
-                AuthorId = user.Id
-            };
-            await CreateCategoryAsync(category);
-        }
         public IQueryable<Category> GetCategories(string name)
         {
             if(!string.IsNullOrEmpty(name))
@@ -46,8 +35,6 @@ namespace ScraBoy.Features.CMS.Topic
             }
             return this.db.Category;
         }
-
-      
 
         public async Task CreateCategoryAsync(Category model)
         {
@@ -79,15 +66,9 @@ namespace ScraBoy.Features.CMS.Topic
             this.db.Category.Remove(model);
             await this.db.SaveChangesAsync();
         }
-        public async Task<IEnumerable<Category>> GetByUser(string userId)
+        public List<Category> GetAllCategory()
         {
-            return await this.db.Category.Where(a => a.AuthorId == userId).ToArrayAsync();
-
-        }
-         public List<Category> GetCategoryByUser(string userId)
-        {
-            var catsByUser = this.db.Category.Where(a => a.AuthorId == userId).ToList();
-            return catsByUser;
+            return this.db.Category.ToList();
         }
     }
 }

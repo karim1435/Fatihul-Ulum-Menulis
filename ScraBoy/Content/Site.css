@@ -1,8 +1,0 @@
-﻿.bg-green {
-    background-color: #28a745 !important;
-}
-
-
-a.bg-green:focus, a.bg-green:hover, button.bg-green:focus, button.bg-green:hover {
-    background-color: #1d2124 !important;
-}

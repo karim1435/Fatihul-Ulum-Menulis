@@ -54,7 +54,6 @@ namespace ScraBoy.Features.CMS.Interest
             return View("Index","",this.votingRepository.GetPagedList(search,1,user.Id));
         }
 
-
         [Route("like/{postId}")]
         [Authorize]
         public async Task<ActionResult> Like(string postId)

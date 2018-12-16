@@ -16,7 +16,7 @@ namespace ScraBoy.Features.CMS.Interest
         Task<Voting> UserHasVoted(string postId, string userId);
         Task DislikeAsync(Voting model);
         Task<bool> UserHasLiked(string postId,string userId);
-        List<CMSUser> UserLiked(string id);
+        List<Voting> UserLiked(string id);
         IPagedList<Voting> GetPagedList(string search,int currentPage,string userId);
     }
 }

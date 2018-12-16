@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -21,18 +22,20 @@ namespace ScraBoy.Features.CMS.User
         public DateTime? Born { get; set; }
         [Display(Name ="Full Name")]
         public string SlugUrl { get; set; }
+        [Display(Name = "Display Name")]
         public string DisplayName { get; set; }
         public string Email { get; set; }
         [Display(Name = "Current Password")]
         public string CurrentPassword { get; set; }
-
         [System.ComponentModel.DataAnnotations.Compare("ConfirmPassword",ErrorMessage ="The new password and confirmation password don't match")]
         [Display(Name = "New Password")]
         public string NewPassword { get; set; }
         [Display(Name = "Confirm Password")]
         public string ConfirmPassword { get; set; }
-
-        [Display(Name ="Role")]
+        [Display(Name = "Upload Image")]
+        public string UrlImage { get; set; }
+        public HttpPostedFileBase ImageFile { get; set; }
+        [Display(Name = "Role")]
         public string SelectedRole { get; set; }
         private readonly List<String> roles = new List<string>();
         public IEnumerable<SelectListItem> Roles

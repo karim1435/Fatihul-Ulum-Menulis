@@ -50,26 +50,32 @@
                                     View <i class="fa fa-eye"></i>
                                 </a>
                             </td>
-                            <td>@Html.DisplayFor(modelItem => item.Author.UserName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.Author.DisplayName)</td>
                             <td>@Html.DisplayFor(modelItem => item.Category.Name)</td>
                             <td>@String.Join(", ",item.Tags)</td>
                             <td>
                                 @{
                                     string info = "";
-                                    if(item.Published < DateTime.Now)
+                                    if(item.Private)
                                     {
-                                        info = "Published On : ";
+                                        info = "Private";
                                     }
                                     else
                                     {
-                                        info = "Will be Published On :";
+                                        info = "Public";
                                     }
                                 }
-                                @info <b>@item.Published.FormatDate()</b>
+                                Status <b>@info</b>
                                 <br />
                                 Created on :<b>@item.Created.FormatDate()</b>
                                 <br />
-                                Last Updated : <b>@item.Updated.FormatDate()</b>
+                                Last Updated : <b>@item.Updated.TimeAgo()</b>
+                                <br />
+                                @if(!item.Private)
+                                {
+                                   <span>Published On :</span>  <b>@item.Published.Value.TimeAgo()</b>
+                                }
+                                
                             </td>
                         </tr>
                                     }

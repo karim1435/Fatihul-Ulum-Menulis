@@ -3,83 +3,129 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <link rel="prev" href="http://www.fatihululum.site/" />
+    <link rel="next" href="http://www.fatihululum.site/admin/" />
+    <link rel="shortcut icon" href="@Url.Content("~/Image/icon.ico")" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
     <title>@ViewBag.Title</title>
-    <!-- Bootstrap core CSS -->
+    @RenderSection("seoSection",required: false)
     <link href="~/Content/PagedList.css" rel="stylesheet" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <!-- Custom styles for this template -->
     <link href="~/Content/blog-home.css" rel="stylesheet" />
-    <link href="~/Content/Site.css" rel="stylesheet" />
     <link href="~/Content/font-awesome.min.css" rel="stylesheet" />
 </head>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-green fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="@Url.Action("Index","HomeBlog")"><h4>Fatihul Ulum</h4></a>
-            <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#"></button>
-            <form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
-
-                <div class="input-group">
-                    @if(User.Identity.IsAuthenticated)
-                    {
-                        <a href="@Url.Action("Create", "Post")" class="btn btn-primary">
-                            Write
-                            <span class="fa fa-plus" aria-hidden="true"></span>
+            <a class="navbar-brand" href="@Url.Action("Index","HomeBlog")">
+                <img class="logo" style="height:50px;width:200px;" src="@Url.Content("~/Image/logo.png")" />
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item active">
+                        <a style="font-size:25px" href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "mostpopularpost" })" class="nav-link btn-group-lg">
+                            Trending
                         </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a style="font-size:25px" href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "mosstinterestpost" })" class="nav-link btn-group-lg">
+                          Favorite
+
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a style="font-size:25px" href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "mostdiscusspost" })" class="nav-link btn-group-lg">
+                            Viral
+                        </a>
+                    </li>
+
+                    @{
+                        Html.RenderAction("CategoryMenu",new { controller = "HomeBlog" });
                     }
-                </div>
-            </form>
-            <!-- Navbar -->
-            <ul class="navbar-nav ml-auto ml-md-0">
+                </ul>
 
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">
-                        Forum
-                        <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li class="nav-item dropdown no-arrow">
-                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fa fa-user-circle"></i>
-                        <span> @User.Identity.GetUserName()</span>
-                    </a>
+                @if(User.Identity.IsAuthenticated)
+                {
+                    Html.RenderAction("NotificationMenu",new { controller = "HomeBlog" });
 
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                        @if(User.Identity.IsAuthenticated)
-                        {
-                        <a class="dropdown-item" href="@Url.Action("Index","Admin")">Dashboard <i class="fa fa-dashboard"></i></a>
-                        }
-                        else
-                        {
-                            <a class="dropdown-item" href="@Url.Action("Register","Admin")">Become Writer <i class="fa fa-pencil"></i></a>
+                }
 
-                        }
-                        <div class="dropdown-divider"></div>
-                        @{
+                <ul class="navbar-nav ml-auto ml-md-0">
+                    <li class="nav-item active dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-user-circle"></i>
+                            <span> @User.Identity.GetUserName()</span>
+                        </a>
 
-                            Html.RenderAction("AuthenticationLink",new { controller = "admin"});
-                        }
-                    </div>
-                </li>
-            </ul>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
+                            @if(User.Identity.IsAuthenticated)
+                            {
+                                <a class="dropdown-item" href="@Url.Action("Index","Admin")">Dashboard <i class="fa fa-dashboard"></i></a>
+                            }
+                            else
+                            {
+                                <a class="dropdown-item" href="@Url.Action("Register","Admin")">Become Writer <i class="fa fa-pencil"></i></a>
+
+                            }
+                            <div class="dropdown-divider"></div>
+                            @{
+
+                                Html.RenderAction("AuthenticationLink",new { controller = "admin" });
+                            }
+                        </div>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
+    <!-- Page Content -->
     @RenderBody()
+    <!-- /.container -->
     <!-- Footer -->
-    <footer class="py-5 bg-green">
+    <footer class="bg-green">
         <div class="container">
-            <p class="m-0 text-center text-white">Copyright &copy; Fatihul Ulum @DateTime.Now.Year</p>
+            <div class="row d-flex text-center justify-content-center mb-md-0 mb-4">
+                <!--Grid column-->
+                <div class="col-md-8 col-12 mt-5">
+                    <p style="line-height: 1.7rem;color:white">
+                        Fatihul Ulum Menulis is free online writing platform which presented for people who has eager
+                        and passion to share their own opinion and also provided for someone to turn their idea into a story as wisdow quote said "Menulis adalah ladang untuk berlogika (berfikir secara logis)".
+                    </p>
+                </div>
+                <!--Grid column-->
+            </div>
+            <!--Grid row-->
+            <hr class="clearfix d-md-none rgba-white-light" style="margin: 10% 15% 5%;">
+            <!--Grid row-->
+            <div class="row pb-3">
+                <!--Grid column-->
+                <div class="col-md-12">
+                    <div class="m-0 text-center text-white">
+                        Copyright © Fatihul Ulum @DateTime.Now.Year
+                    </div>
+                </div>
+                <!--Grid column-->
+            </div>
+            <!--Grid row-->
         </div>
         <!-- /.container -->
     </footer>
+
+    <!-- Grid row -->
     <!-- Bootstrap core JavaScript -->
     <script src="~/Scripts/jquery.min.js"></script>
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
 
+    <script src="~/js/jquery-2.1.1.min.js"></script>
+    <script src="~/js/jquery-ui.min-1.11.1.js"></script>
+    <script src="~/js/admin.js"></script>
     @RenderSection("scripts",required: false)
+
+
 </body>
 </html>

@@ -1,0 +1,21 @@
+﻿@model IEnumerable<ScraBoy.Features.CMS.HomeBlog.RankingViewModel>
+<div class="card-body">
+    <div class="row">
+        <div class="col-md-12">
+            @foreach(var item in Model.Take(6))
+            {
+                <div class="media mb-4">
+                    <div class="img-event">
+                        <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.User.UrlImage)" style="height: 80px; width:80px" alt="">
+                    </div>
+                    <div class="media-body">
+                        <a href="@Url.Action("Profile","User",new { userId = item.User.SlugUrl })">
+                            <h5 class="mt-0">@item.User.DisplayName</h5>
+                        </a>
+                        <span style="font-size:15px;" class="label label-primary">@item.Point Point</span>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+ </div>

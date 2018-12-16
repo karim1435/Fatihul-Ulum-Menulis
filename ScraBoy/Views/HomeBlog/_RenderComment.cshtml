@@ -2,12 +2,18 @@
 
 @foreach(var item in Model)
 {
-    <div class="media mb-4">
-        <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
-        <div class="media-body">
-            <a href="@Url.Action("Profile","User",new { userId= item.User.SlugUrl})" ><h5 class="mt-0">@item.User.DisplayName</h5> </a>  @item.Comment.PostedOn.TimeAgo()
-           <p><b>@item.Comment.Content</b> </p>
+    if(item.Comment.UserId == item.Post.AuthorId)
+    {
+        <div class="card" style="background-color: #FFFBE9">
+            @Html.Partial("PostComment",item)
         </div>
-    </div>
-
+        
+    }
+    else
+    {
+        <div class="card" style="background-color: #ffffff">
+            @Html.Partial("PostComment",item)
+        </div>
+    }
+    <br />
 }

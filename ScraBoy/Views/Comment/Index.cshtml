@@ -21,11 +21,12 @@
             @foreach(var item in Model)
             {
                 <div class="media mb-4">
-                    <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
+                    <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.User.UrlImage)" style="height: 80px; width:80px" alt="">
                     <div class="media-body">
                         <a href="@Url.Action("Profile","User",new { userId= item.User.SlugUrl})"><h5 class="mt-0">@item.User.DisplayName</h5> 
-                         </a>Commented On <a href="@Url.Action("Post","HomeBlog",new { postId = item.PostId })">@item.Post.Title</a>   @item.PostedOn.TimeAgo()
-                        <p><b>@item.Content</b> </p>
+
+                         </a><span class="text-muted">Commented On <a href="@Url.Action("Post","HomeBlog",new { postId = item.PostId })">@item.Post.Title</a>   @item.PostedOn.TimeAgo()</span> 
+                        <p>@Html.Raw(item.Content)</p>
                         <a data-action="delete" ,data-value="item.Id" href=@Url.Action("Delete","Comment",new { id = item.Id })>
                             Delete <i class="fa fa-trash"></i>
                         </a>

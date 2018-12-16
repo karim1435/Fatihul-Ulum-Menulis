@@ -96,6 +96,7 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -153,6 +154,10 @@
     <Reference Include="Antlr3.Runtime">
       <Private>True</Private>
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="ZetaProducerHtmlCompressor, Version=1.0.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ZetaProducerHtmlCompressor.1.0.3\lib\net40-full\ZetaProducerHtmlCompressor.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -231,6 +236,7 @@
     <Compile Include="Features\CMS\Comments\CommentController.cs" />
     <Compile Include="Features\CMS\Comments\CommentRepository.cs" />
     <Compile Include="Features\CMS\Comments\ICommentRepository.cs" />
+    <Compile Include="Features\CMS\Gzip\CompressContentAttribute.cs" />
     <Compile Include="Features\CMS\HomeBlog\BlogService.cs" />
     <Compile Include="Features\CMS\HomeBlog\HomeBlogController.cs" />
     <Compile Include="Features\CMS\HomeBlog\PostCommentViewModel.cs" />
@@ -240,12 +246,20 @@
     <Compile Include="Features\CMS\Interest\VotingRepository.cs" />
     <Compile Include="Features\CMS\ModelBinders\PostModelBinder.cs" />
     <Compile Include="Features\CMS\ModelBinders\StringExtensions.cs" />
-    <Compile Include="Features\CMS\Nws\Report.cs" />
-    <Compile Include="Features\CMS\Nws\ReportController.cs" />
-    <Compile Include="Features\CMS\Nws\IReportRepository.cs" />
-    <Compile Include="Features\CMS\Nws\ReportRepoitory.cs" />
+    <Compile Include="Features\CMS\News\Report.cs" />
+    <Compile Include="Features\CMS\News\ReportController.cs" />
+    <Compile Include="Features\CMS\News\IReportRepository.cs" />
+    <Compile Include="Features\CMS\News\ReportRepoitory.cs" />
+    <Compile Include="Features\CMS\Reporting\IViolationRepository.cs" />
+    <Compile Include="Features\CMS\Reporting\VIolation.cs" />
+    <Compile Include="Features\CMS\Reporting\ViolationController.cs" />
+    <Compile Include="Features\CMS\Reporting\ViolationRepository.cs" />
     <Compile Include="Features\CMS\Role\IRoleRepository.cs" />
     <Compile Include="Features\CMS\Role\RoleRepository.cs" />
+    <Compile Include="Features\CMS\Sitemap\ISitemapItem.cs" />
+    <Compile Include="Features\CMS\Sitemap\SitemapController.cs" />
+    <Compile Include="Features\CMS\Sitemap\SitemapItem.cs" />
+    <Compile Include="Features\CMS\Sitemap\XmlSitemapResult.cs" />
     <Compile Include="Features\CMS\Tag\TagRepository.cs" />
     <Compile Include="Features\CMS\Tag\ITagRepostory.cs" />
     <Compile Include="Features\CMS\Tag\TagController.cs" />
@@ -377,12 +391,119 @@
     <Compile Include="Migrations\201811190522335_urep.Designer.cs">
       <DependentUpon>201811190522335_urep.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201811201534108_imageprofile.cs" />
+    <Compile Include="Migrations\201811201534108_imageprofile.Designer.cs">
+      <DependentUpon>201811201534108_imageprofile.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201811281734491_testing coy.cs" />
+    <Compile Include="Migrations\201811281734491_testing coy.Designer.cs">
+      <DependentUpon>201811281734491_testing coy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812011718581_begin to add forum.cs" />
+    <Compile Include="Migrations\201812011718581_begin to add forum.Designer.cs">
+      <DependentUpon>201812011718581_begin to add forum.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812011833412_delete.cs" />
+    <Compile Include="Migrations\201812011833412_delete.Designer.cs">
+      <DependentUpon>201812011833412_delete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812051607447_categoryremoveuser.cs" />
+    <Compile Include="Migrations\201812051607447_categoryremoveuser.Designer.cs">
+      <DependentUpon>201812051607447_categoryremoveuser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812051629428_changea.cs" />
+    <Compile Include="Migrations\201812051629428_changea.Designer.cs">
+      <DependentUpon>201812051629428_changea.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812051634444_changeb.cs" />
+    <Compile Include="Migrations\201812051634444_changeb.Designer.cs">
+      <DependentUpon>201812051634444_changeb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812051637040_changec.cs" />
+    <Compile Include="Migrations\201812051637040_changec.Designer.cs">
+      <DependentUpon>201812051637040_changec.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812051700387_changed.cs" />
+    <Compile Include="Migrations\201812051700387_changed.Designer.cs">
+      <DependentUpon>201812051700387_changed.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812051704505_changed1.cs" />
+    <Compile Include="Migrations\201812051704505_changed1.Designer.cs">
+      <DependentUpon>201812051704505_changed1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812051712228_changeaadas.cs" />
+    <Compile Include="Migrations\201812051712228_changeaadas.Designer.cs">
+      <DependentUpon>201812051712228_changeaadas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812051721180_smaia.cs" />
+    <Compile Include="Migrations\201812051721180_smaia.Designer.cs">
+      <DependentUpon>201812051721180_smaia.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812051724120_finf.cs" />
+    <Compile Include="Migrations\201812051724120_finf.Designer.cs">
+      <DependentUpon>201812051724120_finf.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812051735003_fixthing.cs" />
+    <Compile Include="Migrations\201812051735003_fixthing.Designer.cs">
+      <DependentUpon>201812051735003_fixthing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812051741293_bismillah.cs" />
+    <Compile Include="Migrations\201812051741293_bismillah.Designer.cs">
+      <DependentUpon>201812051741293_bismillah.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812051744143_bismillah lagi.cs" />
+    <Compile Include="Migrations\201812051744143_bismillah lagi.Designer.cs">
+      <DependentUpon>201812051744143_bismillah lagi.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812051750202_public.cs" />
+    <Compile Include="Migrations\201812051750202_public.Designer.cs">
+      <DependentUpon>201812051750202_public.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812051820559_publicb.cs" />
+    <Compile Include="Migrations\201812051820559_publicb.Designer.cs">
+      <DependentUpon>201812051820559_publicb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812051833522_pubsss.cs" />
+    <Compile Include="Migrations\201812051833522_pubsss.Designer.cs">
+      <DependentUpon>201812051833522_pubsss.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812052017085_commnet system.cs" />
+    <Compile Include="Migrations\201812052017085_commnet system.Designer.cs">
+      <DependentUpon>201812052017085_commnet system.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812061540295_bis.cs" />
+    <Compile Include="Migrations\201812061540295_bis.Designer.cs">
+      <DependentUpon>201812061540295_bis.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812061741419_violation.cs" />
+    <Compile Include="Migrations\201812061741419_violation.Designer.cs">
+      <DependentUpon>201812061741419_violation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812062018247_security.cs" />
+    <Compile Include="Migrations\201812062018247_security.Designer.cs">
+      <DependentUpon>201812062018247_security.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812141611331_chat.cs" />
+    <Compile Include="Migrations\201812141611331_chat.Designer.cs">
+      <DependentUpon>201812141611331_chat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812151515025_newtesting.cs" />
+    <Compile Include="Migrations\201812151515025_newtesting.Designer.cs">
+      <DependentUpon>201812151515025_newtesting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812151653372_4444.cs" />
+    <Compile Include="Migrations\201812151653372_4444.Designer.cs">
+      <DependentUpon>201812151653372_4444.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812152157000_up.cs" />
+    <Compile Include="Migrations\201812152157000_up.Designer.cs">
+      <DependentUpon>201812152157000_up.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\adminbootstrap.min.css" />
     <Content Include="Content\alladmin.min.css" />
     <Content Include="Content\blog-home.css" />
     <Content Include="Content\bootstrap.css" />
@@ -390,6 +511,7 @@
     <Content Include="Content\dataTables.bootstrap4.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\quote.css" />
+    <Content Include="js\fbshare.js" />
     <Content Include="Scripts\datatables-demo.js" />
     <Content Include="Scripts\dataTables.bootstrap4.js" />
     <Content Include="Content\font-awesome.css" />
@@ -397,7 +519,6 @@
     <Content Include="Scripts\jquery.dataTables.js" />
     <Content Include="Content\sb-admin.css" />
     <Content Include="Content\profile.css" />
-    <Content Include="Content\Site.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -443,6 +564,7 @@
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
+    <Content Include="Scripts\jquery.tmpl.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\main.js" />
     <Content Include="Scripts\respond.js" />
@@ -693,21 +815,37 @@
     <Content Include="Views\Widgets\_Search.cshtml" />
     <Content Include="Views\HomeBlog\_RenderViewCount.cshtml" />
     <Content Include="Views\HomeBlog\_WidgetPost.cshtml" />
-    <Content Include="Views\HomeBlog\_WidgetCategory.cshtml" />
     <Content Include="Views\HomeBlog\_WidgetTags.cshtml" />
     <Content Include="Views\HomeBlog\_WidgetRecentComments.cshtml" />
     <Content Include="Views\HomeBlog\_WidgetSidebar.cshtml" />
     <Content Include="Views\HomeBlog\_Search.cshtml" />
-    <Content Include="Views\HomeBlog\_NotFoundPage.cshtml" />
     <Content Include="Views\Admin\ResetPassword.cshtml" />
     <Content Include="Views\Report\Create.cshtml" />
     <Content Include="Views\Report\_PostForm.cshtml" />
     <Content Include="Views\Report\Edit.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\HomeBlog\_WidgetSidebarPost.cshtml" />
+    <Content Include="Views\HomeBlog\_WidgetTopUsers.cshtml" />
+    <Content Include="Views\HomeBlog\_RenderFooter.cshtml" />
+    <Content Include="Views\HomeBlog\ShowWhoVote.cshtml" />
+    <Content Include="Views\HomeBlog\_Sidebar.cshtml" />
+    <Content Include="Views\HomeBlog\RankingTopUser.cshtml" />
+    <Content Include="Views\HomeBlog\FuPost.cshtml" />
+    <Content Include="Views\HomeBlog\_RenderIndex.cshtml" />
+    <Content Include="Views\HomeBlog\CategoryMenu.cshtml" />
+    <Content Include="Views\Comment\Reply.cshtml" />
+    <Content Include="Views\HomeBlog\PostComment.cshtml" />
+    <Content Include="Views\Comment\Edit.cshtml" />
+    <Content Include="Views\Comment\Form.cshtml" />
+    <Content Include="Views\Violation\CreateReport.cshtml" />
+    <Content Include="Views\Violation\Index.cshtml" />
+    <Content Include="Views\HomeBlog\_RenderCommentCount.cshtml" />
+    <Content Include="Views\HomeBlog\NotificationMenu.cshtml" />
+    <Content Include="Views\HomeBlog\Info.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Features\Social Media\" />
+    <Folder Include="Features\CMS\NewFolder1\" />
     <Folder Include="Image\post\" />
     <Folder Include="Image\profile\" />
     <Folder Include="Models\" />
@@ -771,12 +909,95 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811190326536_userreport.resx">
       <DependentUpon>201811190326536_userreport.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811190521039_ureport.resx">
       <DependentUpon>201811190521039_ureport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201811190522335_urep.resx">
       <DependentUpon>201811190522335_urep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811201534108_imageprofile.resx">
+      <DependentUpon>201811201534108_imageprofile.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201811281734491_testing coy.resx">
+      <DependentUpon>201811281734491_testing coy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812011718581_begin to add forum.resx">
+      <DependentUpon>201812011718581_begin to add forum.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812011833412_delete.resx">
+      <DependentUpon>201812011833412_delete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051607447_categoryremoveuser.resx">
+      <DependentUpon>201812051607447_categoryremoveuser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051629428_changea.resx">
+      <DependentUpon>201812051629428_changea.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051634444_changeb.resx">
+      <DependentUpon>201812051634444_changeb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051637040_changec.resx">
+      <DependentUpon>201812051637040_changec.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051700387_changed.resx">
+      <DependentUpon>201812051700387_changed.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051704505_changed1.resx">
+      <DependentUpon>201812051704505_changed1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051712228_changeaadas.resx">
+      <DependentUpon>201812051712228_changeaadas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051721180_smaia.resx">
+      <DependentUpon>201812051721180_smaia.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051724120_finf.resx">
+      <DependentUpon>201812051724120_finf.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051735003_fixthing.resx">
+      <DependentUpon>201812051735003_fixthing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051741293_bismillah.resx">
+      <DependentUpon>201812051741293_bismillah.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051744143_bismillah lagi.resx">
+      <DependentUpon>201812051744143_bismillah lagi.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051750202_public.resx">
+      <DependentUpon>201812051750202_public.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051820559_publicb.resx">
+      <DependentUpon>201812051820559_publicb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812051833522_pubsss.resx">
+      <DependentUpon>201812051833522_pubsss.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812052017085_commnet system.resx">
+      <DependentUpon>201812052017085_commnet system.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812061540295_bis.resx">
+      <DependentUpon>201812061540295_bis.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812061741419_violation.resx">
+      <DependentUpon>201812061741419_violation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812062018247_security.resx">
+      <DependentUpon>201812062018247_security.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812141611331_chat.resx">
+      <DependentUpon>201812141611331_chat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812151515025_newtesting.resx">
+      <DependentUpon>201812151515025_newtesting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812151653372_4444.resx">
+      <DependentUpon>201812151653372_4444.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812152157000_up.resx">
+      <DependentUpon>201812152157000_up.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

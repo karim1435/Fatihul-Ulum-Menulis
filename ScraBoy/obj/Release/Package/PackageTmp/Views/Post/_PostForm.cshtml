@@ -17,7 +17,7 @@
 
         <div class="form-group">
             <div class="form-label-group">
-                @Html.TextAreaFor(model => model.Content,15,40,new { htmlAttributes = new { @class = "form-control",@placeholder = "Enter Title",@autofocus = "autofocus" } })
+                @Html.TextAreaFor(model => model.Content,20,40,new { htmlAttributes = new { @class = "form-control",@placeholder = "Enter Title",@autofocus = "autofocus" } })
                 @Html.ValidationMessageFor(model => model.Content,"",new { @class = "text-danger" })
             </div>
         </div>
@@ -26,38 +26,41 @@
             @Html.LabelFor(model => model.UrlImage,htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <input type="file" name="ImageFile" class="btn btn-primary" />
-                <p>@Model.UrlImage"</p>
+                <p>@Model.UrlImage</p>
                 @Html.ValidationMessageFor(model => model.UrlImage,"",new { @class = "text-danger" })
-            </div>
-
-        </div>
-
-        <div class="form-group">
-            <div class="form-label-group">
-                @Html.EditorFor(model => model.Published,new { htmlAttributes = new { @class = "form-control datepicker",@placeholder = "Enter Title",@autofocus = "autofocus" } })
-                @Html.LabelFor(model => model.Published)
-                @Html.ValidationMessageFor(model => model.Published,"",new { @class = "text-danger" })
+                <p class="text-muted">Please make sure to use recommended facebook size: 1200(w) x 630(h) or 600 x 315. use this tool to resize your image http://resizeimage.net/</p>
             </div>
         </div>
+
+      
 
         <div class="form-group">
             <div class="form-label-group">
                 @Html.EditorFor(model => model.Tags,"TagEditor",new { htmlAttributes = new { @class = "form-control",@placeholder = "Enter Title",@autofocus = "autofocus" } })
                 @Html.LabelFor(model => model.Tags)
                 @Html.ValidationMessageFor(model => model.CombinedTags,"",new { @class = "text-danger" })
-                <p class="text-info">Separate tags with commas</p>
+                <p class="text-muted">Separate tags with commas</p>
 
             </div>
         </div>
 
         <div class="form-group">
             <p>Select Category</p>
-            <div class="form-label-group">
+            <div class="btn-group dropup">
                 @Html.DropDownListFor(
                  model => model.CategoryId,new SelectList(ViewBag.Categories,"Id","Name"),
                  new { @class = "form-control",@placeholder = "Enter Title",@autofocus = "autofocus" }
              )
                 @Html.ValidationMessageFor(model => model.CategoryId,"",new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox">
+                <label>
+                    @Html.CheckBoxFor(model => model.Private)
+                    Set as Private
+                </label>
             </div>
         </div>
 

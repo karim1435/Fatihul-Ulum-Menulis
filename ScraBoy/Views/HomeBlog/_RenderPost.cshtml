@@ -1,54 +1,66 @@
-﻿@model ScraBoy.Features.CMS.HomeBlog.BlogViewModel
+﻿@using PagedList;
+@using PagedList.Mvc;
 
+@model PagedList.IPagedList<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>
 
-@if(ViewBag.IsIndex)
+@if(Model.Count() <= 0)
 {
-    <div class="card mb-4">
-
-        <div class="card-text text-muted">
-            Posted by <a href="@Url.Action("Profile","User",new { userId= Model.User.SlugUrl})">@Model.User.DisplayName</a> on @Model.Post.Published.Value.FormatDate()
-            Category: @Html.Partial("_RenderCategory",Model.Category.Name)
-        </div>
-        <img class="card-img-top" src="@Url.Content(Model.Post.UrlImage)" style="height: 380px;" alt="Card image cap">
-        <div class="card-body">
-            <h2 class="card-title">
-                @Html.ActionLink(Model.Post.Title,"post",new { controller = "HomeBlog",postId = Model.Post.Id })
-            </h2>
-            <p class="card-text">@Model.Post.Content.ReadMore()</p>
-            <a href="@Url.Action("Post",new { controller = "HomeBlog",postId = Model.Post.Id })" class="btn btn-primary">Read More &rarr;</a>
-        </div>
-        <div class="card-footer text-muted">
-            @Html.Partial("_RenderVoting",Model)
-            @Html.Partial("_RenderViewCount",Model.ViewCount)
-            Topics @Html.Partial("_RenderTags",Model.Post.Tags.Distinct())
+    <div id="content-wrapper">
+        <div class="container-fluid">
+            <h1 class="display-1">404</h1>
+            <p class="lead">
+                Page not found. You can
+                <a href="javascript:history.back()">go back</a>
+                to the previous page, or
+                <a href="@Url.Action("Index","HomeBlog")">return home</a>.
+            </p>
         </div>
     </div>
 }
 else
 {
-    <div class="col-lg-8">
-        <!-- Title -->
-        <h1 class="mt-4">@Model.Post.Title</h1>
-        <!-- Author -->
-        <p class="lead">
-            Posted by <a href="@Url.Action("Profile","User",new { userId= Model.User.SlugUrl})">@Model.User.DisplayName</a> on @Model.Post.Published.Value.FormatDate()
-            Category: @Html.Partial("_RenderCategory",Model.Category.Name)
-            Topics: @Html.Partial("_RenderTags",Model.Post.Tags.Distinct())
-        </p>
-        <hr>
-        <!-- Preview Image -->
-        <img class="img-fluid rounded" style="height" src="@Url.Content(Model.Post.UrlImage)" alt="">
-        <hr>
-        <!-- Post Content -->
-        @Html.Raw(Model.Post.Content)
-        <hr>
-        <div class="card-login text-success">
-            @Html.Partial("_RenderVoting",Model)
-            @Html.Partial("_RenderViewCount",Model.ViewCount)
-        </div>
-        @Html.Partial("_CommentForm",Model)
+    <div id="products" class="row view-group">
+        @foreach(var item in Model)
+        {
+            <div class="item list-group-item col-xs-4 col-lg-4">
+                <div class="card-title">
+                    <div class="img-event">
+                        <img style="height:225px; width:300px;" class="group list-group-image img-fluid" src="@Url.Content(item.Post.UrlImage)" alt="@item.Post.Title" />
+                    </div>
+                    <div class="caption">
+                        <div class="col-xs-12 col-md-12">
+                            <div class="group card-title inner list-group-item-heading text-muted">
+                                @item.Post.Published.Value.FormatDate() | @Html.Partial("_RenderCategory",item.Category.Name)
+                                by <a target="_blank" href="@Url.Action("Profile","User",new { userId= item.User.SlugUrl})">
+                                    @item.User.DisplayName
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="caption">
+                        <div class="col-xs-12 col-md-12">
+                            <h5 class="group card-title inner list-group-item-heading">
+                                @Html.ActionLink(item.Post.Title,"post",new { controller = "HomeBlog",postId = item.Post.Id },new { @class = "text-dark",target="_blank" })
+                            </h5>
+                            <p class="group inner list-group-item-text">
+                                @item.Post.Content.ReadMore(100)
+                                <a target="_blank" href="@Url.Action("Post",new { controller = "HomeBlog",postId = item.Post.Id })">
+                                    Continue Reading
+                                </a>
+                            </p>
 
-        @Html.Partial("_RenderComment",Model.Comments)
-
+                            <div class="row">
+                                <div class="col-xs-12 col-md-12">
+                                    @Html.Partial("_RenderFooter",item)   
+                                </div>
+                               
+                            </div>
+                        </div>
+                      
+                    </div>
+                </div>
+            </div>
+        }
     </div>
 }
+

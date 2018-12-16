@@ -1,6 +1,7 @@
 ﻿using Microsoft.Owin.Security;
 using ScraBoy.Features.CMS.Role;
 using ScraBoy.Features.CMS.Topic;
+using ScraBoy.Features.CMS.Upload;
 using ScraBoy.Features.CMS.User;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,10 @@ namespace ScraBoy.Features.CMS.Admin
     [RoutePrefix("admin")]
     [Authorize]
     
-    public class AdminController : Controller
+    public class AdminController : UploadController
     {
+        private readonly string pathFolder = "~/Image/profile/";
+        private readonly string defaultProfile = "~/Image/profile/default.jpg";
         private readonly ICategoryRepository categoryRepository;
         private readonly IUserRepository userRepository;
         private readonly IRoleRepository roleRepository;
@@ -90,12 +93,11 @@ namespace ScraBoy.Features.CMS.Admin
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
+            model.UrlImage = defaultProfile;
             bool completed = await this.userService.RegisterAsync(model);
 
             if(completed)
             {
-                await this.categoryRepository.CreateDefaultCategory(model.Username);
-
                 return RedirectToAction("Index");
             }
 
@@ -166,6 +168,13 @@ namespace ScraBoy.Features.CMS.Admin
         [Authorize(Roles = "admin")]
         public async Task<ActionResult> Manage(UserViewModel model,string username)
         {
+            var user = await userService.GetUserByNameAsync(username);
+
+            if(user == null)
+            {
+                return HttpNotFound();
+            }
+
             var currentUser = User.Identity.Name;
             var isAdmin = User.IsInRole("admin");
 
@@ -174,6 +183,31 @@ namespace ScraBoy.Features.CMS.Admin
             {
                 return new HttpUnauthorizedResult();
             }
+
+            if(model.ImageFile != null)
+            {
+                if(!user.UrlImage.Equals(defaultProfile))
+                {
+                    DeleteOldImage(user.UrlImage);
+                }
+
+                var filePath = GetFullFile(model.ImageFile.FileName);
+
+                if(!CheckFileType(filePath))
+                {
+                    ModelState.AddModelError(string.Empty,"Upload Image with JPEG, JPG OR PNG Extension");
+                    return View(model);
+                }
+
+                SaveImage(model.ImageFile,pathFolder,filePath);
+
+                model.UrlImage = pathFolder + filePath;
+            }
+            else
+            {
+                model.UrlImage = user.UrlImage;
+            }
+
 
             var userUpdated = await userService.ManageProfile(model);
 
@@ -210,6 +244,13 @@ namespace ScraBoy.Features.CMS.Admin
                         Icon = "fa fa-user-secret",
                         RouteInfo = new { controller = "user"}
                     });
+                    items.Add(new AdminMenuItem
+                    {
+                        Text = "Alert",
+                        Action = "Index",
+                        Icon = "fa fa-warning",
+                        RouteInfo = new { controller = "Violation" }
+                    });
                 }
                 if(!User.IsInRole("author"))
                 {
@@ -240,7 +281,7 @@ namespace ScraBoy.Features.CMS.Admin
                 {
                     Text = "Comment",
                     Action = "Index",
-                    Icon = "fa fa-comment-alt",
+                    Icon = "fa fa-comment",
                     RouteInfo = new { controller = "comment" }
                 });
                 items.Add(new AdminMenuItem
@@ -286,6 +327,8 @@ namespace ScraBoy.Features.CMS.Admin
         }
 
         private bool _isDisposed;
+        
+
         protected override void Dispose(bool disposing)
         {
 

@@ -3,20 +3,68 @@
 @{
     ViewBag.Title = Model.Post.Title;
 
-    ViewBag.IsIndex = false;
+    ViewBag.Single = true;
     Layout = "~/Views/Shared/_BlogLayout.cshtml";
 }
+
+@section seoSection{
+    <meta name="description" content="Tulisan Fatihul Ulum - @Model.Post.Title">
+    <meta name="robots" content="index">
+
+    <meta property="fb:app_id" content="221173468811282" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="@Model.FullUrl" />
+    <meta property="og:title" content="@Model.Post.Title" />
+    <meta property="og:image" content="@HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)@Url.Content(Model.Post.UrlImage)" />
+    <meta property="og:description" content="@Model.Post.Content.ReadMore()" />
+}
+<style type="text/css">
+    body {
+        background: #FFFFFF !important;
+    }
+     .text-success {
+    color: #14B796 !important;
+    /* Adding !important forces the browser to overwrite the default style applied by Bootstrap */
+</style>
+<div id="fb-root"></div>
 <div class="container">
     <div class="row">
-        @Html.Partial("_RenderPost",Model)
-
+        <div class="col-lg-8">
+            <!-- Title -->
+            <h1 class="mt-4">@Model.Post.Title</h1>
+            <!-- Author -->
+            <div class="lead">
+                Posted Under @Html.Partial("_RenderCategory",Model.Category.Name)  by <a href="@Url.Action("Profile","User",new { userId= Model.User.SlugUrl})">@Model.User.DisplayName</a> on @Model.Post.Published.Value.FormatDate()
+            </div>
+            <div class="fb-share-button" data-href="@Model.FullUrl" data-layout="button" data-size="small" data-mobile-iframe="true">
+                <a target="_blank" href="@Model.FullUrl" class="fb-xfbml-parse-ignore">Share</a>
+            </div>
+            <div class="pull-right">
+                <a class="btn btn-xs text-danger" title="Report" href=@Url.Action("CreateReport","Violation",new { postId = Model.Post.Id })>
+                    <i class="fa fa-exclamation"></i> Report
+                </a>
+            </div>
+            <hr />
+            <!-- Preview Image -->
+            <img class="img-fluid rounded" src="@Url.Content(Model.Post.UrlImage)" alt="@Model.Post.Title">
+            <hr>
+            <!-- Post Content -->
+            @Html.Raw(Model.Post.Content)
+            <div class="card-footer text-muted">
+                @Html.Partial("_RenderFooter",Model)
+            </div>
+            @Html.Partial("_CommentForm",Model.NewComment)
+            @Html.Partial("_RenderComment",Model.Comments)
+        </div>
         <div class="col-md-4">
             <!-- Search Widget -->
-           @Html.Partial("_Search")
-            @Html.Partial("_WidgetSidebar")
+            @Html.Partial("_Search")
+            @Html.Partial("_WidgetSidebarPost")
 
         </div>
     </div>
 </div>
 
-
+<script src="~/js/fbshare.js"></script>
+<script src="~/Scripts/tinymce/tinymce.js"></script>
+<script src="~/Scripts/main.js"></script>

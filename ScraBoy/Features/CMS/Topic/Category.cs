@@ -17,9 +17,6 @@ namespace ScraBoy.Features.CMS.Topic
         [Column(TypeName = "NVARCHAR")]
         public string Name { get; set; }
         public DateTime CreatedOn { get; set; }
-        public string AuthorId { get; set; }
-        [ForeignKey("AuthorId")]
-        public virtual CMSUser Author { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace ScraBoy.Features.Product
 
         public async Task<ProductModel> GetProductByIdAync(int? id)
         {
-            return await this._db.Product.Include("Type").Where(p => p.ProductId == id).SingleOrDefaultAsync();
+            return await this._db.Product.Include("Type").Where(p => p.ProductId == id).FirstOrDefaultAsync();
         }
 
         public async Task AddProductAsync(ProductModel model)

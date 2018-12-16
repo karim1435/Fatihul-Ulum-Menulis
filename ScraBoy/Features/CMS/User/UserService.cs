@@ -29,7 +29,6 @@ namespace ScraBoy.Features.CMS.User
             this.rolesRepostitory = roleReporitoy;
             this.modelState = modelState;
         }
-
         public async Task<Boolean> RegisterAsync(RegisterViewModel model)
         {
             if(!modelState.IsValid)
@@ -66,6 +65,8 @@ namespace ScraBoy.Features.CMS.User
                 Email = model.Username,
                 Born = DateTime.Now,
                 DisplayName = model.DisplayName,
+                UrlImage=model.UrlImage,
+                Security=model.Security,
                 SlugUrl ="fuuser"+Guid.NewGuid().ToString() + DateTime.Now.ToString("yymmssfff")
             };
 
@@ -90,6 +91,17 @@ namespace ScraBoy.Features.CMS.User
                 return false;
             }
 
+            if(model.Username.Contains(" "))
+            {
+                modelState.AddModelError(string.Empty,"Cannot contains space");
+                return false;
+            }
+            if(model.Username.Contains("@"))
+            {
+                modelState.AddModelError(string.Empty,"Cannot contains @");
+                return false;
+            }
+
             if(string.IsNullOrWhiteSpace(model.NewPassword))
             {
                 modelState.AddModelError(string.Empty,"Your must type a password");
@@ -98,6 +110,7 @@ namespace ScraBoy.Features.CMS.User
 
             var newUser = new CMSUser()
             {
+                UrlImage = model.UrlImage,
                 UserName = model.Username,
                 Email = model.Username,
                 Born = DateTime.Now,
@@ -179,14 +192,15 @@ namespace ScraBoy.Features.CMS.User
                 Email = user.Email,
                 Description = user.Description,
                 DisplayName = user.DisplayName,
-                Born = user.Born
+                Born = user.Born,
+                UrlImage=user.UrlImage
                 
             };
 
             var userRoles = await usersRepository.GetRolesForUserAsync(user);
 
             viewModel.SelectedRole = userRoles.Count() > 0 ?
-                userRoles.FirstOrDefault() : userRoles.SingleOrDefault();
+                userRoles.FirstOrDefault() : userRoles.FirstOrDefault();
 
             viewModel.LoadUserRoles(await rolesRepostitory.GetAllRolesAsync());
 
@@ -207,12 +221,16 @@ namespace ScraBoy.Features.CMS.User
                 return false;
             }
 
+            if(!user.Security.Equals(model.Security))
+            {
+                modelState.AddModelError(string.Empty,"Your security question doesn't correct");
+                return false;
+            }
             if(string.IsNullOrWhiteSpace(model.Password))
             {
                 modelState.AddModelError(string.Empty,"The password must be supplied");
                 return false;
             }
-
             var newHashedPassword = usersRepository.HashPassword(model.Password);
 
             user.PasswordHash = newHashedPassword;
@@ -236,25 +254,11 @@ namespace ScraBoy.Features.CMS.User
                 return false;
             }
 
-            if(string.IsNullOrWhiteSpace(model.CurrentPassword))
-            {
-                modelState.AddModelError(string.Empty,"The current password must be supplied");
-                return false;
-            }
-
-            var passwordVerified = usersRepository.VerifyUserPassword(user.PasswordHash,model.CurrentPassword);
-
-            if(!passwordVerified)
-            {
-                modelState.AddModelError(string.Empty,"You entered wrong password.");
-                return false;
-            }
-
-        
             user.Email = model.Email;
             user.Description = model.Description;
             user.Born = model.Born;
             user.DisplayName = model.DisplayName;
+            user.UrlImage = model.UrlImage;
 
             await usersRepository.UpdateAsync(user);
 
@@ -270,37 +274,11 @@ namespace ScraBoy.Features.CMS.User
         {
             var user = await this.usersRepository.GetUserByNameAsync(model.Username);
 
-            if(user == null)
-            {
-                modelState.AddModelError(string.Empty,"The specified user does not ecist.");
-                return false;
-            }
-
-            if(!modelState.IsValid)
-            {
-                return false;
-            }
-
-            if(string.IsNullOrWhiteSpace(model.CurrentPassword))
-            {
-                modelState.AddModelError(string.Empty,"The current password must be supplied");
-                return false;
-            }
-
-            var passwordVerified = usersRepository.VerifyUserPassword(user.PasswordHash,model.CurrentPassword);
-
-            if(!passwordVerified)
-            {
-                modelState.AddModelError(string.Empty,"You entered wrong password.");
-                return false;
-            }
-
-
             user.Description = model.Description;
             user.Email = model.Email;
             user.Born = model.Born;
             user.DisplayName = model.DisplayName;
-
+            user.UrlImage = model.UrlImage;
             await usersRepository.UpdateAsync(user);
 
             return true;

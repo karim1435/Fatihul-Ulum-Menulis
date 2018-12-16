@@ -1,0 +1,32 @@
+﻿@model ScraBoy.Features.CMS.HomeBlog.BlogViewModel
+
+@{
+    ViewBag.Title = "Author Likes " + Model.Post.Title;
+
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="about">
+                <div class="content line"></div>
+                <div class="content text">Authors Who Like</div>
+                <div class="content line"></div>
+            </div>
+                @foreach(var item in Model.Voting.LikedUser.OrderByDescending(a => a.PostedOn))
+                {
+                    <div class="media mb-4">
+                        <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.User.UrlImage)" style="height: 80px; width:80px" alt="">
+                        <div class="media-body">
+                            <a class="text-primary" href="@Url.Action("Profile","User",new { userId = item.User.SlugUrl })">
+                                <h5 class="mt-0">@item.User.DisplayName</h5>
+                            </a>
+                            <span>Liked</span>
+                            <a class="text-primary" href="@Url.Action("Post","HomeBlog",new { postId = item.PostId })">@item.Post.Title</a> @item.PostedOn.TimeAgo()
+                        </div>
+                    </div>
+                    <hr />
+                }
+        </div>
+    </div>
+</div>

@@ -1,9 +1,5 @@
 ﻿html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-size: 100%;
-  font: inherit;
+    padding: 0;
   vertical-align: baseline;
   outline: none;
   -webkit-font-smoothing: antialiased;
@@ -14,12 +10,6 @@
   box-sizing: border-box;
 }
 html { overflow-y: scroll; }
-body { 
-  background: #f0f0f0; 
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  color: #313131;
-    line-height: 1; 
-}
 
 ::selection { background: #a4dcec; }
 ::-moz-selection { background: #a4dcec; }
@@ -74,24 +64,13 @@ img { border: 0; max-width: 100%; }
   -moz-transition: height 0.5s linear;
   transition: height 0.5s linear;
 }
-#topbar a {
-  color: #fff;
-  font-size:1.3em;
-  line-height: 1.25em;
-  text-decoration: none;
-  opacity: 0.5;
-  font-weight: bold;
-}
-#topbar a:hover {
-  opacity: 1;
-}
-
 /** typography **/
 h1 {
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   font-size: 2.5em;
   line-height: 1.5em;
   letter-spacing: -0.05em;
+  margin-top:20px;
   margin-bottom: 20px;
   padding: .1em 0;
   color: #444;
@@ -144,18 +123,14 @@ p {
   font-size: 1.4em;
   line-height: 1.55em;
   margin-bottom: 22px;
-  color: #555;
 }
-
-a { color: #5a9352; text-decoration: none; }
-a:hover { text-decoration: underline; }
 
 .center { display: block; text-align: center; }
 
 /** page structure **/
 #w {
   display: block;
-  width: 750px;
+  width: 1100px;
   margin: 0 auto;
   padding-top: 30px;
   padding-bottom: 45px;
@@ -166,7 +141,7 @@ a:hover { text-decoration: underline; }
   width: 100%;
   background: #fff;
   padding: 25px 20px;
-  padding-bottom: 35px;
+  padding-bottom:25px;
   -webkit-box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
   -moz-box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
@@ -174,14 +149,13 @@ a:hover { text-decoration: underline; }
 
 #userphoto {
   display: block;
-  float: right;
-  margin-left: 10px;
-  margin-bottom: 8px;
+  float: none;
+  margin-left: 355px;
 }
 #userphoto img {
   display: block;
-  padding: 2px;
-  background: #fff;
+  padding: 10px;
+  background: #f0f0f0;
   -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.4);
   -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.4);
   box-shadow: 0 1px 3px rgba(0,0,0,0.4);
@@ -191,8 +165,8 @@ a:hover { text-decoration: underline; }
 /** profile nav links **/
 #profiletabs {
   display: block;
-  margin-bottom: 4px;
-  height: 50px;
+  margin-bottom: 100px;
+  height: 20px;
 }
 
 #profiletabs ul { list-style: none; display: block; width: 70%; height: 50px; }
@@ -206,6 +180,7 @@ a:hover { text-decoration: underline; }
   background: #eae8db;
   color: #666;
   margin-right: 7px;
+  margin-top:50px;
   border: 1px solid #fff;
   -webkit-border-radius: 5px;
   -webkit-border-bottom-left-radius: 0;

@@ -1,5 +1,7 @@
 ﻿using ScraBoy.Features.CMS.Comments;
 using ScraBoy.Features.CMS.Interest;
+using ScraBoy.Features.CMS.ModelBinders;
+using ScraBoy.Features.CMS.Reporting;
 using ScraBoy.Features.CMS.Topic;
 using ScraBoy.Features.CMS.User;
 using System;
@@ -25,15 +27,13 @@ namespace ScraBoy.Features.CMS.Blog
         [AllowHtml]
         [Display(Name = "Post Content")]
         [Required]
-        [StringLength(int.MaxValue,MinimumLength =400)]
-        public string Content { get; set; }
+        [StringLength(int.MaxValue,MinimumLength = 400)]
+        public string Content { get; set; } 
         [Required]
         public DateTime Created { get; set; }
         [Required]
         public DateTime Updated { get; set; }
 
-        [Required(ErrorMessage ="Please Set Date")]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}",ApplyFormatInEditMode = true)]
         public DateTime? Published { get; set; }
         private IList<string> _tags = new List<String>();
 
@@ -42,7 +42,7 @@ namespace ScraBoy.Features.CMS.Blog
             get { return _tags; }
             set { _tags = value; }
         }
-        [Required(ErrorMessage ="Tag can't be empty")]
+        [Required(ErrorMessage = "Tag can't be empty")]
         public string CombinedTags
         {
             get
@@ -54,16 +54,20 @@ namespace ScraBoy.Features.CMS.Blog
                 _tags = value.Split(',').Select(s => s.Trim()).ToList();
             }
         }
+
+        public bool Private { get; set; }
         public string AuthorId { get; set; }
         [ForeignKey("AuthorId")]
         public virtual CMSUser Author { get; set; }
-        [Required(ErrorMessage ="Please Select Category")]
+
+        [Required(ErrorMessage = "Please Select Category")]
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
         public virtual Category Category { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Voting> Votings { get; set; }
         public virtual ICollection<ViewPost> ViewPosts { get; set; }
+        public virtual ICollection<Violation> Violations { get; set; }
         [Display(Name = "Upload Image")]
         public string UrlImage { get; set; }
 
@@ -74,7 +78,7 @@ namespace ScraBoy.Features.CMS.Blog
         {
             get
             {
-                if(ViewPosts==null)
+                if(ViewPosts == null)
                 {
                     return 0;
                 }
@@ -86,7 +90,7 @@ namespace ScraBoy.Features.CMS.Blog
         {
             get
             {
-                if(Votings== null)
+                if(Votings == null)
                 {
                     return 0;
                 }
@@ -103,6 +107,22 @@ namespace ScraBoy.Features.CMS.Blog
                     return 0;
                 }
                 return Comments.Count();
+            }
+        }
+        [NotMapped]
+        public string UrlPost
+        {
+            get
+            {
+                return string.Format("posts/{0}",this.Id);
+            }
+        }
+        [NotMapped]
+        public string FullUrlPost
+        {
+            get
+            {
+                return StringExtensions.getUrl() + UrlPost;
             }
         }
     }

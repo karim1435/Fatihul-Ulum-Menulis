@@ -11,6 +11,7 @@ namespace ScraBoy.Features.CMS.Blog
 {
     public interface IPostRepository
     {
+        IEnumerable<Post> GetAllPost();
         int CountPublished { get; }
         Task<Post> GetAsync(string id);
         void Edit(string id,Post updatedItem);
@@ -28,7 +29,6 @@ namespace ScraBoy.Features.CMS.Blog
         Task UpdateViewCount(string postId);
         Task<IEnumerable<Post>> SortByViews();
         List<Post> GetBlogList(string name,string tagId,string categoryId);
-        List<Post> GetPostList(string name);
 
     }
 }

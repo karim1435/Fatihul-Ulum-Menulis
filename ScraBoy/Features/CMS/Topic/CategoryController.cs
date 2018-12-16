@@ -29,27 +29,13 @@ namespace ScraBoy.Features.CMS.Topic
         {
             int pageNumber = (page ?? 1);
 
-            if(!User.IsInRole("author"))
-            {
-                return View("Index","",this.categoryService.GetPagedList(currentFilter,pageNumber,null));
-            }
-
-            var user = await GetLoggedInUser();
-
-            return View("Index","",this.categoryService.GetPagedList(currentFilter,pageNumber,user.Id));
+            return View("Index","",this.categoryService.GetPagedList(currentFilter,pageNumber));
         }
         public async Task<ViewResult> Search(string search)
         {
             ViewBag.Filter = search;
 
-            if(!User.IsInRole("author"))
-            {
-                return View("Index",this.categoryService.GetPagedList(search,1,null));
-            }
-
-            var user = await GetLoggedInUser();
-
-            return View("Index","",this.categoryService.GetPagedList(search,1,user.Id));
+            return View("Index","",this.categoryService.GetPagedList(search,1));
         }
 
         [HttpGet]
@@ -70,17 +56,15 @@ namespace ScraBoy.Features.CMS.Topic
                 await SetViewBag();
                 return View(model);
             }
-            var user = await GetLoggedInUser();
 
-            if(categoryService.GetCategoryByName(model.Name,user.Id))
+            if(categoryService.GetCategoryByName(model.Name))
             {
                 ModelState.AddModelError(string.Empty,"Category Already Exists");
                 return View(model);
             }
 
-            model.AuthorId = user.Id;
-
             var success= await this.categoryService.AddAsync(model);
+
             if(!success)
             {
                 await SetViewBag();
@@ -102,15 +86,6 @@ namespace ScraBoy.Features.CMS.Topic
                 return HttpNotFound();
             }
 
-            if(User.IsInRole("author"))
-            {
-                var user = await GetLoggedInUser();
-
-                if(category.AuthorId != user.Id)
-                {
-                    return new HttpUnauthorizedResult();
-                }
-            }
             return View(category);
         }
         [HttpPost]
@@ -119,38 +94,24 @@ namespace ScraBoy.Features.CMS.Topic
         {
 
             var category = await this.categoryService.GetCategory(catId);
-            var user = await GetLoggedInUser();
 
-            if(categoryService.GetExistingCategory(model.Name,user.Id,category.Id))
+            if(categoryService.GetExistingCategory(model.Name,category.Id))
             {
                 ModelState.AddModelError(string.Empty,"Category Already Exists");
                 return View(model);
             }
 
-
-            if(User.IsInRole("author"))
-            {
-
-                try
-                {
-                    if(category.AuthorId != user.Id)
-                    {
-
-                        return new HttpUnauthorizedResult();
-                    }
-                }
-                catch { }
-
-            }
-
             bool updated = await categoryService.UpdateAsync(model, catId);
+
             if(!updated)
             {
                 await SetViewBag();
                 return View(model);
             }
+
             return RedirectToAction("Index");
         }
+        [Authorize(Roles = "admin, editor")]
         public async Task<ActionResult> Delete(int id)
         {
             var category = this.categoryService.GetCategory(id);
@@ -188,9 +149,7 @@ namespace ScraBoy.Features.CMS.Topic
        
         public async Task SetViewBag()
         {
-            var user = await GetLoggedInUser();
-
-            ViewBag.Categories = await categoryService.GetByUserId(user.Id);
+            ViewBag.Categories = categoryRepository.GetAllCategory();
         }
         private async Task<CMSUser> GetLoggedInUser()
         {

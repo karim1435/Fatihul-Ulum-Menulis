@@ -2464,8 +2464,8 @@ a.btn.disabled, fieldset:disabled a.btn {
 
     .btn-success:hover {
         color: #fff;
-        background-color: #218838;
-        border-color: #1e7e34;
+        background-color: #28a745;
+        border-color: #28a745;
     }
 
     .btn-success.focus, .btn-success:focus {
@@ -2480,8 +2480,8 @@ a.btn.disabled, fieldset:disabled a.btn {
 
     .btn-success:not(:disabled):not(.disabled).active, .btn-success:not(:disabled):not(.disabled):active, .show > .btn-success.dropdown-toggle {
         color: #fff;
-        background-color: #1e7e34;
-        border-color: #1c7430;
+        background-color: #28a745;
+        border-color: #28a745;
     }
 
         .btn-success:not(:disabled):not(.disabled).active:focus, .btn-success:not(:disabled):not(.disabled):active:focus, .show > .btn-success.dropdown-toggle:focus {

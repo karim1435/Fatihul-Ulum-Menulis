@@ -28,7 +28,7 @@ namespace ScraBoy.Features.CMS.Tag
 
             if(Request.AcceptTypes.Contains("application/json"))
             {
-                return Json(tags,JsonRequestBehavior.AllowGet);
+                return Json(tags.ToList(),JsonRequestBehavior.AllowGet);
             }
 
             if(User.IsInRole("author"))

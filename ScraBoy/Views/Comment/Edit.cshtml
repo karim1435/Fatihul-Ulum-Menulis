@@ -1,0 +1,12 @@
+﻿@model ScraBoy.Features.CMS.Comments.Comment
+@{
+    ViewBag.Title = "Edit Comment";
+
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+<script src="~/Scripts/tinymce/tinymce.js"></script>
+<script src="~/Scripts/main.js"></script>
+
+<div class="container">
+    @Html.Partial("Form",Model)
+</div>

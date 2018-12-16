@@ -26,8 +26,6 @@ namespace ScraBoy.Features.CMS.Upload
             string ext = Path.GetExtension(fileName);
             switch(ext.ToLower())
             {
-                case ".gif":
-                    return true;
                 case ".jpg":
                     return true;
                 case ".jpeg":

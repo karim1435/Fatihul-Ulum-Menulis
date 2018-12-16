@@ -43,12 +43,12 @@ namespace ScraBoy.Features.Item
 
         public async Task AddToInventoryAsync(int productId)
         {
-            var product = await this._db.Product.SingleOrDefaultAsync(p => p.ProductId == productId);
+            var product = await this._db.Product.FirstOrDefaultAsync(p => p.ProductId == productId);
 
             if(product == null)
                 return;
 
-            var inventory = await _db.Inventory.SingleOrDefaultAsync(c => c.ProductId == productId);
+            var inventory = await _db.Inventory.FirstOrDefaultAsync(c => c.ProductId == productId);
 
             if(inventory != null)
             {
@@ -77,7 +77,7 @@ namespace ScraBoy.Features.Item
         }
         public async Task<int> RemoveFromInventoryAsync(int productId)
         {
-            var inventory = await _db.Inventory.SingleOrDefaultAsync(c => c.ProductId == productId);
+            var inventory = await _db.Inventory.FirstOrDefaultAsync(c => c.ProductId == productId);
 
             var inventoryCount = 0;
 

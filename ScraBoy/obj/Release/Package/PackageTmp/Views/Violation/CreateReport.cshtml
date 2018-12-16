@@ -1,0 +1,37 @@
+﻿@model ScraBoy.Features.CMS.Reporting.Violation
+
+@{
+    ViewBag.Title = "Report Post";
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+<script src="~/Scripts/tinymce/tinymce.js"></script>
+<script src="~/Scripts/main.js"></script>
+<div class="container">
+    <br />
+    @using(Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        <h5 class="card-header">Report @ViewBag.post</h5>
+        <br />
+        <div class="form-group">
+            <div class="form-label-group">
+                @Html.EnumDropDownListFor(model => model.ViolationType,htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ViolationType,"",new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="card my-4">
+            
+            <div class="form-group">
+                <div class="form-label-group">
+                    @Html.TextAreaFor(model => model.Reason,10,40,new { htmlAttributes = new { @class = "form-control",@placeholder = "Enter Title",@autofocus = "autofocus" } })
+                    @Html.ValidationMessageFor(model => model.Reason,"",new { @class = "text-danger" })
+                </div>
+            </div>
+
+            
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    }
+</div>

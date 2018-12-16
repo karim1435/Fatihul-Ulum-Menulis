@@ -59,16 +59,18 @@ namespace ScraBoy.Features.CMS.Blog
         }
         private async Task SetViewBag()
         {
-            var catRepository = new CategoryRepository();
             var user = await GetLoggedInUser();
-            ViewBag.Categories = await categoryRepositoriy.GetByUser(user.Id);
-        }
 
+            ViewBag.Categories = await categoryRepositoriy.GetAllCategoriesAsync();
+
+        }
         [HttpGet]
         [Route("create")]
         public async Task<ActionResult> Create()
         {
+
             await SetViewBag();
+
             return View(new Post());
         }
 
@@ -92,7 +94,7 @@ namespace ScraBoy.Features.CMS.Blog
 
             if(!CheckFileType(filePath))
             {
-                ModelState.AddModelError(string.Empty,"Please upload image");
+                ModelState.AddModelError(string.Empty,"Upload Image with JPEG, JPG OR PNG Extension");
                 await SetViewBag();
                 return View(model);
             }
@@ -101,12 +103,13 @@ namespace ScraBoy.Features.CMS.Blog
 
             var user = await GetLoggedInUser();
 
+            model.Id = "iqro" + Guid.NewGuid().ToString() + DateTime.Now.ToString("yymmddss") + model.Title;
+            model.Id = model.Id.MakeUrlFriednly();
+            model.AuthorId = user.Id;
             model.Tags = model.Tags.Select(tag => tag.MakeUrlFriednly()).ToList();
             model.Created = DateTime.Now;
             model.Updated = DateTime.Now;
-            model.AuthorId = user.Id;
-            model.Id = string.Join(model.AuthorId,model.Tags.Distinct()) + "iqro" + "fatihululum" + model.Created.ToString("yymmddss") + model.Title;
-            model.Id = model.Id.MakeUrlFriednly();
+            model.Published = DateTime.Now;
 
             try
             {
@@ -149,14 +152,14 @@ namespace ScraBoy.Features.CMS.Blog
         [Route("edit/{postId}")]
         public async Task<ActionResult> Edit(string postId)
         {
-            await SetViewBag();
-
             var post = await postRepository.GetAsync(postId);
 
             if(post == null)
             {
                 return HttpNotFound();
             }
+            await SetViewBag();
+
             if(User.IsInRole("author"))
             {
                 var user = await GetLoggedInUser();
@@ -175,6 +178,11 @@ namespace ScraBoy.Features.CMS.Blog
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(Post model,string postId)
         {
+            var post = await postRepository.GetAsync(postId);
+            if(post == null)
+            {
+                return HttpNotFound();
+            }
             if(!ModelState.IsValid)
             {
                 await SetViewBag();
@@ -182,8 +190,7 @@ namespace ScraBoy.Features.CMS.Blog
             }
             var user = await GetLoggedInUser();
 
-            var post = await postRepository.GetAsync(postId);
-
+           
             if(User.IsInRole("author"))
             {
                 try
@@ -205,7 +212,7 @@ namespace ScraBoy.Features.CMS.Blog
 
                 if(!CheckFileType(filePath))
                 {
-                    ModelState.AddModelError(string.Empty,"Please upload image");
+                    ModelState.AddModelError(string.Empty,"Upload Image with JPEG, JPG OR PNG Extension");
                     await SetViewBag();
                     return View(model);
                 }
@@ -234,7 +241,9 @@ namespace ScraBoy.Features.CMS.Blog
             catch(Exception e)
             {
                 ModelState.AddModelError("",e.Message);
+
                 await SetViewBag();
+
                 return View(model);
             }
         }

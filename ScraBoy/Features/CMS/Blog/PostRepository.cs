@@ -34,8 +34,8 @@ namespace ScraBoy.Features.CMS.Blog
         }
         public async Task UpdateViewCount(string postId)
         {
-            var view = await this.db.ViewPost.SingleOrDefaultAsync(a => a.ViewId == viewId &&
-            a.PostId==postId);
+            var view = await this.db.ViewPost.FirstOrDefaultAsync(a => a.ViewId == viewId &&
+            a.PostId == postId);
 
             if(view != null)
             {
@@ -48,8 +48,8 @@ namespace ScraBoy.Features.CMS.Blog
                 ViewId = viewId,
                 Count = 1,
                 LastViewed = DateTime.Now
-
             };
+
             db.ViewPost.Add(viewPost);
 
             await this.db.SaveChangesAsync();
@@ -83,25 +83,43 @@ namespace ScraBoy.Features.CMS.Blog
         public async Task<Post> GetAsync(string id)
         {
             return await db.Post.Include("Author")
-                .SingleOrDefaultAsync(post => post.Id == id);
+                .FirstOrDefaultAsync(post => post.Id == id);
         }
 
         public IQueryable<Post> GetBlogs(string name,string tagId,string categoryId)
         {
-            if(!string.IsNullOrEmpty(name))
+            if(string.IsNullOrEmpty(categoryId) && string.IsNullOrEmpty(tagId))
             {
-                return this.db.Post.Where(m => m.Title.Contains(name) || 
-                m.Content.Contains(name) || 
-                m.Author.UserName.Contains(name));
+                if(!string.IsNullOrEmpty(name))
+                {
+                    return this.db.Post.Where(m => m.Title.Contains(name) ||
+                    m.Content.Contains(name) ||
+                    m.Author.UserName.Contains(name));
+                }
+
             }
             if(!string.IsNullOrEmpty(tagId))
             {
+                if(!string.IsNullOrEmpty(name))
+                {
+                    return GetPostByTagAsync(tagId).AsQueryable().
+                        Where(m => m.Title.ToLower().Contains(name.ToLower()) || m.Content.ToLower().Contains(name) ||
+                    m.Author.UserName.ToLower().Contains(name.ToLower()));
+                }
                 return GetPostByTagAsync(tagId).AsQueryable();
             }
             if(!string.IsNullOrEmpty(categoryId))
             {
+                if(!string.IsNullOrEmpty(name))
+                {
+                    return this.GetPostByCategories(categoryId).AsQueryable().
+                        Where(m => m.Title.ToLower().Contains(name.ToLower()) || m.Content.ToLower().Contains(name) ||
+                    m.Author.UserName.ToLower().Contains(name.ToLower()));
+                }
                 return GetPostByCategories(categoryId).AsQueryable();
+
             }
+
             return this.db.Post;
         }
 
@@ -119,10 +137,7 @@ namespace ScraBoy.Features.CMS.Blog
             return this.db.Post;
         }
 
-        public List<Post> GetPostList(string name)
-        {
-            return this.GetPosts(name).OrderByDescending(a => a.Created).ToList();
-        }
+
         public IPagedList<Post> GetPagedList(string search,int currentPage,string userId)
         {
             var model = new List<Post>();
@@ -140,17 +155,26 @@ namespace ScraBoy.Features.CMS.Blog
         }
         public void Edit(string id,Post updatedItem)
         {
-            var post = db.Post.SingleOrDefault(p => p.Id == id);
+            var post = db.Post.FirstOrDefault(p => p.Id == id);
 
             if(post == null)
             {
                 throw new KeyNotFoundException("A post with the id of " + id +
                     "does not exist in the data store.");
             }
+            
+            
 
             post.Title = updatedItem.Title;
             post.Content = updatedItem.Content;
-            post.Published = updatedItem.Published;
+
+            if(!updatedItem.Private&& post.Private)
+            {
+                post.Published = DateTime.Now;
+            }
+
+            post.Private = updatedItem.Private;
+            
             post.Tags = updatedItem.Tags;
             post.UrlImage = updatedItem.UrlImage;
             post.CategoryId = updatedItem.CategoryId;
@@ -158,14 +182,20 @@ namespace ScraBoy.Features.CMS.Blog
 
             db.SaveChanges();
         }
-
+        public IEnumerable<Post> GetAllPost()
+        {
+            using(var db = new CMSContext())
+            {
+                return this.db.Post.ToList();
+            }
+        }
         public async Task<IEnumerable<Post>> GetAllAsync()
         {
             return await db.Post.Include("Author").ToArrayAsync();
         }
         public async Task Create(Post model)
         {
-            var post = await db.Post.SingleOrDefaultAsync(p => p.Id == model.Id);
+            var post = await db.Post.FirstOrDefaultAsync(p => p.Id == model.Id);
 
             if(post != null)
             {
@@ -177,12 +207,12 @@ namespace ScraBoy.Features.CMS.Blog
         }
         public async Task<IEnumerable<Post>> GetPostsByAuthorAsync(string authorId)
         {
-            return await db.Post.Include("Author").Where(p => p.AuthorId == authorId).
-                OrderByDescending(post => post.Created).ToArrayAsync();
+            return await db.Post.Include("Author").Where(p => p.AuthorId == authorId &&
+                    p.Published < DateTime.Now && !p.Private).ToArrayAsync();
         }
         public void Delete(string id)
         {
-            var post = db.Post.SingleOrDefault(p => p.Id == id);
+            var post = db.Post.FirstOrDefault(p => p.Id == id);
 
             if(post == null)
             {
@@ -224,9 +254,9 @@ namespace ScraBoy.Features.CMS.Blog
                 Take(pageSize).
                 ToArrayAsync();
         }
-        public  IEnumerable<Post> GetPostByCategories(string category)
+        public IEnumerable<Post> GetPostByCategories(string category)
         {
-            return  db.Post.Where(a => a.Category.Name.Equals(category)).ToList();
+            return db.Post.Where(a => a.Category.Name.Contains(category)).ToList();
         }
         public async Task<IEnumerable<string>> GetAllCategories()
         {

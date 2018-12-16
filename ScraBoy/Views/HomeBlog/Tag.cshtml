@@ -1,48 +1,56 @@
 ﻿@using PagedList;
 @using PagedList.Mvc;
 
+
 @model PagedList.IPagedList<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>
 
 @{
     ViewBag.Title = "Post Tagged On "+ @ViewBag.Tag;
 
-    ViewBag.IsIndex = true;
+    ViewBag.Single = false;
 
     Layout = "~/Views/Shared/_BlogLayout.cshtml";
 }
-
-<h2></h2>
-
+@section seoSection{
+<meta name="description" content="Fatihul Ulum Menulis, Posts Tagged with @ViewBag.Tag">
+<meta name="robots" content="index">
+}
+<style type="text/css">
+    body {
+        background: #F7F7F7 !important;
+    }
+     .text-success {
+    color: #14B796 !important;
+</style>
 <div class="container">
     <div class="row">
         <div class="col-md-8">
-            <h1 class="my-4">
-                Posts Tagged with
-                <small>@ViewBag.Tag</small>
-            </h1>
-            @foreach(var item in Model)
-            {
-                @Html.Partial("_RenderPost",item)
-            }
+            <h1 class="my-4">Post tagged by @ViewBag.tag</h1>
+            @Html.Partial("_RenderPost",Model)
 
-            <div>
-                <!-- Pagination -->
-                <ul class="pagination justify-content-center mb-4">
-                    <!-- Pagination -->
-                    <ul class="pagination justify-content-center mb-4">
-                        @if(Model.Count() > 0)
-                        {
-                            @Html.PagedListPager(Model,page => Url.Action("Tag",new { page = page,currentFilter = ViewBag.Filter }))
-                        }
-                    </ul>
-                </ul>
-            </div>
+            <ul class="pagination justify-content-center mb-4">
+                @if(Model.Count() > 0)
+                {
+                    @Html.PagedListPager(Model,page => Url.Action("Tag",new { page = page,currentFilter = ViewBag.Filter }))
+                }
+            </ul>
         </div>
         <div class="col-md-4">
-            <!-- Search Widget -->
-           @Html.Partial("_Search")
-
-            @Html.Partial("_WidgetSidebar")
+            <div class="card my-4">
+                <h5 class="card-header">Search</h5>
+                <div class="card-body">
+                    @using(Html.BeginForm("SearchTag","HomeBlog",new { tagId = ViewBag.tag },FormMethod.Get))
+                    {
+                        <div class="input-group">
+                            <input type="text" class="form-control" value="@ViewBag.Filter" name="search" placeholder="Find Stories">
+                            <span class="input-group-btn">
+                                <button class="btn btn-secondary" type="submit">Go!</button>
+                            </span>
+                        </div>
+                    }
+                </div>
+            </div>
+            @Html.Partial("_widgetsidebar")
         </div>
     </div>
 </div>

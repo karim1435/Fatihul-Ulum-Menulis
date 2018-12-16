@@ -1,0 +1,13 @@
+﻿@model IEnumerable<string>
+
+
+    <div class="card-body">
+        <div class="row">
+                <div class="col-md-12">
+                    @foreach(var item in Model)
+                    {
+                        <a class="label label-primary" href="@Url.Action("Category",new { catId = item })" rel="nofollow">@item</a>
+                    }
+                </div>
+        </div>
+    </div>

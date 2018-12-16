@@ -1,65 +1,52 @@
 ﻿@model ScraBoy.Features.CMS.User.UserProfileModel
 
-    @{
-        ViewBag.Title = Model.User.DisplayName +"'s " +"Profile";
-        Layout = "~/Views/Shared/_BlogLayout.cshtml";
+@{
+    ViewBag.Title = Model.User.DisplayName + "'s " + "Profile";
+    Layout = "~/Views/Shared/_Profile.cshtml";
+}
+<script type="text/javascript" src="~/Scripts/jquery-1.10.2.min.js"></script>
+<h1>@Model.User.DisplayName's Profile</h1>
+<div id="userphoto"><img src="@Url.Content(Model.User.UrlImage)" style="height:350px; width:350px;" class="d-flex mr-3 rounded-circle" alt="default avatar"></div>
+
+<nav id="profiletabs">
+    <ul class="clearfix">
+        <li><a href="#bio" class="sel">About</a></li>
+        <li><a href="#posts">Posts by @Model.User.DisplayName</a></li>
+    </ul>
+</nav>
+
+<section id="bio">
+
+    <p class="bio"><span><b>Name: </b></span> @Model.User.DisplayName</p>
+    <p class="bio"><span><b>Birth Day: </b></span> @Model.User.Born.Value.FormatDate()</p>
+    <p class="bio"><span><b>Level: </b> </span> @Model.Role</p>
+    <p class="bio">@Html.Raw(Model.User.Description)</p>
+
+</section>
+
+<section id="posts" class="hidden">
+    @foreach(var item in Model.Posts)
+            {
+        <p>
+            <a class="text-primary" href="@Url.Action("Post","HomeBlog",new { postId=item.Id})">@item.Title</a>
+        </p>
+        <p class="posts">@item.Content.ReadMore()</p><hr />
     }
-    <link href="~/Content/profile.css" rel="stylesheet" />
-    <script type="text/javascript" src="~/Scripts/jquery-1.10.2.min.js"></script>
+</section>
+<script type="text/javascript">
+    $(function () {
+        $('#profiletabs ul li a').on('click', function (e) {
+            e.preventDefault();
+            var newcontent = $(this).attr('href');
 
-    <div id="topbar">
-        <a href="http://designshack.net">Back to Design Shack</a>
-    </div>
+            $('#profiletabs ul li a').removeClass('sel');
+            $(this).addClass('sel');
 
-    <div id="w">
-        <div id="content" class="clearfix">
-            <div id="userphoto"><img src="http://placehold.it/50x50" alt="default avatar"></div>
-            <h1>@Model.User.DisplayName's Profile</h1>
-            <nav id="profiletabs">
-                <ul class="clearfix">
-                    <li><a href="#bio" class="sel">About</a></li>
-                    <li><a href="#posts">Posts by @Model.User.DisplayName</a></li>
-                </ul>
-            </nav>
-
-            <section id="bio">
-                <p class="bio"><span><b>Name: </b></span> @Model.User.DisplayName</p>
-                <hr />
-                <p class="bio"><span><b>Birth Day: </b></span> @Model.User.Born.Value.FormatDate()</p>
-                <hr />
-                <p class="bio"><span><b>Level: </b> </span> @Model.Role</p>
-                <hr />
-                <p class="bio"><span><b>About: </b> </span>@Html.Raw(@Model.User.Description)</p>
-                
-            </section>
-
-            <section id="posts" class="hidden">
-                @foreach(var item in Model.Posts)
-                {
-                    <p>
-                        <a href="@Url.Action("Post","HomeBlog",new { postId=item.Id})">@item.Title</a>
-                    </p>
-                   
-                    <p class="posts">@item.Content.ReadMore(90) </p>
-                    <hr />
-                }
-            </section>
-        </div>
-    </div>
-    <script type="text/javascript">
-        $(function () {
-            $('#profiletabs ul li a').on('click', function (e) {
-                e.preventDefault();
-                var newcontent = $(this).attr('href');
-
-                $('#profiletabs ul li a').removeClass('sel');
-                $(this).addClass('sel');
-
-                $('#content section').each(function () {
-                    if (!$(this).hasClass('hidden')) { $(this).addClass('hidden'); }
-                });
-
-                $(newcontent).removeClass('hidden');
+            $('#content section').each(function () {
+                if (!$(this).hasClass('hidden')) { $(this).addClass('hidden'); }
             });
+
+            $(newcontent).removeClass('hidden');
         });
-    </script>
+    });
+</script>
