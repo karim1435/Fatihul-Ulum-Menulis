@@ -17,6 +17,7 @@ namespace ScraBoy.Features.CMS.Blog
     [Authorize]
     public class PostController : UploadController
     {
+        private int totalMinWords = 500;
         private readonly string pathFolder = "~/Image/post/";
         private readonly IPostRepository postRepository;
         private readonly IUserRepository userRepository;
@@ -103,13 +104,25 @@ namespace ScraBoy.Features.CMS.Blog
 
             var user = await GetLoggedInUser();
 
-            model.Id = "iqro" + Guid.NewGuid().ToString() + DateTime.Now.ToString("yymmddss") + model.Title;
+            model.Id = "iqro"+"-"+DateTime.Now.ToString("yymmddss")+"-"+ model.Title;
+
             model.Id = model.Id.MakeUrlFriednly();
             model.AuthorId = user.Id;
             model.Tags = model.Tags.Select(tag => tag.MakeUrlFriednly()).ToList();
             model.Created = DateTime.Now;
             model.Updated = DateTime.Now;
             model.Published = DateTime.Now;
+
+            var content = model.Content.ReadMore(model.Content.Length);
+
+            int contentLenth = content.CountTotalWords();
+
+            if(contentLenth < totalMinWords)
+            {
+                ModelState.AddModelError(string.Empty,"Conten harus lebih dari " +totalMinWords + " Kata");
+                await SetViewBag();
+                return View(model);
+            }
 
             try
             {
@@ -189,8 +202,6 @@ namespace ScraBoy.Features.CMS.Blog
                 return View(model);
             }
             var user = await GetLoggedInUser();
-
-           
             if(User.IsInRole("author"))
             {
                 try
@@ -227,6 +238,17 @@ namespace ScraBoy.Features.CMS.Blog
             }
 
             model.Tags = model.Tags.Select(tag => tag.MakeUrlFriednly()).ToList();
+
+            var content = model.Content.ReadMore(model.Content.Length);
+
+            int contentLenth = content.CountTotalWords();
+
+            if(contentLenth < totalMinWords)
+            {
+                ModelState.AddModelError(string.Empty,"Conten harus lebih dari " + totalMinWords + " Kata");
+                await SetViewBag();
+                return View(model);
+            }
 
             try
             {
@@ -288,6 +310,8 @@ namespace ScraBoy.Features.CMS.Blog
         }
 
         private bool _isDisposed;
+        
+
         protected override void Dispose(bool disposing)
         {
 

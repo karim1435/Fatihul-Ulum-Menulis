@@ -1,0 +1,119 @@
+﻿@model ScraBoy.Features.Lomba.Audience.Participant
+
+@{
+    ViewBag.Title = "Fatihul Ulum Contest - My Proposal";
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+
+@{
+    var contest = (ScraBoy.Features.Lomba.Contest.Competition)ViewBag.mycontest;
+}
+<link href="~/Content/tab.css" rel="stylesheet" />
+<div class="container">
+    <br />
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Title -->
+            <h1 class="mt-4">@Model.Title</h1>
+            <div class="lead text-muted">
+                Submitted on @Model.ProposedOn.TimeAgo()
+            </div>
+            <hr />
+            @Html.Raw(Model.Content)
+
+
+            @if(contest.StatusContest.Equals(ScraBoy.Features.Lomba.Contest.StatusContest.Finish))
+            {
+                <h5 class="card-header">Information</h5>
+                <div class="card-body">
+                    <div class="media mb-4">
+                        <div class="media-body">
+
+                            <h5 class="mt-0">Your Score : <span title="@Model.Score" style="font-size:15px;" class="label label-primary"><li class="fa fa-star"></li> @Model.Score.FormatNumber()</span></h5>
+                            @Html.Raw(Model.Message)
+                        </div>
+                    </div>
+                </div>
+            }
+            <section id="tabs">
+                <div class="row">
+                    <div class="col-xs-12 ">
+                        <nav>
+                            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fa fa-users"></i> Participants (@contest.TotalParticipants)</a>
+                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><i class="fa fa-trophy"></i> Ranking</a>
+                            </div>
+                        </nav>
+                        <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                @if(contest.Participants.Count() > 0)
+                                {
+                                    foreach(var item in contest.Participants.OrderByDescending(a => a.ProposedOn).Take(10))
+                                    {
+                                        <div class="card-body">
+                                            <div class="media mb-4">
+                                                <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.Author.UrlImage)" style="height: 80px; width:80px" alt="">
+                                                <div class="media-body">
+                                                    <a href="@Url.Action("Profile","User",new { userId = item.Author.SlugUrl })">
+                                                        <h5 class="mt-0">@item.Author.DisplayName</h5>
+                                                    </a> <span>Date applied @item.ProposedOn.TimeAgo()</span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        if(contest.Participants.Count() > 10)
+                                        {
+                                            <div class="card-body">
+                                                <div class="media mb-4">
+                                                    <h5 class="text-muted">+@(contest.Participants.Count() - 10)  more participants</h5>
+                                                </div>
+                                            </div>
+
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <p>Masih belum ada partisipasi yang join contest ini.</p>
+                                }
+
+                            </div>
+                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                @if(contest.StatusContest.Equals(ScraBoy.Features.Lomba.Contest.StatusContest.Finish))
+                                {
+                                    foreach(var item in contest.Participants.OrderByDescending(a => a.Score).Take(10))
+                                    {
+                                        <div class="card-body">
+                                            <div class="media mb-4">
+                                                <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.Author.UrlImage)" style="height: 80px; width:80px" alt="">
+                                                <div class="media-body">
+                                                    <a href="@Url.Action("Profile","User",new { userId = item.Author.SlugUrl })">
+                                                        <h5 class="mt-0">@item.Author.DisplayName</h5>
+                                                    </a>
+                                                    <span title="@item.Score" style="font-size:15px;" class="label label-primary"><li class="fa fa-star"></li> @item.Score.FormatNumber()</span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    }
+                                }
+                                else
+                                {
+                                    <p>Pemenang masih belum ditentukan, Tunggu Sampai contest selesai.</p>
+                                }
+
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </div>
+        <div class="col-md-4">
+            @Html.Partial("~/Views/Competition/_InfoContest.cshtml",contest)
+        </div>
+    </div>
+</div>

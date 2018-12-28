@@ -1,0 +1,73 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model IPagedList<ScraBoy.Features.Lomba.Contest.Competition>
+
+@{
+    ViewBag.Title = "Contest List";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<a href="@Url.Action("Create","Competition")" class="btn btn-success">
+    New Contest
+</a>
+
+@AntiForgery.GetHtml()
+<div class="card mb-3">
+    <div class="card-header">
+        <h2> <i class="fa fa-trophy"></i> Contest List</h2>
+        @using(Html.BeginForm("SearchContest","Competition",FormMethod.Get))
+        {
+            @Html.Partial("~/Views/Widgets/_Search.cshtml")
+        }
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Participants</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach(var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @item.Title
+                                <br>
+                                <a href=@Url.Action("View","Competition",new { slugUrl = item.SlugUrl })>
+                                    View <i class="fa fa-eye"></i>
+                                </a>
+                                
+                                <a href=@Url.Action("Edit","Competition",new { slugUrl = item.SlugUrl })>
+                                    Edit <i class="fa fa-pencil"></i>
+                                </a>
+                                <a href=@Url.Action("Index","Participant",new { slugUrl = item.SlugUrl })>
+                                    Check <i class="fa fa-eye"></i>
+                                </a>
+                                <a data-action="delete" ,data-value="item.slugUrl" href=@Url.Action("Delete","Competition",new { slugUrl = item.SlugUrl })>
+                                    Delete <i class="fa fa-trash"></i>
+                                </a>
+                            </td>
+                            <td>
+                                <p>Category : <b>@item.Category.Name</b></p>
+                                <p>Reward : <b>@item.Reward</b></p>
+                                <p>Status :<b> @item.StatusContest</b> </p>
+                                <p>Participants :<b> @item.TotalParticipants</b></p>
+                                <p>Deadline : <b>@item.StartedOn.FormatDate() - @item.EndOn.FormatDate()</b></p>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            @if(Model.Count() > 0)
+            {
+                <text>Page</text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text>Of</text> @Model.PageCount
+                @Html.PagedListPager(Model,page => Url.Action("ContestList","Competition",new { page = page,currentFilter = ViewBag.Filter }))
+            }
+        </div>
+
+    </div>
+</div>

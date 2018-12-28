@@ -1,0 +1,14 @@
+﻿@model ScraBoy.Features.Lomba.Contest.Competition
+<div class="card my-4">
+    <h5 class="card-header">About Contest</h5>
+    <div class="card-body">
+        <p><i class="fa fa-header"></i> Lomba : @Model.Title</p>
+        <p><i class="fa fa-calendar"></i> Deadline : @Model.StartedOn.FormatDate() - @Model.EndOn.FormatDate()</p>
+        <p><i class="fa fa-file-word-o"></i> Words : @Model.MinimumWord-@Model.MaximumWord</p>
+        <p><i class="fa fa-info-circle"></i> Status : @Model.StatusContest</p>
+        <p><i class="fa fa-thumb-tack"></i> Category : @Model.Category.Name</p>
+        <p><i class="fa fa-trophy"></i> Reward : @Model.Reward</p>
+        <hr />
+        <a target="_blank" href="@Url.Action("View",new { controller = "Competition",slugUrl = Model.SlugUrl})" class="btn btn-block" style="background-color:#ffffff"><i class="fa fa-eye"></i> View Contest Detail</a>
+    </div>
+</div>

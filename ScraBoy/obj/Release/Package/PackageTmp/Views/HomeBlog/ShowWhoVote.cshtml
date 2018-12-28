@@ -1,9 +1,12 @@
 ﻿@model ScraBoy.Features.CMS.HomeBlog.BlogViewModel
 
 @{
-    ViewBag.Title = "Author Likes " + Model.Post.Title;
+    ViewBag.Title = "Fatihul Ulum Menulis - Author Likes " + Model.Post.Title;
 
     Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+@section seoSection{
+    <meta name="robots" content="noindex">
 }
 <div class="container">
     <div class="row">

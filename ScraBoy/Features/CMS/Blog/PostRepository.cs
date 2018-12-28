@@ -13,9 +13,12 @@ namespace ScraBoy.Features.CMS.Blog
 {
     public class PostRepository : IPostRepository
     {
+        
         private CMSContext db;
         private readonly int pageSize = 10;
         private string viewId;
+        private int totalMinimumWords;
+
         public PostRepository(CMSContext db)
         {
             this.db = db;
@@ -117,8 +120,9 @@ namespace ScraBoy.Features.CMS.Blog
                     m.Author.UserName.ToLower().Contains(name.ToLower()));
                 }
                 return GetPostByCategories(categoryId).AsQueryable();
-
             }
+
+        
 
             return this.db.Post;
         }
@@ -162,8 +166,6 @@ namespace ScraBoy.Features.CMS.Blog
                 throw new KeyNotFoundException("A post with the id of " + id +
                     "does not exist in the data store.");
             }
-            
-            
 
             post.Title = updatedItem.Title;
             post.Content = updatedItem.Content;
@@ -253,6 +255,14 @@ namespace ScraBoy.Features.CMS.Blog
                 Skip(skip).
                 Take(pageSize).
                 ToArrayAsync();
+        }
+    
+        public IEnumerable<Post> GetPostsByUser(string slugUrl)
+        {
+
+            return db.Post.Include("Author").Where(p => p.Author.SlugUrl == slugUrl &&
+                    p.Published < DateTime.Now && !p.Private);
+
         }
         public IEnumerable<Post> GetPostByCategories(string category)
         {

@@ -49,7 +49,7 @@
                         {
                             <div class="@(item == (ViewBag.PopularView as IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>).First() ?
                                 "carousel-item active" : "carousel-item")">
-                                <img src="@Url.Content(item.Post.UrlImage)" style="height:400px;">
+                                <img src="@Url.Content(item.Post.UrlImage)" style="height:380px;">
                                 <div class="carousel-caption">
                                     <h2 class="group card-title inner list-group-item-heading ">
                                         @Html.ActionLink(item.Post.Title,"post",new { controller = "HomeBlog",postId = item.Post.Id },new { @class = "bg-dark text-light",target = "_blank" })
@@ -70,7 +70,7 @@
             <br />
             <div>
                 <div id="products" class="row view-group">
-                    @foreach(var item in (ViewBag.PopularView as IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>).Skip(3).Take(9))
+                    @foreach(var item in (ViewBag.PopularView as IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>).Skip(3).Take(6))
             {
                         <div class="item grid-group-item col-xs-4 col-lg-4">
                             <div class="media mb-4">
@@ -86,10 +86,11 @@
                 </div>
             </div>
         </div>
+
         <div class="col-md-4">
             <div class="row">
                 <div class="col-md-12">
-                    <h5 class="card-header">Top Writters</h5>
+                    <h4 class="card-header">Top Writers</h4>
                     @Html.Partial("_WidgetTopUsers",(ViewBag.TopUser as IEnumerable<ScraBoy.Features.CMS.HomeBlog.RankingViewModel>).Take(5))
                     <a target="_blank" href="@Url.Action("RankingTopUser",new { controller = "HomeBlog"})" class="btn btn-block" style="background-color:#ffffff"><h5 class="mt-0 text-success"> View Ranking</h5></a>
                     <hr />
@@ -98,18 +99,19 @@
         </div>
     </div>
 </div>
-    <div id="products" class="container row view-group">
-        <div class="about">
-            <div class="content line"></div>
-            <div class="content text">Latest</div>
-            <div class="content line"></div>
-        </div>
+
+<div class="container">
+    <div id="products" class="row view-group">
         @Html.Partial("_RenderIndex",(ViewBag.NewPosts as IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>).Take(9))
-        <a target="_blank" href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "latestpost" })" class="btn btn-block" style="background-color:#ffffff"><h5 class="mt-0 text-success">Show More</h5></a>
-        <div class="about">
-            <div class="content line"></div>
-            <div class="content text">Comments</div>
-            <div class="content line"></div>
-        </div>
+        <a target="_blank" href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "latestpost" })" class="btn btn-block" style="background-color:#ffffff">
+            <h5 class="mt-0 text-success">Show More</h5>
+        </a>
+    </div>
+</div>
+
+
+<div class="container">
+    <div id="products" class="row view-group">
         @Html.Partial("_WidgetRecentComments",(ViewBag.RecentComments as IEnumerable<ScraBoy.Features.CMS.HomeBlog.CommentViewModel>).Take(9))
     </div>
+</div>

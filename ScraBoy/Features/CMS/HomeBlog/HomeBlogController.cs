@@ -19,7 +19,6 @@ using System.Xml.Linq;
 
 namespace ScraBoy.Features.CMS.HomeBlog
 {
-    
     public class HomeBlogController : Controller
     {
         private readonly IPostRepository posRepository;
@@ -230,7 +229,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
 
             return View("Tag","",blogs);
         }
-       
+
 
         [Route("votedBy/{postId}")]
         [CompressContent]
@@ -339,7 +338,8 @@ namespace ScraBoy.Features.CMS.HomeBlog
                                 await this.votingRepository.UserHasLiked(item.Post.Id,UserId);
         }
 
-        public string UserId {
+        public string UserId
+        {
             get { return User.Identity.GetUserId(); }
         }
     }

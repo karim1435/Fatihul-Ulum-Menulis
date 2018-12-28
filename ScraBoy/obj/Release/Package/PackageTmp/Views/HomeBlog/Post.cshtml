@@ -1,7 +1,7 @@
 ﻿@model ScraBoy.Features.CMS.HomeBlog.BlogViewModel
 
 @{
-    ViewBag.Title = Model.Post.Title;
+    ViewBag.Title = "Fatihul Ulum Menulis - "+ Model.Post.Title;
 
     ViewBag.Single = true;
     Layout = "~/Views/Shared/_BlogLayout.cshtml";
@@ -24,6 +24,14 @@
     }
      .text-success {
     color: #14B796 !important;
+	}
+	  img {
+        width: 100%;
+        height: auto;
+    }
+     iframe {
+        width: 100%;
+    }
     /* Adding !important forces the browser to overwrite the default style applied by Bootstrap */
 </style>
 <div id="fb-root"></div>

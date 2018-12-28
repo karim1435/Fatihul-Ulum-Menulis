@@ -1,0 +1,87 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model IPagedList<ScraBoy.Features.Lomba.Contest.Competition>
+
+@{
+    ViewBag.Title = "Fatihul Ulum Menuli - My Contest";
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+<style type="text/css">
+    body {
+        background: #F7F7F7 !important;
+    }
+     .btn-success {
+        background-color: #14B796 !important;
+    }
+    .text-success {
+        color: #14B796 !important;
+</style>
+<div class="container">
+
+    <div class="row">
+        <div class="about">
+            <div class="content line"></div>
+            <div class="content text">My Contest</div>
+            <div class="content line"></div>
+        </div>
+        @if(Model.Count() > 0)
+        {
+            foreach(var item in Model)
+            {
+                <div class="item col-xs-4 col-lg-4">
+                    <div class="thumbnail card">
+                        <div class="img-event">
+                            <img style="height:200px; width:400px;" class="group list-group-image img-fluid" src="@Url.Content(item.UrlImage)" alt="@item.Title" />
+                        </div>
+                        <br />
+                        <div class="caption">
+                            <div class="col-xs-12 col-md-12">
+                                <h5 class="group card-title inner list-group-item-heading">
+                                    <a class="text-dark" href="@Url.Action("View","Competition",new { slugUrl=item.SlugUrl})" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                                        @item.Title
+                                    </a>
+                                </h5>
+                                <span><a class="label @(item.StatusContest.Equals(ScraBoy.Features.Lomba.Contest.StatusContest.Open) ? "label-primary" : "label-danger") text-white" role="button">@item.StatusContest</a></span>
+                                <hr />
+                                <div class="row">
+                                    <div class="col-xs-12 col-md-12">
+                                        <div>
+                                          @Html.Partial("_FooterInfo",item)
+                                            <a class="btn btn-raised btn-success" href="@Url.Action("ViewContest","Participant",new { slugUrl=item.SlugUrl})" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                                                View Proposal
+                                            </a>
+                                        </div>
+                                        <br />
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            }
+        }
+        else
+        {
+            <h4>
+                OPPS! It seems you haven't followed any contest before
+                <span>
+                    <a href="@Url.Action("Index","Competition")" class="btn btn-info">
+                        <i class="fa fa-search"></i> Find Contest
+                    </a>
+                </span>
+            </h4>
+        }
+    </div>
+    <div>
+        @if(Model.Count() > 0)
+        {
+            <text>Page</text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text>Of</text> @Model.PageCount
+            @Html.PagedListPager(Model,page => Url.Action("MyContest","Competition",new { page = page,currentFilter = ViewBag.Filter }))
+        }
+    </div>
+    <br />
+</div>

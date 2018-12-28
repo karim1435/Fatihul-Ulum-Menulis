@@ -18,5 +18,6 @@ namespace ScraBoy.Features.CMS.Comments
         Task EditAsync(Comment model,int commentId);
         Task ReplyAsync(Comment model);
         Comment GetParentComment(int id);
+        
     }
 }

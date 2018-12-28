@@ -2,51 +2,90 @@
 
 @{
     ViewBag.Title = Model.User.DisplayName + "'s " + "Profile";
-    Layout = "~/Views/Shared/_Profile.cshtml";
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
 }
-<script type="text/javascript" src="~/Scripts/jquery-1.10.2.min.js"></script>
-<h1>@Model.User.DisplayName's Profile</h1>
-<div id="userphoto"><img src="@Url.Content(Model.User.UrlImage)" style="height:350px; width:350px;" class="d-flex mr-3 rounded-circle" alt="default avatar"></div>
-
-<nav id="profiletabs">
-    <ul class="clearfix">
-        <li><a href="#bio" class="sel">About</a></li>
-        <li><a href="#posts">Posts by @Model.User.DisplayName</a></li>
-    </ul>
-</nav>
-
-<section id="bio">
-
-    <p class="bio"><span><b>Name: </b></span> @Model.User.DisplayName</p>
-    <p class="bio"><span><b>Birth Day: </b></span> @Model.User.Born.Value.FormatDate()</p>
-    <p class="bio"><span><b>Level: </b> </span> @Model.Role</p>
-    <p class="bio">@Html.Raw(Model.User.Description)</p>
-
-</section>
-
-<section id="posts" class="hidden">
-    @foreach(var item in Model.Posts)
-            {
-        <p>
-            <a class="text-primary" href="@Url.Action("Post","HomeBlog",new { postId=item.Id})">@item.Title</a>
-        </p>
-                <p class="posts">@item.Content.ReadMore()</p><hr />
+<style>
+    body {
+        background: #F7F7F7 !important;
     }
-</section>
-<script type="text/javascript">
-    $(function () {
-        $('#profiletabs ul li a').on('click', function (e) {
-            e.preventDefault();
-            var newcontent = $(this).attr('href');
+</style>
+<link href="~/Content/profile.css" rel="stylesheet" />
+<div class="container">
+    <br />
+    <div class="card">
+        <div class="p-3 text-center">
+            <div class="card-body">
+                <h1 class="display-4">@Model.User.DisplayName Profile</h1>
 
-            $('#profiletabs ul li a').removeClass('sel');
-            $(this).addClass('sel');
+                <img src="@Url.Content(Model.User.UrlImage)" style="border-radius:50%; height:200px; width:200px;" alt="default avatar">
 
-            $('#content section').each(function () {
-                if (!$(this).hasClass('hidden')) { $(this).addClass('hidden'); }
-            });
+                <p class="lead">@Html.Raw(Model.User.Description)</p>
+                <p class="lead">
+                    <a style="font-size:20px" class="label label-primary" href="#" role="button">@Model.Role</a>
+                </p>
+            </div>
+            <div class="small">
+                @if(!string.IsNullOrEmpty(Model.User.FbProfile))
+                {
+                    <a class="btn btn-raised btn-info" href="@Model.User.FbProfile" title="Facebook Profile" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                        <i class="fa fa-facebook" aria-hidden="true"></i>
+                    </a>
+                }
+                @if(!string.IsNullOrEmpty(Model.User.InstagramProfile))
+                {
+                    <a class="btn btn-raised btn-info" href="@Model.User.InstagramProfile" title="IG Profile">
+                        <i class="fa fa-instagram" aria-hidden="true"></i>
+                    </a>
+                }
+                @if(!string.IsNullOrEmpty(Model.User.TwitterProfile))
+                {
+                    <a class="btn btn-raised btn-info" href="@Model.User.TwitterProfile" title="Twitter Profile">
+                        <i class="fa fa-twitter" aria-hidden="true"></i>
+                    </a>
+                }
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        @foreach(var item in Model.Posts)
+        {
+            <div class="item col-xs-4 col-lg-4">
+                <div class="thumbnail card">
+                    <div class="img-event">
+                        <img style="height:200px; width:400px;" class="group list-group-image img-fluid" src="@Url.Content(item.UrlImage)" alt="@item.Title" />
+                    </div>
+                    <div class="caption">
+                        <div class="col-xs-12 col-md-12">
+                            <div class="group card-title inner list-group-item-heading text-muted">
+                                @item.Published.Value.FormatDate()
+                            </div>
+                        </div>
+                    </div>
+                    <div class="caption">
+                        <div class="col-xs-12 col-md-12">
+                            <h5 class="group card-title inner list-group-item-heading">
+                                @Html.ActionLink(item.Title,"post",new { controller = "HomeBlog",postId = item.Id },new { @class = "text-dark" })
+                            </h5>
+                            <p class="group inner list-group-item-text">
+                                @item.Content.ReadMore(167)
+                                <a href="@Url.Action("Post",new { controller = "HomeBlog",postId = item.Id })">
+                                    Continue Reading
+                                </a>
+                            </p>
 
-            $(newcontent).removeClass('hidden');
-        });
-    });
-</script>
+                            <div class="row">
+                                <div class="col-xs-12 col-md-12">
+                                    @*@Html.Partial("_RenderFooter",item)*@
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+    <br />
+</div>

@@ -19,10 +19,12 @@ namespace ScraBoy.Features.CMS.User
         string HashPassword(string password);
         Task AddUserToRoleAsync(CMSUser newUser,string role);
         Task<IEnumerable<string>> GetRolesForUserAsync(CMSUser user);
+        IEnumerable<string> GetRolesForUser(CMSUser user);
         Task RemoveUserFromRoleAsync(CMSUser user,params string[] roleNames);
         Task<CMSUser> GetLoginUserAsync(string userName,string pasword);
         Task<ClaimsIdentity> CrateIdentityAsync(CMSUser user);
         IQueryable<CMSUser> GetPosts(string name);
+        IEnumerable<CMSUser> GetAllUsersAsync();
         Task<IdentityResult> ResetPasswordAsync(string userid,string code,string password);
 
     }

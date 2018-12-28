@@ -7,6 +7,7 @@
     <link rel="next" href="http://www.fatihululum.site/admin/" />
     <link rel="shortcut icon" href="@Url.Content("~/Image/icon.ico")" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="google-site-verification" content="EU2SRbeq_lOYftubOOKQegY3Lyth7WPfks-bB0ZHJjM" />
     <title>@ViewBag.Title</title>
     @RenderSection("seoSection",required: false)
     <link href="~/Content/PagedList.css" rel="stylesheet" />
@@ -26,29 +27,40 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
+                <div class="dropdown">
+                    <button style="font-size:20px" class="btn btn-default bg-green text-white dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Contest
+                    </button>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="@Url.Action("MyContest","Competition")">My Contest</a>
+                        <a class="dropdown-item" href="@Url.Action("Index",new { controller = "Competition"})">Find Contest</a>
+
+                    </div>
+                </div>
                 <ul class="navbar-nav mr-auto">
+
                     <li class="nav-item active">
-                        <a style="font-size:25px" href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "mostpopularpost" })" class="nav-link btn-group-lg">
+                        <a class="btn btn-default bg-green text-white" style="font-size:20px" href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "mostpopularpost" })" class="nav-link btn-group-lg">
                             Trending
                         </a>
                     </li>
                     <li class="nav-item active">
-                        <a style="font-size:25px" href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "mosstinterestpost" })" class="nav-link btn-group-lg">
-                          Favorite
+                        <a class="btn btn-default bg-green text-white" style="font-size:20px" href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "mosstinterestpost" })" class="nav-link btn-group-lg">
+                            Favorite
 
                         </a>
                     </li>
                     <li class="nav-item active">
-                        <a style="font-size:25px" href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "mostdiscusspost" })" class="nav-link btn-group-lg">
+                        <a class="btn btn-default bg-green text-white" style="font-size:20px" href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "mostdiscusspost" })" class="nav-link btn-group-lg">
                             Viral
                         </a>
                     </li>
 
-                    @{
-                        Html.RenderAction("CategoryMenu",new { controller = "HomeBlog" });
-                    }
-                </ul>
 
+                </ul>
+                @{
+                    Html.RenderAction("CategoryMenu",new { controller = "HomeBlog" });
+                }
                 @if(User.Identity.IsAuthenticated)
                 {
                     Html.RenderAction("NotificationMenu",new { controller = "HomeBlog" });
@@ -57,7 +69,7 @@
 
                 <ul class="navbar-nav ml-auto ml-md-0">
                     <li class="nav-item active dropdown no-arrow">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="btn btn-default bg-green text-white dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fa fa-user-circle"></i>
                             <span> @User.Identity.GetUserName()</span>
                         </a>
@@ -124,6 +136,15 @@
     <script src="~/js/jquery-2.1.1.min.js"></script>
     <script src="~/js/jquery-ui.min-1.11.1.js"></script>
     <script src="~/js/admin.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131424917-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-131424917-1');
+    </script>
+
     @RenderSection("scripts",required: false)
 
 

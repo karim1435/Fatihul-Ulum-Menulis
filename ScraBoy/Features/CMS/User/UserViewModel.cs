@@ -34,6 +34,14 @@ namespace ScraBoy.Features.CMS.User
         public string ConfirmPassword { get; set; }
         [Display(Name = "Upload Image")]
         public string UrlImage { get; set; }
+        [Display(Name = "Point Bonus")]
+        public int Bonus { get; set; }
+        [Display(Name = "Facebook Profile Url")]
+        public string FbProfile { get; set; }
+        [Display(Name = "Instagram Profile Url")]
+        public string InstagramProfile { get; set; }
+        [Display(Name = "Twitter Profile Url")]
+        public string TwitterProfile { get; set; }
         public HttpPostedFileBase ImageFile { get; set; }
         [Display(Name = "Role")]
         public string SelectedRole { get; set; }

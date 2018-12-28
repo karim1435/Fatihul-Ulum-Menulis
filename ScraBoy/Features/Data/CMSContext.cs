@@ -20,6 +20,8 @@ using ScraBoy.Features.CMS.User;
 using System.Collections;
 using ScraBoy.Features.CMS.Nws;
 using ScraBoy.Features.CMS.Reporting;
+using ScraBoy.Features.Lomba.Audience;
+using ScraBoy.Features.Lomba.Contest;
 //using ScraBoy.Features.Forum.Question;
 //using ScraBoy.Features.Forum.Channel;
 //using ScraBoy.Features.Forum.Favorite;
@@ -44,6 +46,9 @@ namespace ScraBoy.Features.Data
         public DbSet<TypeModel> Type { get; set; }
         public DbSet<ProductModel> Product { get; set; }
         public DbSet<InventoryModel> Inventory { get; set; }
+
+        public DbSet<Participant> Participant { get; set; }
+        public DbSet<Competition> Competiton { get; set; }
         #endregion
 
         #region CMS
@@ -77,7 +82,7 @@ namespace ScraBoy.Features.Data
 
             modelBuilder.Entity<Post>().HasRequired(e => e.Category);
 
-            
+
 
             modelBuilder.Entity<Comment>()
                 .HasRequired(s => s.Post)
@@ -134,6 +139,20 @@ namespace ScraBoy.Features.Data
                 .WithMany(g => g.Violations)
                 .HasForeignKey<string>(s => s.PostId).WillCascadeOnDelete(true);
 
+            modelBuilder.Entity<Competition>()
+             .HasRequired(s => s.Creator)
+             .WithMany(g => g.Competitions)
+             .HasForeignKey<string>(s => s.CreatorId).WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Participant>()
+            .HasRequired(s => s.Competition)
+            .WithMany(g => g.Participants)
+            .HasForeignKey<int>(s => s.CompetitionId).WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Competition>()
+           .HasRequired(s => s.Category)
+           .WithMany(g => g.Competitions)
+           .HasForeignKey<int>(s => s.CategoryId).WillCascadeOnDelete(true);
             #endregion
 
             //#region Forum FluentApi
@@ -145,5 +164,6 @@ namespace ScraBoy.Features.Data
             //modelBuilder.Entity<Thread>().HasRequired(e => e.Topic);
             //#endregion
         }
+
     }
 }

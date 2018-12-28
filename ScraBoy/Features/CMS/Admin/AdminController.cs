@@ -71,6 +71,8 @@ namespace ScraBoy.Features.CMS.Admin
                 IsPersistent = model.RememberMe
             },userIdentity);
 
+            await this.userService.LastLoginUpdate(user);
+
             if(Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
@@ -103,9 +105,6 @@ namespace ScraBoy.Features.CMS.Admin
 
             return View(model);
         }
-
-       
-
         [AllowAnonymous]
         public async Task<ActionResult> ResetPassword()
         {
@@ -250,6 +249,13 @@ namespace ScraBoy.Features.CMS.Admin
                         Action = "Index",
                         Icon = "fa fa-warning",
                         RouteInfo = new { controller = "Violation" }
+                    });
+                    items.Add(new AdminMenuItem
+                    {
+                        Text = "Contest",
+                        Action = "ContestList",
+                        Icon = "fa fa-trophy",
+                        RouteInfo = new { controller = "Competition" }
                     });
                 }
                 if(!User.IsInRole("author"))

@@ -5,7 +5,7 @@
 @model PagedList.IPagedList<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>
 
 @{
-    ViewBag.Title = "Post Tagged On "+ @ViewBag.Tag;
+    ViewBag.Title = "Fatihul Ulum Menulis - Post Tagged On "+ @ViewBag.Tag;
 
     ViewBag.Single = false;
 
@@ -28,12 +28,12 @@
             <h1 class="my-4">Post tagged by @ViewBag.tag</h1>
             @Html.Partial("_RenderPost",Model)
 
-            <ul class="pagination justify-content-center mb-4">
+             <div>
                 @if(Model.Count() > 0)
                 {
                     @Html.PagedListPager(Model,page => Url.Action("Tag",new { page = page,currentFilter = ViewBag.Filter }))
                 }
-            </ul>
+            </div>
         </div>
         <div class="col-md-4">
             <div class="card my-4">

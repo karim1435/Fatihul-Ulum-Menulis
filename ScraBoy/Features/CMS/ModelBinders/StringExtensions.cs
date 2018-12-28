@@ -10,6 +10,7 @@ using System.Web;
 
 namespace ScraBoy.Features.CMS.ModelBinders
 {
+
     public static class Utils
     {
         // update : 5/April/2018
@@ -32,8 +33,10 @@ namespace ScraBoy.Features.CMS.ModelBinders
             return false;
         }
     }
+   
     public static class StringExtensions
     {
+      
         public static String getUrl()
         {
             //Return variable declaration
@@ -59,29 +62,25 @@ namespace ScraBoy.Features.CMS.ModelBinders
                 appPath += "/";
             return appPath;
         }
-        public static String ReadMorePost(this Post content,int length,string ommission = "... ")
+        public static int CountTotalWords(this string x)
         {
-            var s = GetonlyText(content.Content);
+            int result = 0;
+            x = x.Trim();
 
-            if(content.Title.Length >= 50)
-            {
-                length = length - (100);
-            }
+            if(x == "")
+                return 0;
 
-            return s.Replace(System.Environment.NewLine,string.Empty)
-                .Replace("\t",string.Empty)
-                .TruncateHtml(length,ommission);
+            //Ensure there is only one space between each word in the passed string
+            while(x.Contains("  "))
+                x = x.Replace("  "," ");
+
+            //Count the words
+            foreach(string y in x.Split(' '))
+                result++;
+
+            return result;
         }
- 
         public static String ReadMore(this string content,int length=300,string ommission = "... ")
-        {
-            var s = GetonlyText(content);
-            
-            return s.Replace(System.Environment.NewLine,string.Empty)
-                .Replace("\t",string.Empty)
-                .TruncateHtml(length,ommission);
-        }
-        public static string GetonlyText(string content)
         {
             HtmlDocument doc = new HtmlDocument();
 
@@ -101,12 +100,14 @@ namespace ScraBoy.Features.CMS.ModelBinders
             }
             s += sb;
 
-            return s;
+            return s.Replace(System.Environment.NewLine,string.Empty)
+                .Replace("\t",string.Empty)
+                .TruncateHtml(length,ommission);
         }
         /// <summary>
         /// remove html 
         /// </summary>
-        public static string TruncateHtml(this string input,int length = 300,
+        public static String TruncateHtml(this string input,int length = 300,
                                            string ommission = "...")
         {
             // s.Substring(0, Math.Min(150, s.Length - 1))
@@ -116,11 +117,23 @@ namespace ScraBoy.Features.CMS.ModelBinders
             return string.Format("{0}" + ommission,input.Substring(0,(iNextSpace > 0) ?
                                                                   iNextSpace : length).Trim());
         }
+        public static string FormatNumber(this int num)
+        {
+            if(num >= 1000)
+            {
+                return (num / 1000D).ToString("0.#") + "K";
+            }
+            return num.ToString("#,0");
+        }
         public static string MakeUrlFriednly(this string value)
         {
             value = value.ToLowerInvariant().Replace(","," ");
             value = Regex.Replace(value,@"[^0-9a-z-]",string.Empty);
             return value;
+        }
+        public static string FormatTime(this DateTime datetime)
+        {
+            return String.Format("{0:t}",datetime);
         }
         public static string FormatDate(this DateTime datetime)
         {

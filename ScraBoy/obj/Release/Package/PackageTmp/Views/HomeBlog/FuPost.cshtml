@@ -31,7 +31,6 @@
             <br />
             @Html.Partial("_RenderPost",Model)
             <div>
-
                 @if(Model.Count() > 0)
                 {
                     <text>Page</text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text>Of</text> @Model.PageCount

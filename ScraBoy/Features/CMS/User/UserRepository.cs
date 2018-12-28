@@ -20,6 +20,7 @@ namespace ScraBoy.Features.CMS.User
             store = new CmsUserStore();
             manager = new CmsUserManager(store);
         }
+ 
         public async Task<CMSUser> GetUserById(string userId)
         {
             return await store.FindByIdAsync(userId);
@@ -39,6 +40,10 @@ namespace ScraBoy.Features.CMS.User
             {
                 return this.GetAllUsersAsync(name).Where(a => a.UserName.Contains(name)).AsQueryable();
             }
+            return store.Users;
+        }
+        public IEnumerable<CMSUser> GetAllUsersAsync()
+        {
             return store.Users;
         }
         public  IEnumerable<CMSUser> GetAllUsersAsync(string userName)
@@ -75,7 +80,10 @@ namespace ScraBoy.Features.CMS.User
         {
             await manager.AddToRoleAsync(user.Id,role);
         }
-
+        public IEnumerable<string> GetRolesForUser(CMSUser user)
+        {
+            return manager.GetRoles(user.Id);
+        }
         public async Task<IEnumerable<string>> GetRolesForUserAsync(CMSUser user)
         {
             return await manager.GetRolesAsync(user.Id);

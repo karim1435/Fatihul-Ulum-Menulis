@@ -1,0 +1,132 @@
+﻿@model ScraBoy.Features.Lomba.Contest.Competition
+
+@{
+    ViewBag.Title = "Fatihul Ulum Contest - " + Model.Title;
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+
+@section seoSection{
+    <meta name="description" content="Fatihul Ulum Contest, @Model.Title">
+    <meta name="robots" content="index">
+
+    <meta property="fb:app_id" content="221173468811282" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="@Model.FullUrlContest" />
+    <meta property="og:title" content="@Model.Title" />
+    <meta property="og:image" content="@HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Authority)@Url.Content(Model.UrlImage)" />
+    <meta property="og:description" content="@Model.Description.ReadMore()" />
+}
+<link href="~/Content/tab.css" rel="stylesheet" />
+<div class="container">
+    <br />
+    <img class="full-width-div" src="@Url.Content(Model.UrlImage)" alt="@Model.Title">
+    <div class="row">
+        <div class="col-lg-8">
+            <!-- Title -->
+            <h1 class="mt-4">@Model.Title</h1>
+            <div class="fb-share-button" data-href="@Model.FullUrlContest" data-layout="button" data-size="small" data-mobile-iframe="true">
+                <a target="_blank" href="@Model.FullUrlContest" class="fb-xfbml-parse-ignore">Share</a>
+            </div>
+            <hr />
+            @Html.Raw(Model.Description)
+
+            @if(Model.StatusContest.Equals(ScraBoy.Features.Lomba.Contest.StatusContest.Open))
+            {
+                if(ViewBag.submit == false)
+                {
+                    <a target="_blank" href="@Url.Action("Join","Participant",new { slugUrl = Model.SlugUrl})" class="btn btn-block btn-info"><h5 class="mt-0">Join Contest Now</h5></a>
+                }
+            }
+            <section id="tabs">
+                <div class="row">
+                    <div class="col-xs-12 ">
+                        <nav>
+                            <div class="nav nav-tabs nav-fill" id="nav-tab" role="tablist">
+                                <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true"><i class="fa fa-users"></i> Participants (@Model.Participants.Count())</a>
+                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false"><i class="fa fa-trophy"></i> Ranking</a>
+                            </div>
+                        </nav>
+                        <div class="tab-content py-3 px-3 px-sm-0" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                @if(Model.Participants.Count() > 0)
+                                {
+                                    foreach(var item in Model.Participants)
+                                    {
+                                        <div class="card-body">
+
+                                            <div class="media mb-4">
+                                                <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.Author.UrlImage)" style="height: 80px; width:80px" alt="">
+                                                <div class="media-body">
+                                                    <a href="@Url.Action("Profile","User",new { userId = item.Author.SlugUrl })">
+                                                        <h5 class="mt-0">@item.Author.DisplayName</h5>
+                                                    </a> <span>Date applied @item.ProposedOn.TimeAgo()</span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        if(Model.Participants.Count() > 10)
+                                        {
+                                            <div class="card-body">
+                                                <div class="media mb-4">
+                                                    <h5 class="text-muted">+@(Model.Participants.Count() - 10)  more participants</h5>
+                                                </div>
+                                            </div>
+
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    <p>Masih belum ada partisipasi yang join contest ini.</p>
+                                }
+
+                            </div>
+                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                @if(Model.StatusContest.Equals(ScraBoy.Features.Lomba.Contest.StatusContest.Finish))
+                                {
+                                    foreach(var item in Model.Participants.OrderByDescending(a => a.Score).Take(10))
+                                    {
+                                        <div class="card-body">
+                                            <div class="media mb-4">
+                                                <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.Author.UrlImage)" style="height: 80px; width:80px" alt="">
+                                                <div class="media-body">
+                                                    <a href="@Url.Action("Profile","User",new { userId = item.Author.SlugUrl })">
+                                                        <h5 class="mt-0">@item.Author.DisplayName</h5>
+                                                    </a>
+                                                    <span title="@item.Score" style="font-size:15px;" class="label label-primary"><li class="fa fa-star"></li> @item.Score.FormatNumber()</span>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    }
+                                }
+                                else
+                                {
+                                    <p>Pemenang masih belum ditentukan, Tunggu Sampai contest selesai.</p>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </div>
+        <div class="col-md-4">
+            @Html.Partial("_InfoContest",Model)
+            <div class="card my-4">
+                <h5 class="card-header">Popular Contest</h5>
+                @Html.Partial("_WidgetContest",(ViewBag.popular as IEnumerable<ScraBoy.Features.Lomba.Contest.Competition>))
+            </div>
+
+            <div class="card my-4">
+                <h5 class="card-header">New Contest</h5>
+                @Html.Partial("_WidgetContest",(ViewBag.recent as IEnumerable<ScraBoy.Features.Lomba.Contest.Competition>))
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/fbshare.js"></script>

@@ -27,7 +27,6 @@ namespace ScraBoy.Features.CMS.Blog
         [AllowHtml]
         [Display(Name = "Post Content")]
         [Required]
-        [StringLength(int.MaxValue,MinimumLength = 400)]
         public string Content { get; set; } 
         [Required]
         public DateTime Created { get; set; }
@@ -124,7 +123,7 @@ namespace ScraBoy.Features.CMS.Blog
             {
                 return StringExtensions.getUrl() + UrlPost;
             }
-        }
+        }  
     }
     public class ViewPost
     {

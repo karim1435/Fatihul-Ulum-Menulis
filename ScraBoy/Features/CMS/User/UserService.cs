@@ -65,8 +65,10 @@ namespace ScraBoy.Features.CMS.User
                 Email = model.Username,
                 Born = DateTime.Now,
                 DisplayName = model.DisplayName,
-                UrlImage=model.UrlImage,
-                Security=model.Security,
+                UrlImage = model.UrlImage,
+                Security = model.Security,
+                RegistrationDate = DateTime.Now,
+                LastLoginTime = DateTime.Now,
                 SlugUrl ="fuuser"+Guid.NewGuid().ToString() + DateTime.Now.ToString("yymmssfff")
             };
 
@@ -136,13 +138,6 @@ namespace ScraBoy.Features.CMS.User
                    ToArrayAsync();
             }
         }
-        public async Task<CMSUser> GetUser(string userId)
-        {
-            using(var db = new CMSContext())
-            {
-                return await db.Users.Where(a => a.SlugUrl==userId).FirstOrDefaultAsync();
-            }
-        }
         public async Task<UserProfileModel> GetProfileModel(string userId)
         {
             CMSUser user = await GetUser(userId);
@@ -162,9 +157,14 @@ namespace ScraBoy.Features.CMS.User
             userModel.Posts = posts;
 
             return userModel;
-
         }
-
+        public async Task<CMSUser> GetUser(string userId)
+        {
+            using(var db = new CMSContext())
+            {
+                return await db.Users.Include(a=>a.Posts).Where(a => a.SlugUrl==userId).FirstOrDefaultAsync();
+            }
+        }
         public List<CMSUser> GetPostsList(string name)
         {
             return this.usersRepository.GetPosts(name).OrderByDescending(a => a.UserName).ToList();
@@ -193,6 +193,9 @@ namespace ScraBoy.Features.CMS.User
                 Description = user.Description,
                 DisplayName = user.DisplayName,
                 Born = user.Born,
+                FbProfile=user.FbProfile,
+                InstagramProfile=user.InstagramProfile,
+                TwitterProfile=user.TwitterProfile,
                 UrlImage=user.UrlImage
                 
             };
@@ -259,7 +262,10 @@ namespace ScraBoy.Features.CMS.User
             user.Born = model.Born;
             user.DisplayName = model.DisplayName;
             user.UrlImage = model.UrlImage;
-
+            user.FbProfile = model.FbProfile;
+            user.InstagramProfile = model.InstagramProfile;
+            user.TwitterProfile = model.TwitterProfile;
+            user.Bonus += model.Bonus;
             await usersRepository.UpdateAsync(user);
 
             var roles = await usersRepository.GetRolesForUserAsync(user);
@@ -270,6 +276,12 @@ namespace ScraBoy.Features.CMS.User
 
             return true;
         }
+        public async Task LastLoginUpdate(CMSUser user)
+        {
+            var model = await this.usersRepository.GetUserByNameAsync(user.UserName);
+            model.LastLoginTime = DateTime.Now;
+            await usersRepository.UpdateAsync(user);
+        }
         public async Task<bool> UpdateProfile(UserViewModel model)
         {
             var user = await this.usersRepository.GetUserByNameAsync(model.Username);
@@ -279,6 +291,10 @@ namespace ScraBoy.Features.CMS.User
             user.Born = model.Born;
             user.DisplayName = model.DisplayName;
             user.UrlImage = model.UrlImage;
+            user.FbProfile = model.FbProfile;
+            user.InstagramProfile = model.InstagramProfile;
+            user.TwitterProfile = model.TwitterProfile;
+            user.Bonus += model.Bonus;
             await usersRepository.UpdateAsync(user);
 
             return true;

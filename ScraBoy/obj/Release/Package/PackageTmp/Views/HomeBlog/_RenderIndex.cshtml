@@ -1,10 +1,14 @@
 ﻿@model IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>
 
+<div class="about">
+    <div class="content line"></div>
+    <div class="content text">Latest</div>
+    <div class="content line"></div>
+</div>
 @foreach(var item in Model)
 {
-    <div class="item grid-group-item col-xs-4 col-lg-4">
+    <div class="item col-xs-4 col-lg-4">
         <div class="thumbnail card">
-
             <div class="img-event">
                 <img style="height:200px; width:400px;" class="group list-group-image img-fluid" src="@Url.Content(item.Post.UrlImage)" alt="@item.Post.Title" />
             </div>
@@ -12,7 +16,7 @@
                 <div class="col-xs-12 col-md-12">
                     <div class="group card-title inner list-group-item-heading text-muted">
                         @item.Post.Published.Value.FormatDate() | @Html.Partial("_RenderCategory",item.Category.Name)
-                        by <a target="_blank" href="@Url.Action("Profile","User",new { userId= item.User.SlugUrl})">
+                        by <a href="@Url.Action("Profile","User",new { userId= item.User.SlugUrl})">
                             @item.User.DisplayName
                         </a>
                     </div>
@@ -20,19 +24,19 @@
             </div>
             <div class="caption">
                 <div class="col-xs-12 col-md-12">
-                    <h4 class="group card-title inner list-group-item-heading">
-                        @Html.ActionLink(item.Post.Title,"post",new { controller = "HomeBlog",postId = item.Post.Id },new { @class = "text-dark",target = "_blank" })
-                    </h4>
+                    <h5 class="group card-title inner list-group-item-heading">
+                        @Html.ActionLink(item.Post.Title,"post",new { controller = "HomeBlog",postId = item.Post.Id },new { @class = "text-dark"})
+                    </h5>
                     <p class="group inner list-group-item-text">
-                        @item.Post.ReadMorePost(300)
-                        <a target="_blank" href="@Url.Action("Post",new { controller = "HomeBlog",postId = item.Post.Id })">
+                        @item.Post.Content.ReadMore(167)
+                        <a href="@Url.Action("Post",new { controller = "HomeBlog",postId = item.Post.Id })">
                             Continue Reading
                         </a>
                     </p>
 
                     <div class="row">
                         <div class="col-xs-12 col-md-12">
-                          @Html.Partial("_RenderFooter",item)   
+                            @Html.Partial("_RenderFooter",item)
                         </div>
                     </div>
 

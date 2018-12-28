@@ -291,6 +291,16 @@
     <Compile Include="Features\Inventory\Shop\ShopService.cs" />
     <Compile Include="Features\Inventory\Type\TypeController.cs" />
     <Compile Include="Features\Inventory\Type\TypeService.cs" />
+    <Compile Include="Features\Lomba\Audience\IParticipantRepository.cs" />
+    <Compile Include="Features\Lomba\Audience\ParticipantController.cs" />
+    <Compile Include="Features\Lomba\Audience\ParticipantRepository.cs" />
+    <Compile Include="Features\Lomba\Audience\ParticipantService.cs" />
+    <Compile Include="Features\Lomba\Contest\CompetirionService.cs" />
+    <Compile Include="Features\Lomba\Contest\Competition.cs" />
+    <Compile Include="Features\Lomba\Audience\Participant.cs" />
+    <Compile Include="Features\Lomba\Contest\CompetitionController.cs" />
+    <Compile Include="Features\Lomba\Contest\CompetitionRepository.cs" />
+    <Compile Include="Features\Lomba\Contest\ICompetitionRepositroy.cs" />
     <Compile Include="Features\Top Ranking\Creator\CreatorController.cs" />
     <Compile Include="Features\Top Ranking\Creator\CreatorModel.cs" />
     <Compile Include="Features\Top Ranking\Creator\CreatorService.cs" />
@@ -499,6 +509,66 @@
     <Compile Include="Migrations\201812152157000_up.Designer.cs">
       <DependentUpon>201812152157000_up.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201812241510008_contest feature.cs" />
+    <Compile Include="Migrations\201812241510008_contest feature.Designer.cs">
+      <DependentUpon>201812241510008_contest feature.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812241519068_forgot event.cs" />
+    <Compile Include="Migrations\201812241519068_forgot event.Designer.cs">
+      <DependentUpon>201812241519068_forgot event.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812241523141_forgot event coy.cs" />
+    <Compile Include="Migrations\201812241523141_forgot event coy.Designer.cs">
+      <DependentUpon>201812241523141_forgot event coy.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812241621396_forgot event coys.cs" />
+    <Compile Include="Migrations\201812241621396_forgot event coys.Designer.cs">
+      <DependentUpon>201812241621396_forgot event coys.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812241854057_contest.cs" />
+    <Compile Include="Migrations\201812241854057_contest.Designer.cs">
+      <DependentUpon>201812241854057_contest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812241958254_useless.cs" />
+    <Compile Include="Migrations\201812241958254_useless.Designer.cs">
+      <DependentUpon>201812241958254_useless.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812242241480_uchenge.cs" />
+    <Compile Include="Migrations\201812242241480_uchenge.Designer.cs">
+      <DependentUpon>201812242241480_uchenge.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812242314514_uchengefj.cs" />
+    <Compile Include="Migrations\201812242314514_uchengefj.Designer.cs">
+      <DependentUpon>201812242314514_uchengefj.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812251044574_status contest.cs" />
+    <Compile Include="Migrations\201812251044574_status contest.Designer.cs">
+      <DependentUpon>201812251044574_status contest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812251921222_score user.cs" />
+    <Compile Include="Migrations\201812251921222_score user.Designer.cs">
+      <DependentUpon>201812251921222_score user.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812260423073_user login.cs" />
+    <Compile Include="Migrations\201812260423073_user login.Designer.cs">
+      <DependentUpon>201812260423073_user login.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812260714274_reward.cs" />
+    <Compile Include="Migrations\201812260714274_reward.Designer.cs">
+      <DependentUpon>201812260714274_reward.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812261348174_reward required.cs" />
+    <Compile Include="Migrations\201812261348174_reward required.Designer.cs">
+      <DependentUpon>201812261348174_reward required.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812261711197_cat with contest.cs" />
+    <Compile Include="Migrations\201812261711197_cat with contest.Designer.cs">
+      <DependentUpon>201812261711197_cat with contest.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201812281814521_profile fb.cs" />
+    <Compile Include="Migrations\201812281814521_profile fb.Designer.cs">
+      <DependentUpon>201812281814521_profile fb.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -510,7 +580,9 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dataTables.bootstrap4.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\profile.css" />
     <Content Include="Content\quote.css" />
+    <Content Include="Content\tab.css" />
     <Content Include="js\fbshare.js" />
     <Content Include="Scripts\datatables-demo.js" />
     <Content Include="Scripts\dataTables.bootstrap4.js" />
@@ -518,7 +590,6 @@
     <Content Include="Content\font-awesome.min.css" />
     <Content Include="Scripts\jquery.dataTables.js" />
     <Content Include="Content\sb-admin.css" />
-    <Content Include="Content\profile.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -795,7 +866,6 @@
     <Content Include="Views\Post\Delete.cshtml" />
     <Content Include="Views\Post\Edit.cshtml" />
     <Content Include="Views\Post\Index.cshtml" />
-    <Content Include="Views\Shared\_Profile.cshtml" />
     <Content Include="Views\Admin\Register.cshtml" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.woff" />
     <Content Include="Scripts\tinymce\skins\lightgray\fonts\tinymce.ttf" />
@@ -808,7 +878,6 @@
     <Content Include="Views\HomeBlog\Category.cshtml" />
     <Content Include="Views\HomeBlog\_RenderCategory.cshtml" />
     <Content Include="Views\Shared\_Login.cshtml" />
-    <Content Include="Views\User\Profile.cshtml" />
     <Content Include="Views\Admin\AuthenticationLink.cshtml" />
     <Content Include="Views\Post\Details.cshtml" />
     <Content Include="Views\Category\_PostForm.cshtml" />
@@ -842,10 +911,25 @@
     <Content Include="Views\HomeBlog\_RenderCommentCount.cshtml" />
     <Content Include="Views\HomeBlog\NotificationMenu.cshtml" />
     <Content Include="Views\HomeBlog\Info.cshtml" />
+    <Content Include="Views\HomeBlog\Author.cshtml" />
+    <Content Include="Views\Competition\Create.cshtml" />
+    <Content Include="Views\Competition\Index.cshtml" />
+    <Content Include="Views\User\Profile.cshtml" />
+    <Content Include="Views\Competition\View.cshtml" />
+    <Content Include="Views\Participant\Join.cshtml" />
+    <Content Include="Views\Competition\ContestList.cshtml" />
+    <Content Include="Views\Participant\Index.cshtml" />
+    <Content Include="Views\Participant\Review.cshtml" />
+    <Content Include="Views\Competition\_PostForm.cshtml" />
+    <Content Include="Views\Competition\Edit.cshtml" />
+    <Content Include="Views\Competition\MyContest.cshtml" />
+    <Content Include="Views\Competition\_WidgetContest.cshtml" />
+    <Content Include="Views\Competition\_InfoContest.cshtml" />
+    <Content Include="Views\Participant\ViewContest.cshtml" />
+    <Content Include="Views\Competition\_FooterInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Features\CMS\NewFolder1\" />
     <Folder Include="Image\post\" />
     <Folder Include="Image\profile\" />
     <Folder Include="Models\" />
@@ -998,6 +1082,51 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812152157000_up.resx">
       <DependentUpon>201812152157000_up.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812241510008_contest feature.resx">
+      <DependentUpon>201812241510008_contest feature.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812241519068_forgot event.resx">
+      <DependentUpon>201812241519068_forgot event.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812241523141_forgot event coy.resx">
+      <DependentUpon>201812241523141_forgot event coy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812241621396_forgot event coys.resx">
+      <DependentUpon>201812241621396_forgot event coys.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812241854057_contest.resx">
+      <DependentUpon>201812241854057_contest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812241958254_useless.resx">
+      <DependentUpon>201812241958254_useless.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812242241480_uchenge.resx">
+      <DependentUpon>201812242241480_uchenge.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812242314514_uchengefj.resx">
+      <DependentUpon>201812242314514_uchengefj.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812251044574_status contest.resx">
+      <DependentUpon>201812251044574_status contest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812251921222_score user.resx">
+      <DependentUpon>201812251921222_score user.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812260423073_user login.resx">
+      <DependentUpon>201812260423073_user login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812260714274_reward.resx">
+      <DependentUpon>201812260714274_reward.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812261348174_reward required.resx">
+      <DependentUpon>201812261348174_reward required.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812261711197_cat with contest.resx">
+      <DependentUpon>201812261711197_cat with contest.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201812281814521_profile fb.resx">
+      <DependentUpon>201812281814521_profile fb.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

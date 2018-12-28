@@ -30,8 +30,7 @@
                         <th>Display Name</th>
                         <th>Username</th>
                         <th>Birth Date</th>
-                        <th>Level</th>
-                        <th>Security</th>
+                        <th>Info</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,8 +47,11 @@
                             </td>
                             <td>@item.UserName</td>
                             <td>@item.Born.Value.FormatDate()</td>
-                            <td>@item.CurrentRole</td>
-                            <td>@item.Security</td>
+                            <td>
+                                <p>Level : @item.CurrentRole</p>
+                                <p>Registered Date : @item.RegistrationDate.Value.FormatDate()</p>
+                                <p>Last Login : @item.LastLoginTime.Value.TimeAgo()</p>
+                            </td>
                         </tr>
                     }
                 </tbody>
