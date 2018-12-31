@@ -124,6 +124,8 @@ namespace ScraBoy.Features.CMS.Blog
                 return StringExtensions.getUrl() + UrlPost;
             }
         }  
+        [NotMapped]
+        public Comment NewComment { get; set; }
     }
     public class ViewPost
     {

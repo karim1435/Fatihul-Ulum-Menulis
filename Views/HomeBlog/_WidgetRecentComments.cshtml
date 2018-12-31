@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ScraBoy.Features.CMS.HomeBlog.CommentViewModel>
+﻿@model IEnumerable<ScraBoy.Features.CMS.Comments.Comment>
 
 <div class="about">
     <div class="content line"></div>
@@ -15,9 +15,9 @@
             <div class="media-body">
                 <a href="@Url.Action("Profile","User",new { userId = item.User.SlugUrl })">
                     <h5 class="mt-0">@item.User.DisplayName</h5>
-                </a> <span class="text-muted">@item.Comment.PostedOn.TimeAgo() on</span>
+                </a> <span class="text-muted">@item.PostedOn.TimeAgo() on</span>
                 <a href="@Url.Action("Post","HomeBlog",new { postId = item.Post.Id })">@item.Post.Title</a>
-                <p>@item.Comment.Content.ReadMore(50)</p>
+                <p>@item.Content.ReadMore(50)</p>
             </div>
         </div>
     </div>

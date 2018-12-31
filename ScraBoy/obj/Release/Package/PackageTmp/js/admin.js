@@ -12,7 +12,7 @@
     $.post(this.href, {
         __RequestVerificationToken: token
     }, function () {
-        location.reload();
+       location.reload();
     });
 
 });

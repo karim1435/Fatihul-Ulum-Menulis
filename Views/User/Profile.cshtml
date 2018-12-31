@@ -27,19 +27,19 @@
             <div class="small">
                 @if(!string.IsNullOrEmpty(Model.User.FbProfile))
                 {
-                    <a class="btn btn-raised btn-info" href="@Model.User.FbProfile" title="Facebook Profile" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                    <a target="_blank" class="btn btn-raised btn-info" href="@Model.User.FbProfile" title="Facebook Profile" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
                         <i class="fa fa-facebook" aria-hidden="true"></i>
                     </a>
                 }
                 @if(!string.IsNullOrEmpty(Model.User.InstagramProfile))
                 {
-                    <a class="btn btn-raised btn-info" href="@Model.User.InstagramProfile" title="IG Profile">
+                    <a target="_blank" class="btn btn-raised btn-info" href="@Model.User.InstagramProfile" title="IG Profile">
                         <i class="fa fa-instagram" aria-hidden="true"></i>
                     </a>
                 }
                 @if(!string.IsNullOrEmpty(Model.User.TwitterProfile))
                 {
-                    <a class="btn btn-raised btn-info" href="@Model.User.TwitterProfile" title="Twitter Profile">
+                    <a target="_blank" class="btn btn-raised btn-info" href="@Model.User.TwitterProfile" title="Twitter Profile">
                         <i class="fa fa-twitter" aria-hidden="true"></i>
                     </a>
                 }

@@ -1,9 +1,9 @@
-﻿@model ScraBoy.Features.CMS.HomeBlog.BlogViewModel
+﻿@model ScraBoy.Features.CMS.Blog.Post
 
 
 
     @Html.Partial("_RenderVoting",Model)
-    @Html.Partial("_RenderViewCount",Model.ViewCount)
+    @Html.Partial("_RenderViewCount",Model.TotalViews)
      @Html.Partial("_RenderCommentCount",Model.TotalComment)
     <div>
         @Html.Partial("_RenderTags",Model)

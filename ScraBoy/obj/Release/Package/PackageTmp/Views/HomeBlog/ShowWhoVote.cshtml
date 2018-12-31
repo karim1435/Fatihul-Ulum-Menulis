@@ -1,7 +1,7 @@
-﻿@model ScraBoy.Features.CMS.HomeBlog.BlogViewModel
+﻿@model ScraBoy.Features.CMS.Blog.Post
 
 @{
-    ViewBag.Title = "Fatihul Ulum Menulis - Author Likes " + Model.Post.Title;
+    ViewBag.Title = "Fatihul Ulum Menulis - Author Likes " + Model.Title;
 
     Layout = "~/Views/Shared/_BlogLayout.cshtml";
 }
@@ -16,7 +16,7 @@
                 <div class="content text">Authors Who Like</div>
                 <div class="content line"></div>
             </div>
-                @foreach(var item in Model.Voting.LikedUser.OrderByDescending(a => a.PostedOn))
+                @foreach(var item in Model.Votings.OrderByDescending(a => a.PostedOn))
                 {
                     <div class="media mb-4">
                         <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.User.UrlImage)" style="height: 80px; width:80px" alt="">
@@ -25,7 +25,7 @@
                                 <h5 class="mt-0">@item.User.DisplayName</h5>
                             </a>
                             <span>Liked</span>
-                            <a class="text-primary" href="@Url.Action("Post","HomeBlog",new { postId = item.PostId })">@item.Post.Title</a> @item.PostedOn.TimeAgo()
+                            <a class="text-primary" href="@Url.Action("Post","HomeBlog",new { postId = Model.Id })">@Model.Title</a> @item.PostedOn.TimeAgo()
                         </div>
                     </div>
                     <hr />

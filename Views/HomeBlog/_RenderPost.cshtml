@@ -1,7 +1,7 @@
 ﻿@using PagedList;
 @using PagedList.Mvc;
 
-@model PagedList.IPagedList<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>
+@model PagedList.IPagedList<ScraBoy.Features.CMS.Blog.Post>
 
 @if(Model.Count() <= 0)
 {
@@ -25,14 +25,14 @@ else
             <div class="item list-group-item col-xs-4 col-lg-4">
                 <div class="card-title">
                     <div class="img-event">
-                        <img style="height:225px; width:300px;" class="group list-group-image img-fluid" src="@Url.Content(item.Post.UrlImage)" alt="@item.Post.Title" />
+                        <img style="height:225px; width:300px;" class="group list-group-image img-fluid" src="@Url.Content(item.UrlImage)" alt="@item.Title" />
                     </div>
                     <div class="caption">
                         <div class="col-xs-12 col-md-12">
                             <div class="group card-title inner list-group-item-heading text-muted">
-                                @item.Post.Published.Value.FormatDate() | @Html.Partial("_RenderCategory",item.Category.Name)
-                                by <a target="_blank" href="@Url.Action("Profile","User",new { userId= item.User.SlugUrl})">
-                                    @item.User.DisplayName
+                                @item.Published.Value.FormatDate() | @Html.Partial("_RenderCategory",item.Category.Name)
+                                by <a target="_blank" href="@Url.Action("Profile","User",new { userId= item.Author.SlugUrl})">
+                                    @item.Author.DisplayName
                                 </a>
                             </div>
                         </div>
@@ -40,11 +40,11 @@ else
                     <div class="caption">
                         <div class="col-xs-12 col-md-12">
                             <h5 class="group card-title inner list-group-item-heading">
-                                @Html.ActionLink(item.Post.Title,"post",new { controller = "HomeBlog",postId = item.Post.Id },new { @class = "text-dark",target="_blank" })
+                                @Html.ActionLink(item.Title,"post",new { controller = "HomeBlog",postId = item.Id },new { @class = "text-dark",target="_blank" })
                             </h5>
                             <p class="group inner list-group-item-text">
-                                @item.Post.Content.ReadMore(100)
-                                <a target="_blank" href="@Url.Action("Post",new { controller = "HomeBlog",postId = item.Post.Id })">
+                                @item.Content.ReadMore(100)
+                                <a target="_blank" href="@Url.Action("Post",new { controller = "HomeBlog",postId = item.Id })">
                                     Continue Reading
                                 </a>
                             </p>

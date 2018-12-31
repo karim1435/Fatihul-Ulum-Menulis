@@ -125,5 +125,9 @@ namespace ScraBoy.Features.CMS.Interest
 
         }
 
+        public IEnumerable<Voting> GetAllVoting()
+        {
+            return db.Voting.Include("User").Include("Post").OrderByDescending(a => a.PostedOn).ToList();
+        }
     }
 }

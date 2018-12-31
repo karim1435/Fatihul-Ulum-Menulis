@@ -1,4 +1,5 @@
-﻿using ScraBoy.Features.CMS.ModelBinders;
+﻿using ScraBoy.Features.CMS.Gzip;
+using ScraBoy.Features.CMS.ModelBinders;
 using ScraBoy.Features.CMS.Topic;
 using ScraBoy.Features.CMS.Upload;
 using ScraBoy.Features.CMS.User;
@@ -31,6 +32,7 @@ namespace ScraBoy.Features.CMS.Blog
         public PostController() : this(new PostRepository(),new UserRepository(),new CategoryRepository()) { }
 
         [Route("")]
+        [CompressContent]
         public async Task<ActionResult> Index(int? page,string currentFilter)
         {
             int pageNumber = (page ?? 1);
@@ -45,6 +47,7 @@ namespace ScraBoy.Features.CMS.Blog
 
             return View("Index","",this.postRepository.GetPagedList(currentFilter,pageNumber,user.Id));
         }
+        [CompressContent]
         public async Task<ViewResult> Search(string search)
         {
             ViewBag.Filter = search;
@@ -67,6 +70,7 @@ namespace ScraBoy.Features.CMS.Blog
         }
         [HttpGet]
         [Route("create")]
+        [CompressContent]
         public async Task<ActionResult> Create()
         {
 
@@ -78,6 +82,7 @@ namespace ScraBoy.Features.CMS.Blog
         [HttpPost]
         [Route("create")]
         [ValidateAntiForgeryToken]
+        [CompressContent]
         public async Task<ActionResult> Create(Post model)
         {
             if(!ModelState.IsValid)
@@ -143,6 +148,7 @@ namespace ScraBoy.Features.CMS.Blog
         [HttpGet]
         [Route("View/{postId}")]
         [Authorize]
+        [CompressContent]
         public async Task<ActionResult> Details(string postId)
         {
             var post = await this.postRepository.GetAsync(postId);
@@ -163,6 +169,7 @@ namespace ScraBoy.Features.CMS.Blog
         }
         [HttpGet]
         [Route("edit/{postId}")]
+        [CompressContent]
         public async Task<ActionResult> Edit(string postId)
         {
             var post = await postRepository.GetAsync(postId);
@@ -189,6 +196,7 @@ namespace ScraBoy.Features.CMS.Blog
         [HttpPost]
         [Route("edit/{postId}")]
         [ValidateAntiForgeryToken]
+        [CompressContent]
         public async Task<ActionResult> Edit(Post model,string postId)
         {
             var post = await postRepository.GetAsync(postId);

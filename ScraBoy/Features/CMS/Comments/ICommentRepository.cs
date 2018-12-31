@@ -10,6 +10,8 @@ namespace ScraBoy.Features.CMS.Comments
 {
     public interface ICommentRepository
     {
+        IEnumerable<Comment> GetAllComment();
+        Task<IEnumerable<Comment>> GetAllCommentsAsync();
         IPagedList<Comment> GetPagedList(string search,int page,string userId);
         Task CreateAsync(Comment model);
         Task<IEnumerable<Comment>> GetCommentByPostIdAsync(string postId);

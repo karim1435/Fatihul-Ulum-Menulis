@@ -11,6 +11,7 @@ namespace ScraBoy.Features.CMS.Interest
 { 
     public interface IVotingRepository
     {
+        IEnumerable<Voting> GetAllVoting();
         Task<IEnumerable<Voting>> GetAllVotingAsync();
         Task LikedAsync(Voting model);
         Task<Voting> UserHasVoted(string postId, string userId);

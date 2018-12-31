@@ -43,10 +43,13 @@ namespace ScraBoy.Features.CMS.HomeBlog
         {
             await SetViewBag();
 
+            await RecentComments();
+            await TopContributor();
+
             return View("Index");
         }
-        [CompressContent]
         [Route("FuPost/{type}")]
+        [CompressContent]
         public async Task<ActionResult> FuPost(string type,int? page,string currentFilter)
         {
             ViewBag.searchType = type;
@@ -56,9 +59,6 @@ namespace ScraBoy.Features.CMS.HomeBlog
             int pageNumber = (page ?? 1);
 
             var blogs = blogService.GetPagedList(type,currentFilter,"","",pageNumber);
-
-
-            await StatusVote(blogs.ToList());
 
             return View("FuPost","",blogs);
         }
@@ -74,8 +74,6 @@ namespace ScraBoy.Features.CMS.HomeBlog
 
             var blogs = blogService.GetPagedList(type,search,"","",1);
 
-
-            await StatusVote(blogs.ToList());
 
             return View("FuPost","",blogs);
         }
@@ -93,27 +91,20 @@ namespace ScraBoy.Features.CMS.HomeBlog
             {
                 return HttpNotFound();
             }
+
             var relatedPosts = await this.blogService.RelatedPosts(post.Id,post.CategoryId);
             ViewBag.RelatedPosts = relatedPosts;
-
-
-            var blog = blogService.GetBlogViewModel(post);
-            await RenderStatusVote(blog);
-
-            var currentComments = await blogService.GetPostCommentAsync(post.Id);
-
-            blog.Comments = currentComments.ToList();
 
             this.posRepository.GetCookieView(HttpContext);
             await this.posRepository.UpdateViewCount(postId);
 
-            return View(blog);
+            return View(post);
         }
         [HttpPost]
         [Route("posts/{postId}")]
         [Authorize]
         [CompressContent]
-        public async Task<ActionResult> Post(BlogViewModel model,string postId)
+        public async Task<ActionResult> Post(Post model,string postId)
         {
             await SetViewBag();
 
@@ -124,17 +115,13 @@ namespace ScraBoy.Features.CMS.HomeBlog
                 return HttpNotFound();
             }
 
-            var blog = blogService.GetBlogViewModel(post);
-
-            await RenderStatusVote(blog);
-
             if(string.IsNullOrWhiteSpace(model.NewComment.Content))
             {
                 return RedirectToAction("Post","HomeBlog",new { postId = postId });
             }
 
             model.NewComment.UserId = UserId;
-            model.NewComment.PostId = blog.Post.Id;
+            model.NewComment.PostId = post.Id;
 
             try
             {
@@ -166,8 +153,6 @@ namespace ScraBoy.Features.CMS.HomeBlog
                 return HttpNotFound();
             }
 
-            await StatusVote(posts.ToList());
-
 
             return View("Category","",posts);
 
@@ -184,11 +169,9 @@ namespace ScraBoy.Features.CMS.HomeBlog
 
             var blogs = blogService.GetPagedList("",search,"",catId,1);
 
-            await StatusVote(blogs.ToList());
 
             return View("Category","",blogs);
         }
-
         // root/tags/tag-id
         [Route("bytags/{tagId}")]
         [CompressContent]
@@ -208,13 +191,10 @@ namespace ScraBoy.Features.CMS.HomeBlog
                 return HttpNotFound();
             }
 
-            await StatusVote(posts.ToList());
-
-
             return View("Tag","",posts);
         }
-        [CompressContent]
         [Route("SearchTag/{tagId}")]
+        [CompressContent]
         public async Task<ActionResult> SearchTag(string tagId,string search)
         {
             await SetViewBag();
@@ -225,8 +205,6 @@ namespace ScraBoy.Features.CMS.HomeBlog
 
             var blogs = blogService.GetPagedList("",search,tagId,"",1);
 
-            await StatusVote(blogs.ToList());
-
             return View("Tag","",blogs);
         }
 
@@ -236,16 +214,14 @@ namespace ScraBoy.Features.CMS.HomeBlog
         public async Task<ActionResult> ShowWhoVote(string postId)
         {
             await SetViewBag();
+
             var post = await this.posRepository.GetAsync(postId);
 
             if(post == null)
             {
                 return HttpNotFound();
             }
-
-            var blog = blogService.GetBlogViewModel(post);
-
-            return View(blog);
+            return View(post);
         }
         [CompressContent]
         public async Task<ActionResult> Info(int? page)
@@ -255,10 +231,11 @@ namespace ScraBoy.Features.CMS.HomeBlog
         }
         public async Task<PartialViewResult> NotificationMenu()
         {
-            return PartialView(this.blogService.GetNotification(User.Identity.GetUserId()));
+            return PartialView(this.blogService.GetNotification(UserId));
         }
         public async Task<PartialViewResult> CategoryMenu()
         {
+
             return PartialView(this.blogService.GetAllCategories());
         }
         [Route("bestwriter")]
@@ -274,70 +251,21 @@ namespace ScraBoy.Features.CMS.HomeBlog
         {
             ViewBag.TopUser = await this.blogService.GetTopContributors();
         }
-        public async Task RecentPost()
-        {
-            var blog = await this.blogService.MostNewPosts();
-            await StatusVote(blog.ToList());
-
-            ViewBag.NewPosts = blog;
-        }
-        private async Task PopularPostByView()
-        {
-            var blog = await this.blogService.GetPopularPostByView();
-            await StatusVote(blog.ToList());
-
-            ViewBag.PopularView = blog;
-        }
-        private async Task SetTags()
-        {
-            ViewBag.Tags = await this.blogService.GetAllTags();
-        }
-        private async Task MostLikedPost()
-        {
-            var blog = await this.blogService.MostLiked();
-            await StatusVote(blog.ToList());
-
-            ViewBag.TopLikes = blog;
-        }
         private async Task RecentComments()
         {
             var model = await this.blogService.GetRecentCommentsAsycn();
-            ViewBag.RecentComments = model.OrderByDescending(a => a.Comment.PostedOn);
+            ViewBag.RecentComments = model;
         }
 
         private async Task SetViewBag()
         {
-            await MostLikedPost();
-            await RecentPost();
-            await PopularPostByView();
-            await SetTags();
-            await RecentComments();
-            await MostCommented();
-            await TopContributor();
+            var blog = await this.blogService.GetAllPost();
+
+            ViewBag.TopLikes = blog.Where(a => a.TotalVote >= 1).OrderByDescending(a => a.TotalVote); ;
+            ViewBag.NewPosts = blog.OrderByDescending(a => a.Published); ;
+            ViewBag.PopularView = blog.Where(a => a.TotalViews >= 1).OrderByDescending(a => a.TotalViews);
+            ViewBag.Commented = blog.Where(a => a.TotalComment >= 1).OrderByDescending(a => a.TotalComment);
         }
-
-        public async Task MostCommented()
-        {
-            var blog = await blogService.SortByCommented();
-            await StatusVote(blog.ToList());
-
-            ViewBag.Commented = blog;
-
-        }
-        private async Task StatusVote(List<BlogViewModel> post)
-        {
-            foreach(var item in post)
-            {
-                await RenderStatusVote(item);
-            }
-        }
-
-        private async Task RenderStatusVote(BlogViewModel item)
-        {
-            item.Voted = !User.Identity.IsAuthenticated ? false :
-                                await this.votingRepository.UserHasLiked(item.Post.Id,UserId);
-        }
-
         public string UserId
         {
             get { return User.Identity.GetUserId(); }

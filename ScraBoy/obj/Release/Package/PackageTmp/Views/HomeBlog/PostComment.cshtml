@@ -1,4 +1,4 @@
-﻿@model ScraBoy.Features.CMS.HomeBlog.CommentViewModel
+﻿@model ScraBoy.Features.CMS.Comments.Comment
 
 <div class="card-body">
     <div class="media mb-4">
@@ -6,29 +6,29 @@
         <div class="media-body">
             <a href="@Url.Action("Profile","User",new { userId = Model.User.SlugUrl })">
                 <h5 class="mt-0">@Model.User.DisplayName</h5>
-            </a> <span class="text-muted">@Model.Comment.PostedOn.TimeAgo()</span>
+            </a> <span class="text-muted">@Model.PostedOn.TimeAgo()</span>
 
-            @if(Model.Comment.Parent != null)
+            @if(Model.Parent != null)
             {
                 <div class="col-md-10" style="background-color:#EFEFEF">
                     <a href="@Url.Action("Profile","User",new { userId = Model.User.SlugUrl })">
-                           @@@Model.Comment.Parent.User.DisplayName
+                           @@@Model.Parent.User.DisplayName
                     </a>
-                        @Html.Raw(Model.Comment.Parent.Content)
+                        @Html.Raw(Model.Parent.Content)
                 </div>
             }
-            <p>@Html.Raw(Model.Comment.Content)</p>
+            <p>@Html.Raw(Model.Content)</p>
 
             @if(User.Identity.Name == Model.User.UserName || User.IsInRole("admin"))
             {
-                <a class="btn btn-danger" data-action="delete" ,data-value="Model.Id" href=@Url.Action("Delete","Comment",new { id = Model.Comment.Id })>
+                <a class="btn btn-danger" data-action="delete" ,data-value="Model.Id" href=@Url.Action("Delete","Comment",new { id = Model.Id })>
                     Delete <i class="fa fa-trash"></i>
                 </a>
-                <a class="btn btn-info" href=@Url.Action("Edit","Comment",new { commentId = Model.Comment.Id})>
+                <a class="btn btn-info" href=@Url.Action("Edit","Comment",new { commentId = Model.Id})>
                     Edit <i class="fa fa-pencil"></i>
                 </a>
             }
-            <a class="btn btn-success" href=@Url.Action("Reply","Comment",new { commentId = Model.Comment.Id})>
+            <a class="btn btn-success" href=@Url.Action("Reply","Comment",new { commentId = Model.Id})>
                 Reply <i class="fa fa-reply"></i>
             </a>
         </div>

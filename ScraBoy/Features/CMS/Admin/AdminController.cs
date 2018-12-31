@@ -1,4 +1,5 @@
 ﻿using Microsoft.Owin.Security;
+using ScraBoy.Features.CMS.Gzip;
 using ScraBoy.Features.CMS.Role;
 using ScraBoy.Features.CMS.Topic;
 using ScraBoy.Features.CMS.Upload;
@@ -37,6 +38,7 @@ namespace ScraBoy.Features.CMS.Admin
             this.userRepository = userRepository;
         }
         [Route("")]
+        [CompressContent]
         public ActionResult Index()
         {
             return View();
@@ -45,6 +47,7 @@ namespace ScraBoy.Features.CMS.Admin
         [HttpGet]
         [Route("login")]
         [AllowAnonymous]
+        [CompressContent]
         public async Task<ActionResult> Login()
         {
             return View();
@@ -53,6 +56,7 @@ namespace ScraBoy.Features.CMS.Admin
         [HttpPost]
         [Route("login")]
         [AllowAnonymous]
+        [CompressContent]
         public async Task<ActionResult> Login(LoginViewModel model,string returnUrl)
         {
             var user = await this.userRepository.GetLoginUserAsync(model.UserName,model.Pasword);
@@ -84,6 +88,7 @@ namespace ScraBoy.Features.CMS.Admin
         }
         [AllowAnonymous]
         [Route("register")]
+        [CompressContent]
         public ActionResult Register()
         {
             return View();
@@ -93,6 +98,7 @@ namespace ScraBoy.Features.CMS.Admin
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [CompressContent]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
             model.UrlImage = defaultProfile;
@@ -106,6 +112,7 @@ namespace ScraBoy.Features.CMS.Admin
             return View(model);
         }
         [AllowAnonymous]
+        [CompressContent]
         public async Task<ActionResult> ResetPassword()
         {
             return View();
@@ -113,6 +120,7 @@ namespace ScraBoy.Features.CMS.Admin
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [CompressContent]
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             var result = await this.userService.ResetPassword(model);
@@ -124,6 +132,7 @@ namespace ScraBoy.Features.CMS.Admin
             return View(model);
         }
         [Route("logout")]
+        [CompressContent]
         public async Task<ActionResult> Logout(string returnUrl)
         {
             var authManager = HttpContext.GetOwinContext().Authentication;
@@ -142,6 +151,7 @@ namespace ScraBoy.Features.CMS.Admin
         [Route("manage/{username}")]
         [HttpGet]
         [Authorize(Roles = "admin")]
+        [CompressContent]
         public async Task<ActionResult> Manage(string username)
         {
             var currentUser = User.Identity.Name;
@@ -165,6 +175,7 @@ namespace ScraBoy.Features.CMS.Admin
         [Route("manage/{username}")]
         [HttpPost]
         [Authorize(Roles = "admin")]
+        [CompressContent]
         public async Task<ActionResult> Manage(UserViewModel model,string username)
         {
             var user = await userService.GetUserByNameAsync(username);

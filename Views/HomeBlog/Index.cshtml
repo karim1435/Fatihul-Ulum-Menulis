@@ -2,7 +2,7 @@
 @using PagedList;
 @using PagedList.Mvc;
 
-@model PagedList.IPagedList<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>
+@model PagedList.IPagedList<ScraBoy.Features.CMS.Blog.Post>
 
 
 @{
@@ -45,14 +45,14 @@
                         <li data-target="#demo" data-slide-to="2"></li>
                     </ul>
                     <div class="carousel-inner">
-                        @foreach(var item in (ViewBag.PopularView as IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>).Take(3))
+                        @foreach(var item in (ViewBag.PopularView as IEnumerable<ScraBoy.Features.CMS.Blog.Post>).Take(3))
                         {
-                            <div class="@(item == (ViewBag.PopularView as IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>).First() ?
+                            <div class="@(item == (ViewBag.PopularView as IEnumerable<ScraBoy.Features.CMS.Blog.Post>).First() ?
                                 "carousel-item active" : "carousel-item")">
-                                <img src="@Url.Content(item.Post.UrlImage)" style="height:380px;">
+                                <img src="@Url.Content(item.UrlImage)" style="height:380px;">
                                 <div class="carousel-caption">
                                     <h2 class="group card-title inner list-group-item-heading ">
-                                        @Html.ActionLink(item.Post.Title,"post",new { controller = "HomeBlog",postId = item.Post.Id },new { @class = "bg-dark text-light",target = "_blank" })
+                                        @Html.ActionLink(item.Title,"post",new { controller = "HomeBlog",postId = item.Id },new { @class = "bg-dark text-light",target = "_blank" })
                                     </h2>
                                 </div>
                             </div>
@@ -70,14 +70,14 @@
             <br />
             <div>
                 <div id="products" class="row view-group">
-                    @foreach(var item in (ViewBag.PopularView as IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>).Skip(3).Take(6))
+                    @foreach(var item in (ViewBag.PopularView as IEnumerable<ScraBoy.Features.CMS.Blog.Post>).Skip(3).Take(6))
             {
                         <div class="item grid-group-item col-xs-4 col-lg-4">
                             <div class="media mb-4">
-                                <img class="d-flex mr-3 " src="@Url.Content(item.Post.UrlImage)" style="height: 50px; width:50px" alt="">
+                                <img class="d-flex mr-3 " src="@Url.Content(item.UrlImage)" style="height: 50px; width:50px" alt="">
                                 <div class="media-body">
                                     <h5 class="group card-title inner list-group-item-heading">
-                                        @Html.ActionLink(item.Post.Title,"post",new { controller = "HomeBlog",postId = item.Post.Id },new { @class = "text-dark",target = "_blank" })
+                                        @Html.ActionLink(item.Title,"post",new { controller = "HomeBlog",postId = item.Id },new { @class = "text-dark",target = "_blank" })
                                     </h5>
                                 </div>
                             </div>
@@ -102,7 +102,7 @@
 
 <div class="container">
     <div id="products" class="row view-group">
-        @Html.Partial("_RenderIndex",(ViewBag.NewPosts as IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>).Take(9))
+        @Html.Partial("_RenderIndex",(ViewBag.NewPosts as IEnumerable<ScraBoy.Features.CMS.Blog.Post>).Take(9))
         <a target="_blank" href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "latestpost" })" class="btn btn-block" style="background-color:#ffffff">
             <h5 class="mt-0 text-success">Show More</h5>
         </a>
@@ -112,6 +112,6 @@
 
 <div class="container">
     <div id="products" class="row view-group">
-        @Html.Partial("_WidgetRecentComments",(ViewBag.RecentComments as IEnumerable<ScraBoy.Features.CMS.HomeBlog.CommentViewModel>).Take(9))
+        @Html.Partial("_WidgetRecentComments",(ViewBag.RecentComments as IEnumerable<ScraBoy.Features.CMS.Comments.Comment>).Take(9))
     </div>
 </div>

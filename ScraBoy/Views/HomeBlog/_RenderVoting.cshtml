@@ -1,31 +1,37 @@
-﻿@model ScraBoy.Features.CMS.HomeBlog.BlogViewModel
+﻿@model ScraBoy.Features.CMS.Blog.Post
+@using Microsoft.AspNet.Identity;
 
-@if(Model.Voted)
+@{
+    string userId = User.Identity.GetUserId();
+    var userVoted = Model.Votings.Where(a => a.UserId.Equals(userId)).Count() > 0;
+    bool userHasLogin = User.Identity.IsAuthenticated;
+}
+
+@if(userVoted && userHasLogin)
 {
-    <a class="@(@Model.Voted ? "fa fa-thumbs-up" : "fa fa-thumbs-o-up")"
-       href="@Url.Action("Like",new { controller = "Voting",postId = Model.Post.Id })">
+    <a class="@(userVoted ? "fa fa-thumbs-up" : "fa fa-thumbs-o-up")"
+       href="@Url.Action("Like",new { controller = "Voting",postId = Model.Id })">
     </a>
 
-    foreach(var item in Model.Voting.LikedUser)
+    foreach(var item in Model.Votings)
     {
-        if(item.User.UserName.Equals(User.Identity.Name))
+        if(item.User.Id.Equals(userId))
         {
-            <a href="@Url.Action("ShowWhoVote",new { controller = "HomeBlog",postId = Model.Post.Id })" class="text-primary">
-                @(@Model.Voting.LikedUser.Count() == 1 ? "You" : "You and " + (Model.Voting.TotalLike - 1) + " others")
+            <a href="@Url.Action("ShowWhoVote",new { controller = "HomeBlog",postId = Model.Id })" class="text-primary">
+                @(Model.TotalVote == 1 ? "You" : "You and " + (Model.TotalVote - 1) + " others")
             </a>
         }
     }
-
 }
 else
 {
 
-    <a class="@(@Model.Voted ? "fa fa-thumbs-up" : "fa fa-thumbs-o-up")"
-       href="@Url.Action("Like",new { controller = "Voting",postId = Model.Post.Id })">
+    <a class="@(userVoted ? "fa fa-thumbs-up" : "fa fa-thumbs-o-up")"
+       href="@Url.Action("Like",new { controller = "Voting",postId = Model.Id })">
     </a>
 
-    <a href="@Url.Action("ShowWhoVote",new { controller = "HomeBlog",postId = Model.Post.Id })">
-        @Model.Voting.TotalLike
+    <a href="@Url.Action("ShowWhoVote",new { controller = "HomeBlog",postId = Model.Id })">
+        @Model.TotalVote
     </a>
 
 }

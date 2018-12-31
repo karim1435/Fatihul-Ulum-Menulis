@@ -36,13 +36,12 @@ namespace ScraBoy.Features.CMS.User
         public virtual DateTime? LastLoginTime { get; set; }
         public virtual DateTime? RegistrationDate { get; set; }
         public string UrlImage { get; set; }    
-        public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Competition> Competitions { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Voting> Votings { get; set; }
         public virtual ICollection<Report> Reports { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<Violation> Violations { get; set; }
-
         [NotMapped]
         public string CurrentRole { get; set; }
 

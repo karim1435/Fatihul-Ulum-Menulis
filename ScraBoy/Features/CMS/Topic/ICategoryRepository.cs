@@ -16,7 +16,7 @@ namespace ScraBoy.Features.CMS.Topic
         IQueryable<Category> GetCategories(string name);
         Task DeleteCategoryAsync(Category model);
         Task<bool> IsExistAsync(string name,int id);
-       List<Category> GetAllCategory();
+        List<Category> GetAllCategory();
     }
 
 }

@@ -6,14 +6,14 @@
 
 <div class="card my-4">
     <h5 class="card-header"><i class="fa fa-line-chart"></i> Popular Posts</h5>
-    @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>)ViewBag.PopularView)
+    @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.Blog.Post>)ViewBag.PopularView)
 </div>
 <div class="card my-4">
     <h5 class="card-header"><i class="fa fa-heart"></i> Top Liked Posts</h5>
-    @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>)ViewBag.TopLikes)
+    @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.Blog.Post>)ViewBag.TopLikes)
 </div>
 <div class="card my-4">
     <h5 class="card-header"><i class="fa fa-comments"></i> Most Commented Posts</h5>
-    @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>)ViewBag.Commented)
+    @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.Blog.Post>)ViewBag.Commented)
 </div>
 

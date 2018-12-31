@@ -20,10 +20,7 @@ namespace ScraBoy.Features.CMS.Comments
         }
         public async Task<IEnumerable<Comment>> GetAllCommentsAsync()
         {
-            using(var db = new CMSContext())
-            {
-                return await db.Comment.Include("Post").OrderByDescending(a=>a.PostedOn).ToArrayAsync();
-            }
+            return await db.Comment.Include(a=>a.Post).OrderByDescending(a => a.PostedOn).ToArrayAsync();
         }
         public async Task ReplyAsync(Comment model)
         {
@@ -54,7 +51,7 @@ namespace ScraBoy.Features.CMS.Comments
         public async Task<IEnumerable<Comment>> GetCommentByPostIdAsync(string postId)
         {
             return await db.Comment.Where(a => a.PostId == postId).
-                OrderByDescending(a=>a.PostedOn).
+                OrderByDescending(a => a.PostedOn).
                 ToArrayAsync();
         }
         public Comment GetParentComment(int id)
@@ -69,7 +66,7 @@ namespace ScraBoy.Features.CMS.Comments
         {
             if(!string.IsNullOrWhiteSpace(name))
             {
-                return this.db.Comment.Include("User").Include("Post").Where(a => a.User.UserName.Contains(name) || 
+                return this.db.Comment.Include("User").Include("Post").Where(a => a.User.UserName.Contains(name) ||
                 a.Post.Title.Contains(name));
             }
             return this.db.Comment.Include("User").Include("Post");
@@ -78,12 +75,12 @@ namespace ScraBoy.Features.CMS.Comments
         {
             return GetComments(name).OrderByDescending(a => a.PostedOn).ToList();
         }
-        
+
         public async Task DeleteCommentAsync(Comment comment)
         {
             using(var db = new CMSContext())
             {
-                if(comment.Respond.Count()>0)
+                if(comment.Respond.Count() > 0)
                 {
                     foreach(var item in comment.Respond.ToList())
                     {
@@ -96,7 +93,7 @@ namespace ScraBoy.Features.CMS.Comments
                 }
                 this.db.Comment.Remove(comment);
             }
-            
+
             await this.db.SaveChangesAsync();
         }
         public async Task EditAsync(Comment model,int commentId)
@@ -107,11 +104,11 @@ namespace ScraBoy.Features.CMS.Comments
 
             await db.SaveChangesAsync();
         }
-        public IPagedList<Comment> GetPagedList(string search,int page, string userId)
+        public IPagedList<Comment> GetPagedList(string search,int page,string userId)
         {
             var model = new List<Comment>();
 
-            if(userId==null)
+            if(userId == null)
             {
                 model = GetCommentList(search).ToList();
             }
@@ -121,6 +118,11 @@ namespace ScraBoy.Features.CMS.Comments
             }
 
             return model.ToPagedList(page,pageSize);
+        }
+
+        public IEnumerable<Comment> GetAllComment()
+        {
+            return db.Comment.Include(a => a.Post).OrderByDescending(a => a.PostedOn).ToList();
         }
     }
 

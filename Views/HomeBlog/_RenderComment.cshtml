@@ -1,8 +1,8 @@
-﻿@model IEnumerable<ScraBoy.Features.CMS.HomeBlog.CommentViewModel>
+﻿@model IEnumerable<ScraBoy.Features.CMS.Comments.Comment>
 
 @foreach(var item in Model)
 {
-    if(item.Comment.UserId == item.Post.AuthorId)
+    if(item.UserId == item.Post.AuthorId)
     {
         <div class="card" style="background-color: #FFFBE9">
             @Html.Partial("PostComment",item)

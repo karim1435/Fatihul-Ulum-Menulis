@@ -1,4 +1,5 @@
 ﻿using ScraBoy.Features.CMS.Blog;
+using ScraBoy.Features.CMS.Gzip;
 using ScraBoy.Features.CMS.User;
 using System;
 using System.Collections.Generic;
@@ -26,6 +27,7 @@ namespace ScraBoy.Features.CMS.Interest
             this.userRepository = userRepository;
         }
         [Route("")]
+        [CompressContent]
         public async Task<ActionResult> Index(int? page,string currentFilter)
         {
             int pageNumber = (page ?? 1);
@@ -40,6 +42,7 @@ namespace ScraBoy.Features.CMS.Interest
             return View("Index","",this.votingRepository.GetPagedList(currentFilter,pageNumber,user.Id));
 
         }
+
         public async Task<ViewResult> Search(string search)
         {
             ViewBag.Filter = search;
@@ -56,6 +59,7 @@ namespace ScraBoy.Features.CMS.Interest
 
         [Route("like/{postId}")]
         [Authorize]
+        [CompressContent]
         public async Task<ActionResult> Like(string postId)
         {
             var post = await postRepository.GetAsync(postId);
@@ -76,7 +80,7 @@ namespace ScraBoy.Features.CMS.Interest
         }
 
         [Route("dislike/{postId}")]
-
+        [CompressContent]
         public async Task<ActionResult> Dislike(string postId)
         {
             var post = await postRepository.GetAsync(postId);

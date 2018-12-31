@@ -70,5 +70,6 @@ namespace ScraBoy.Features.CMS.Topic
         {
             return this.db.Category.ToList();
         }
+
     }
 }

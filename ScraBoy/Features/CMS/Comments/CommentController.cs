@@ -1,4 +1,5 @@
 ﻿using ScraBoy.Features.CMS.Blog;
+using ScraBoy.Features.CMS.Gzip;
 using ScraBoy.Features.CMS.User;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace ScraBoy.Features.CMS.Comments
 
 
         [Route("")]
+        [CompressContent]
         public async Task<ActionResult> Index(int? page,string currentFilter)
         {
             int pageNumber = (page ?? 1);
@@ -46,6 +48,7 @@ namespace ScraBoy.Features.CMS.Comments
         }
         [HttpGet]
         [Route("reply/{commentId}")]
+        [CompressContent]
         public async Task<ActionResult> Reply(int commentId)
         {
             var comment = await commentRepository.GetCommentById(commentId);
@@ -60,6 +63,7 @@ namespace ScraBoy.Features.CMS.Comments
 
         [HttpPost]
         [Route("reply/{commentId}")]
+        [CompressContent]
         public async Task<ActionResult> Reply(Comment model,int commentId)
         {
             var comment = await commentRepository.GetCommentById(commentId);
@@ -86,6 +90,7 @@ namespace ScraBoy.Features.CMS.Comments
 
         [HttpGet]
         [Route("edit/{commentId}")]
+        [CompressContent]
         public async Task<ActionResult> Edit(int commentId)
         {
             var comment = await commentRepository.GetCommentById(commentId);
@@ -99,6 +104,7 @@ namespace ScraBoy.Features.CMS.Comments
         }
         [HttpPost]
         [Route("edit/{commentId}")]
+        [CompressContent]
         public async Task<ActionResult> Edit(Comment model,int commentId)
         {
            
@@ -119,6 +125,7 @@ namespace ScraBoy.Features.CMS.Comments
             return RedirectToAction("Post","HomeBlog",new { postId = comment.PostId });
         }
 
+        [CompressContent]
         public async Task<ViewResult> Search(string search)
         {
             ViewBag.Filter = search;

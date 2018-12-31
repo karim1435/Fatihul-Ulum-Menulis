@@ -23,12 +23,14 @@ namespace ScraBoy.Features.CMS.HomeBlog
         private readonly IVotingRepository voteRepository;
         public readonly ITagRepostory tagRepoistory;
         private readonly ICategoryRepository categoryRepository;
+        private readonly IUserRepository userRepository;
         public BlogService() : this(
             new PostRepository(),
             new CommentRepository(),
             new VotingRepository(),
             new TagRepository(),
-            new CategoryRepository())
+            new CategoryRepository(),
+            new UserRepository())
         {
 
         }
@@ -37,33 +39,28 @@ namespace ScraBoy.Features.CMS.HomeBlog
             ICommentRepository commentRepository,
             IVotingRepository voteRepository,
             ITagRepostory tagRepository,
-            ICategoryRepository categoryRepository)
+            ICategoryRepository categoryRepository,
+            IUserRepository userRepository)
         {
             this.postRepository = postRepository;
             this.commenRepository = commentRepository;
             this.voteRepository = voteRepository;
             this.tagRepoistory = tagRepository;
             this.categoryRepository = categoryRepository;
+            this.userRepository = userRepository;
         }
         private List<Voting> GetALLVoting(string userId)
         {
-            using(var db = new CMSContext())
-            {
-                return db.Voting.Include("User").Include("Post").Where(a => a.LikeCount == true).
-                    Where(post => post.Post.AuthorId.Equals(userId) && post.UserId != userId).ToList();
-            }
+            var model = voteRepository.GetAllVoting();
+            return model.Where(post => post.Post.AuthorId.Equals(userId) && post.UserId != userId).ToList();
         }
         public List<Comment> GetAllComment(string userId)
         {
-            using(var db = new CMSContext())
-            {
-                return db.Comment.Include("User").Include("Post").Include("Parent").
-                    Where(post => post.Post.AuthorId.Equals(userId) && post.UserId != userId).ToList();
-            }
+            var model = commenRepository.GetAllComment();
+            return model.Where(post => post.Post.AuthorId.Equals(userId) && post.UserId != userId).ToList();
         }
         public IEnumerable<NotificationViewModel> GetNotification(string userId)
         {
-
             var notifications = ((from like in GetALLVoting(userId)
                                   select new NotificationViewModel
                                   {
@@ -90,90 +87,53 @@ namespace ScraBoy.Features.CMS.HomeBlog
             var notification = GetNotification(userId).ToList();
             return notification.ToPagedList(page,10);
         }
-        public IPagedList<BlogViewModel> GetPagedList(string postType,string search,string tagId,string catId,int currentPage)
+        public IPagedList<Post> GetPagedList(string postType,string search,string tagId,string catId,int currentPage)
         {
             var model = new List<Post>();
 
 
             model = this.postRepository.GetBlogList(search,tagId,catId);
 
-            var posts = new List<BlogViewModel>();
-
             if(postType.Equals("latestpost") || postType.Equals(""))
             {
-                posts = GetBlogListViewModel(model).
-                    OrderByDescending(a => a.Post.Published).ToList();
+                model = model.OrderByDescending(a => a.Published).ToList();
             }
             else if(postType.Equals("mostpopularpost"))
             {
-                posts = GetBlogListViewModel(model).Where(a => a.ViewCount > 0).
-                    OrderByDescending(a => a.ViewCount).ToList();
+                model = model.Where(a => a.TotalViews > 0).
+                    OrderByDescending(a => a.TotalViews).ToList();
             }
             else if(postType.Equals("mosstinterestpost"))
             {
-                posts = GetBlogListViewModel(model).Where(a => a.Voting.TotalLike > 0).
-                    OrderByDescending(a => a.Voting.TotalLike).ToList();
+                model = model.Where(a => a.TotalVote > 0).
+                    OrderByDescending(a => a.TotalVote).ToList();
             }
             else if(postType.Equals("mostdiscusspost"))
             {
-                posts = GetBlogListViewModel(model).Where(a => a.TotalComment > 0).
+                model = model.Where(a => a.TotalComment > 0).
                     OrderByDescending(a => a.TotalComment).ToList();
             }
 
-            return posts.ToPagedList(currentPage,pageSize);
+            return model.Where(a=>!a.Private).ToPagedList(currentPage,pageSize);
         }
-
-        public async Task<IEnumerable<CommentViewModel>> GetPostCommentAsync(string posId)
+        public async Task<IEnumerable<Post>> GetAllPost()
         {
-            var comments = await commenRepository.GetCommentByPostIdAsync(posId);
-
-            return GetCommentViewModel(comments);
+            var model = await this.postRepository.GetAllAsync();
+            return model.Where(a => a.Private == false);
         }
-        public async Task<IEnumerable<CommentViewModel>> GetRecentCommentsAsycn()
+        public async Task<IEnumerable<Comment>> GetRecentCommentsAsycn()
         {
-            using(var db = new CMSContext())
-            {
-                var comments = db.Comment.Include("User").Include("Parent").OrderByDescending(a => a.PostedOn).ToList();
-
-                return GetCommentViewModel(comments).ToList();
-            }
+            var comments = await this.commenRepository.GetAllCommentsAsync();
+            return comments.OrderByDescending(a => a.PostedOn);
         }
-
-        public async Task<IEnumerable<BlogViewModel>> RelatedPosts(string postId,int categoryId)
+        public async Task<IEnumerable<Post>> RelatedPosts(string postId,int categoryId)
         {
-            var post = await this.postRepository.GetAllAsync();
-            return GetBlogListViewModel(post).Where(a => a.Post.CategoryId == categoryId && a.Post.Id != postId);
-        }
-        public async Task<IEnumerable<BlogViewModel>> MostNewPosts()
-        {
-            var post = await this.postRepository.GetAllAsync();
-            return GetBlogListViewModel(post).OrderByDescending(a => a.Post.Published);
-        }
-        public async Task<IEnumerable<BlogViewModel>> MostLiked()
-        {
-            var post = await this.postRepository.GetAllAsync();
-            return GetBlogListViewModel(post).Where(a => a.Voting.TotalLike >= 1).OrderByDescending(a => a.Voting.TotalLike);
-        }
-        public async Task<IEnumerable<BlogViewModel>> SortByCommented()
-        {
-            var post = await this.postRepository.GetAllAsync();
-            return GetBlogListViewModel(post).Where(a => a.TotalComment >= 1).OrderByDescending(a => a.TotalComment);
-        }
-        public async Task<IEnumerable<BlogViewModel>> GetPopularPostByView()
-        {
-            var post = await this.postRepository.GetAllAsync();
-            return GetBlogListViewModel(post).Where(a => a.ViewCount >= 1).OrderByDescending(a => a.ViewCount);
-        }
-        private IEnumerable<CMSUser> GetAllUsers()
-        {
-            using(var db = new CMSContext())
-            {
-                return db.Users.ToList();
-            }
+            var post = await GetAllPost();
+            return post.Where(a => a.CategoryId == categoryId && a.Id != postId);
         }
         public async Task<IEnumerable<RankingViewModel>> GetTopContributors()
         {
-            var users = GetAllUsers();
+            var users = this.userRepository.GetAllUsersAsync();
 
             var topUsers = new List<RankingViewModel>();
 
@@ -193,110 +153,9 @@ namespace ScraBoy.Features.CMS.HomeBlog
         }
         public IEnumerable<string> GetAllCategories()
         {
-            using(var db = new CMSContext())
-            {
-                var categories = db.Post.Include("Category").Where(a => a.Published < DateTime.Now && !a.Private).Select(a => a.Category.Name);
-                return categories.ToList().Distinct();
-            }
-        }
-        public async Task<List<string>> GetAllTags()
-        {
-            using(var db = new CMSContext())
-            {
-                var tagsList = db.Post.Where(a => a.Published < DateTime.Now && !a.Private).Select(p => p.CombinedTags).ToList();
-                return string.Join(",",tagsList).Split(',').Distinct().ToList();
-            }
-        }
+            var cat = this.categoryRepository.GetAllCategory();
 
-        public BlogViewModel GetBlogViewModel(Post post)
-        {
-            var blog = new BlogViewModel();
-
-            blog.Post.Id = post.Id;
-            blog.Post.Title = post.Title;
-            blog.Post.Content = Formatter.FormatHtml(post.Content);
-            blog.Post.CategoryId = post.CategoryId;
-            blog.Post.Tags = post.Tags;
-            blog.FullUrl = post.FullUrlPost;
-            blog.User.UserName = post.Author.UserName;
-            blog.User.Id = post.Author.Id;
-            blog.User.SlugUrl = post.Author.SlugUrl;
-            blog.Post.Private = post.Private;
-            blog.User.UrlImage = post.Author.UrlImage;
-            blog.User.DisplayName = post.Author.DisplayName;
-            blog.Post.Created = post.Created;
-            blog.Post.Published = post.Published;
-            blog.Voting.LikedUser = this.voteRepository.UserLiked(blog.Post.Id);
-            blog.Voting.TotalLike = post.TotalVote;
-            blog.SideBarTags.Tags = tagRepoistory.GetAll().ToList();
-            blog.Category.Name = post.Category.Name;
-            blog.Post.UrlImage = post.UrlImage;
-            blog.ViewCount = post.TotalViews;
-            blog.TotalComment = post.TotalComment;
-
-            return blog;
-        }
-        public IEnumerable<BlogViewModel> GetBlogListViewModel(IEnumerable<Post> posts)
-        {
-            var blogs = new List<BlogViewModel>();
-            foreach(var post in posts)
-            {
-                var blog = new BlogViewModel();
-
-                blog.Post.Id = post.Id;
-                blog.Post.Title = post.Title;
-                blog.Post.Content = Formatter.FormatHtml(post.Content);
-                blog.Post.Tags = post.Tags;
-                blog.Post.CategoryId = post.CategoryId;
-                blog.FullUrl = post.FullUrlPost;
-                blog.User.UserName = post.Author.UserName;
-                blog.User.DisplayName = post.Author.DisplayName;
-                blog.User.Id = post.Author.Id;
-                blog.Post.Private = post.Private;
-                blog.User.UrlImage = post.Author.UrlImage;
-                blog.User.SlugUrl = post.Author.SlugUrl;
-                blog.Post.Created = post.Created;
-                blog.Post.Published = post.Published;
-                blog.Voting.LikedUser = this.voteRepository.UserLiked(blog.Post.Id);
-                blog.Voting.TotalLike = post.TotalVote;
-                blog.SideBarTags.Tags = tagRepoistory.GetAll().ToList();
-                blog.Post.UrlImage = post.UrlImage;
-                blog.Category.Name = post.Category.Name;
-                blog.ViewCount = post.TotalViews;
-                blog.TotalComment = post.TotalComment;
-
-                blogs.Add(blog);
-            }
-            return blogs.Where(a => a.Post.Published < DateTime.Now && !a.Post.Private);
-        }
-        public IEnumerable<CommentViewModel> GetCommentViewModel(IEnumerable<Comment> comments)
-        {
-            var blogComments = new List<CommentViewModel>();
-
-            foreach(var item in comments)
-            {
-                var model = new CommentViewModel();
-                model.Comment.Id = item.Id;
-                model.Comment.PostedOn = item.PostedOn;
-                model.Post.Title = item.Post.Title;
-                model.Post.AuthorId = item.Post.AuthorId;
-
-                if(item.ParentId.HasValue)
-                {
-                    model.Comment.Parent = commenRepository.GetParentComment(item.ParentId.Value);
-
-                }
-                model.Comment.UserId = item.UserId;
-                model.User.UserName = item.User.UserName;
-                model.User.Id = item.User.Id;
-                model.User.UrlImage = item.User.UrlImage;
-                model.User.SlugUrl = item.User.SlugUrl;
-                model.User.DisplayName = item.User.DisplayName;
-                model.Comment.Content = item.Content;
-                model.Post.Id = item.Post.Id;
-                blogComments.Add(model);
-            }
-            return blogComments.OrderBy(a => a.Comment.PostedOn);
+            return cat.Where(a => a.Posts.Count() > 0).Select(a => a.Name).Distinct().ToList();
         }
     }
 }
