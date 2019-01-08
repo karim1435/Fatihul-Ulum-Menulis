@@ -44,22 +44,7 @@ namespace ScraBoy.Features.CMS.User
             }
             return View("Index","",users);
         }
-        [Route("profile/{userId}")]
-        [AllowAnonymous]
-        public async Task<ActionResult> Profile(string userId)
-        {
-            var user = await userservice.GetUser(userId);
-
-            if(user == null)
-            {
-                return HttpNotFound();
-            }
-
-            var profile = await userservice.GetProfileModel(userId);
-
-            return View(profile);
-        }
-
+       
         public async Task<ViewResult> Search(string search)
         {
             ViewBag.Filter = search;

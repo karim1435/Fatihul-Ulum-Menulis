@@ -1,6 +1,7 @@
 ﻿using ScraBoy.Features.CMS.Blog;
 using ScraBoy.Features.CMS.ModelBinders;
 using ScraBoy.Features.CMS.User;
+using ScraBoy.Features.Lomba.Contest;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +14,10 @@ namespace ScraBoy.Features.CMS.Sitemap
     {
         IPostRepository postRepository = new PostRepository();
         IUserRepository userRepository = new UserRepository();
+        ICompetitionRepositroy contestRepository = new CompetitionRepository();
         Post _blog;
         CMSUser user;
+        Competition contest;
         List<ISitemapItem> _items;
         public XmlSitemapResult Author(CMSUser author)
         {
@@ -30,7 +33,33 @@ namespace ScraBoy.Features.CMS.Sitemap
             AddEntriesPost();
             return new XmlSitemapResult(_items);
         }
-       
+       public XmlSitemapResult Contest(Competition contest)
+        {
+            this.contest = contest;
+            _items = new List<ISitemapItem>();
+            AddEntriesContest();
+            return new XmlSitemapResult(_items);
+        }
+        private void AddEntriesContest()
+        {
+            var entries = this.contestRepository.GetContest();
+            foreach(var entry in entries)
+            {
+                var siteMapPost = new SitemapItem(entry.FullUrlContest);
+                siteMapPost.LastModified = entry.UpdatedOn;
+                siteMapPost.Priority = 1;
+
+                if(!String.IsNullOrEmpty(entry.UrlImage))
+                {
+                    SiteMapImg img = new SiteMapImg();
+                    img.img = this.getFullPhoto(entry.UrlImage);
+                    img.caption = entry.Title;
+
+                    siteMapPost.siteMapImg = img;
+                }
+                _items.Add(siteMapPost);
+            }
+        }
         private void AddEntriesUser()
         {
             var entries =this.userRepository.GetAllUsersAsync();

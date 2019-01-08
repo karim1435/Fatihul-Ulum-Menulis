@@ -1,8 +1,9 @@
-﻿@model ScraBoy.Features.CMS.User.UserProfileModel
+﻿@model ScraBoy.Features.CMS.User.CMSUser
 
 @{
-    ViewBag.Title = Model.User.DisplayName + "'s " + "Profile";
+    ViewBag.Title = Model.DisplayName + "'s " + "Profile";
     Layout = "~/Views/Shared/_BlogLayout.cshtml";
+    ViewBag.Single = false;
 }
 <style>
     body {
@@ -15,31 +16,40 @@
     <div class="card">
         <div class="p-3 text-center">
             <div class="card-body">
-                <h1 class="display-4">@Model.User.DisplayName Profile</h1>
+                <h1 class="display-4">@Model.DisplayName</h1>
 
-                <img src="@Url.Content(Model.User.UrlImage)" style="border-radius:50%; height:200px; width:200px;" alt="default avatar">
-
-                <p class="lead">@Html.Raw(Model.User.Description)</p>
+                <img src="@Url.Content(Model.UrlImage)" style="border-radius:50%; height:200px; width:200px;" alt="default avatar">
+                <p class="lead">@Html.Raw(Model.Description)</p>
                 <p class="lead">
-                    <a style="font-size:20px" class="label label-primary" href="#" role="button">@Model.Role</a>
+                    <a style="font-size:20px" class="label label-primary" href="#" role="button">@Model.CurrentRole</a>
                 </p>
+                <p class="lead">
+                    <span title="@Model.TotalScore Point" class="label label-success">@Model.TotalScore.FormatNumber() Point</span>
+                    <div>
+                        <span class="lead label label-success">@Model.TotalPost posts</span>
+                        <span class="lead label label-warning">@Model.TotalComment comments</span>
+                        <span class="lead label label-danger">@Model.TotalLike likes</span>
+                        <span class="lead label label-info">@Model.TotalView views</span>
+                    </div>
+                </p>
+
             </div>
             <div class="small">
-                @if(!string.IsNullOrEmpty(Model.User.FbProfile))
+                @if(!string.IsNullOrEmpty(Model.FbProfile))
                 {
-                    <a target="_blank" class="btn btn-raised btn-info" href="@Model.User.FbProfile" title="Facebook Profile" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                    <a target="_blank" class="btn btn-raised btn-info" href="@Model.FbProfile" title="Facebook Profile" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
                         <i class="fa fa-facebook" aria-hidden="true"></i>
                     </a>
                 }
-                @if(!string.IsNullOrEmpty(Model.User.InstagramProfile))
+                @if(!string.IsNullOrEmpty(Model.InstagramProfile))
                 {
-                    <a target="_blank" class="btn btn-raised btn-info" href="@Model.User.InstagramProfile" title="IG Profile">
+                    <a target="_blank" class="btn btn-raised btn-info" href="@Model.InstagramProfile" title="IG Profile">
                         <i class="fa fa-instagram" aria-hidden="true"></i>
                     </a>
                 }
-                @if(!string.IsNullOrEmpty(Model.User.TwitterProfile))
+                @if(!string.IsNullOrEmpty(Model.TwitterProfile))
                 {
-                    <a target="_blank" class="btn btn-raised btn-info" href="@Model.User.TwitterProfile" title="Twitter Profile">
+                    <a target="_blank" class="btn btn-raised btn-info" href="@Model.TwitterProfile" title="Twitter Profile">
                         <i class="fa fa-twitter" aria-hidden="true"></i>
                     </a>
                 }
@@ -58,7 +68,10 @@
                     <div class="caption">
                         <div class="col-xs-12 col-md-12">
                             <div class="group card-title inner list-group-item-heading text-muted">
-                                @item.Published.Value.FormatDate()
+                                @item.Published.Value.FormatDate() | @Html.Partial("_RenderCategory",item.Category.Name)
+                                by <a href="@Url.Action("Profile","HomeBlog",new { userId= item.Author.SlugUrl})">
+                                    @item.Author.DisplayName
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -76,7 +89,7 @@
 
                             <div class="row">
                                 <div class="col-xs-12 col-md-12">
-                                    @*@Html.Partial("_RenderFooter",item)*@
+                                    @Html.Partial("_RenderFooter",item)
                                 </div>
                             </div>
 
@@ -84,7 +97,6 @@
                     </div>
                 </div>
             </div>
-
         }
     </div>
     <br />

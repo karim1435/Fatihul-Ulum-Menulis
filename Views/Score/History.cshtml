@@ -1,0 +1,48 @@
+﻿@model IEnumerable<ScraBoy.Features.CMS.PointScore.UserScore>
+
+@{
+    ViewBag.Title = "Tracking Score";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<div class="card-header">
+    <h2> <i class="fa fa-trophy"></i> Score List</h2>
+</div>
+
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+                <tr>
+                    <th>Score</th>
+                    <th>Note</th>
+                    <th>Info</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @item.Score
+                            <br>
+                            <a href=@Url.Action("Edit","Score",new { id = item.Id })>
+                                Edit <i class="fa fa-eye"></i>
+                            </a>
+                            <a data-action="delete" ,data-value="item.Id" href=@Url.Action("Delete","Score",new { id = item.Id })>
+                                Delete <i class="fa fa-trash"></i>
+                            </a>
+                        </td>
+                        <td>@item.Note</td>
+                        <td>
+                            @item.Author.DisplayName
+                            <br />
+                            Created : @item.Created.TimeAgo()
+                            <br />
+                            Updated : @item.Updated.TimeAgo()
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

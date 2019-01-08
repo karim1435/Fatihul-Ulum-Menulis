@@ -138,31 +138,21 @@ namespace ScraBoy.Features.CMS.User
                    ToArrayAsync();
             }
         }
-        public async Task<UserProfileModel> GetProfileModel(string userId)
+        public async Task<CMSUser> GetProfileModel(string userId)
         {
-            CMSUser user = await GetUser(userId);
-
-            if(user == null)
-            {
-                return null;
-            }
+            CMSUser user = await this.usersRepository.GetUserBySlug(userId);
 
             var role = await this.usersRepository.GetRolesForUserAsync(user);
-            var posts = await GetPostByUserId(user.UserName);
 
-            var userModel = new UserProfileModel();
+            user.CurrentRole = role.FirstOrDefault();
 
-            userModel.User = user;
-            userModel.Role = role.FirstOrDefault();
-            userModel.Posts = posts;
-
-            return userModel;
+            return user;
         }
         public async Task<CMSUser> GetUser(string userId)
         {
             using(var db = new CMSContext())
             {
-                return await db.Users.Include(a=>a.Posts).Where(a => a.SlugUrl==userId).FirstOrDefaultAsync();
+                return await db.Users.Include(a => a.Posts).Where(a => a.SlugUrl == userId).FirstOrDefaultAsync();
             }
         }
         public List<CMSUser> GetPostsList(string name)
@@ -265,7 +255,6 @@ namespace ScraBoy.Features.CMS.User
             user.FbProfile = model.FbProfile;
             user.InstagramProfile = model.InstagramProfile;
             user.TwitterProfile = model.TwitterProfile;
-            user.Bonus += model.Bonus;
             await usersRepository.UpdateAsync(user);
 
             var roles = await usersRepository.GetRolesForUserAsync(user);
@@ -294,7 +283,6 @@ namespace ScraBoy.Features.CMS.User
             user.FbProfile = model.FbProfile;
             user.InstagramProfile = model.InstagramProfile;
             user.TwitterProfile = model.TwitterProfile;
-            user.Bonus += model.Bonus;
             await usersRepository.UpdateAsync(user);
 
             return true;

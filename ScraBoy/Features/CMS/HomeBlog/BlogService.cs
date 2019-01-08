@@ -91,7 +91,6 @@ namespace ScraBoy.Features.CMS.HomeBlog
         {
             var model = new List<Post>();
 
-
             model = this.postRepository.GetBlogList(search,tagId,catId);
 
             if(postType.Equals("latestpost") || postType.Equals(""))
@@ -114,7 +113,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
                     OrderByDescending(a => a.TotalComment).ToList();
             }
 
-            return model.Where(a=>!a.Private).ToPagedList(currentPage,pageSize);
+            return model.Where(a => !a.Private).ToPagedList(currentPage,pageSize);
         }
         public async Task<IEnumerable<Post>> GetAllPost()
         {
@@ -151,11 +150,22 @@ namespace ScraBoy.Features.CMS.HomeBlog
             }
             return topUsers.Where(a => a.Point > 0).OrderByDescending(a => a.Point);
         }
+    
         public IEnumerable<string> GetAllCategories()
         {
             var cat = this.categoryRepository.GetAllCategory();
 
             return cat.Where(a => a.Posts.Count() > 0).Select(a => a.Name).Distinct().ToList();
+        }
+        public async Task<CMSUser> GetProfileModel(string userId)
+        {
+            CMSUser user = await this.userRepository.GetUserBySlug(userId);
+
+            var role = await this.userRepository.GetRolesForUserAsync(user);
+
+            user.CurrentRole = role.FirstOrDefault();
+
+            return user;
         }
     }
 }

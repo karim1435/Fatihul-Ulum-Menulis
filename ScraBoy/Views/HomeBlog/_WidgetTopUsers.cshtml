@@ -9,7 +9,7 @@
                         <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.User.UrlImage)" style="height:50px; width:50px" alt="">
                     </div>
                     <div class="media-body">
-                        <a href="@Url.Action("Profile","User",new { userId = item.User.SlugUrl })">
+                        <a href="@Url.Action("Profile","HomeBlog",new { userId = item.User.SlugUrl })">
                             <h5 class="mt-0">@item.User.DisplayName</h5>
                         </a>
                         <span title="@item.Point Point" style="font-size:15px;" class="label label-primary">@item.Point.FormatNumber() Point</span>
@@ -18,4 +18,4 @@
             }
         </div>
     </div>
- </div>
+</div>

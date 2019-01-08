@@ -16,7 +16,7 @@
                 <div class="col-xs-12 col-md-12">
                     <div class="group card-title inner list-group-item-heading text-muted">
                         @item.Published.Value.FormatDate() | @Html.Partial("_RenderCategory",item.Category.Name)
-                        by <a href="@Url.Action("Profile","User",new { userId= item.Author.SlugUrl})">
+                        by <a href="@Url.Action("Profile","HomeBlog",new { userId= item.Author.SlugUrl})">
                             @item.Author.DisplayName
                         </a>
                     </div>

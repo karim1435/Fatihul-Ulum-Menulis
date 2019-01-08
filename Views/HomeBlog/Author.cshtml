@@ -2,7 +2,7 @@
 @using PagedList.Mvc;
 
 
-@model PagedList.IPagedList<ScraBoy.Features.CMS.Blog.Post>
+@model PagedList.IPagedList<ScraBoy.Features.CMS.HomeBlog.BlogViewModel>
 
 @{
     ViewBag.Title = "Fatihul Ulum Menulis - Post Tagged On ";
@@ -10,8 +10,8 @@
     Layout = "~/Views/Shared/_BlogLayout.cshtml";
 }
 @section seoSection{
-    <meta name="description" content="Fatihul Ulum Menulis, Posts Tagged with @ViewBag.Tag">
-    <meta name="robots" content="index">
+    <meta name="description" content="Tulisan Fatihul Ulum, Posts Tagged with @ViewBag.Tag" />
+    <meta name="robots" content="index" />
 }
 <style>
     .user-l {

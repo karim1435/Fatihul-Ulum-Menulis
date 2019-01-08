@@ -13,5 +13,6 @@ namespace ScraBoy.Features.Lomba.Contest
         Task<Competition> GetByUrl(string slugUrl);
         Task Edit(string slugUrl,Competition model);
         Task Delete(string slugIrl);
+        IEnumerable<Competition> GetContest();
     }
 }

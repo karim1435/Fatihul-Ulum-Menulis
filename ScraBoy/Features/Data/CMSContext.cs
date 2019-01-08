@@ -22,6 +22,7 @@ using ScraBoy.Features.CMS.Nws;
 using ScraBoy.Features.CMS.Reporting;
 using ScraBoy.Features.Lomba.Audience;
 using ScraBoy.Features.Lomba.Contest;
+using ScraBoy.Features.CMS.PointScore;
 //using ScraBoy.Features.Forum.Question;
 //using ScraBoy.Features.Forum.Channel;
 //using ScraBoy.Features.Forum.Favorite;
@@ -49,6 +50,7 @@ namespace ScraBoy.Features.Data
 
         public DbSet<Participant> Participant { get; set; }
         public DbSet<Competition> Competiton { get; set; }
+        public DbSet<UserScore> UserScore { get; set;}
         #endregion
 
         #region CMS
@@ -61,16 +63,6 @@ namespace ScraBoy.Features.Data
         public DbSet<Violation> Violation { get; set; }
         #endregion
 
-        //#region Forum
-        //public DbSet<Thread> Thread { get; set; }
-        //public DbSet<Subject> Subject { get; set; }
-        //public DbSet<Topic> Topic { get; set; }
-        //public DbSet<ThreadStar> ThreadStar { get; set; }
-        //public DbSet<Answer> Answer { get; set; }
-        //public DbSet<ThreadView> ThreadView { get; set; }
-        //public DbSet<Pool> Pool { get; set; }
-        //public DbSet<Alert> Alert { get; set; }
-        //#endregion
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -150,9 +142,14 @@ namespace ScraBoy.Features.Data
             .HasForeignKey<int>(s => s.CompetitionId).WillCascadeOnDelete(true);
 
             modelBuilder.Entity<Competition>()
-           .HasRequired(s => s.Category)
-           .WithMany(g => g.Competitions)
-           .HasForeignKey<int>(s => s.CategoryId).WillCascadeOnDelete(true);
+            .HasRequired(s => s.Category)
+            .WithMany(g => g.Competitions)
+            .HasForeignKey<int>(s => s.CategoryId).WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<UserScore>()
+            .HasRequired(s => s.Author)
+            .WithMany(g => g.UserScores)
+            .HasForeignKey<string>(s => s.AuthorId).WillCascadeOnDelete(true);
             #endregion
 
             //#region Forum FluentApi

@@ -6,40 +6,40 @@
     Layout = "~/Views/Shared/_BlogLayout.cshtml";
 }
 @section seoSection{
-<meta name="description" content="Fatihul Ulum Menulis, Fatihul Ulum Menulis - Top Ten Writers Ranking">
+    <meta name="description" content="Fatihul Ulum Menulis, Fatihul Ulum Menulis - Top Ten Writers Ranking">
     <meta name="robots" content="index">
 }
 <div class="container">
 
     <div class="row">
-            <div class="col-md-12">
-                <div class="about">
-                    <div class="content line"></div>
-                    <div class="content text">Top Writers</div>
-                    <div class="content line"></div>
-                </div>
-                @foreach(var item in Model.Take(10))
-                {
-                    <div class="media mb-4">
-                        <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.User.UrlImage)" style="height: 80px; width:80px" alt="">
-                        <div class="media-body">
-                            <a href="@Url.Action("Profile","User",new { userId = item.User.SlugUrl })">
-                                <h5 class="mt-0">@item.User.DisplayName</h5>
-                            </a>
-                            <div>
+        <div class="col-md-12">
+            <div class="about">
+                <div class="content line"></div>
+                <div class="content text">Top Writers</div>
+                <div class="content line"></div>
+            </div>
+            @foreach(var item in Model.Take(10))
+            {
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.User.UrlImage)" style="height: 80px; width:80px" alt="">
+                    <div class="media-body">
+                        <a href="@Url.Action("Profile","HomeBlog",new { userId = item.User.SlugUrl })">
+                            <h5 class="mt-0">@item.User.DisplayName</h5>
+                        </a>
+                        <div>
 
-                            </div>
-                            <span title="@item.Point Point" class="label label-primary">@item.Point.FormatNumber() Point</span>
-                            <div>
-                                <span class="label label-success">@item.TotalPublishedPost posts</span>
-                                <span class="label label-warning">@item.TotalCommentPost comments</span>
-                                <span class="label label-danger">@item.TotalLikedPost likes</span>
-                                <span class="label label-info">@item.TotalViewedPost views</span>
-                            </div>
+                        </div>
+                        <span title="@item.Point Point" class="label label-primary">@item.Point.FormatNumber() Point</span>
+                        <div>
+                            <span class="label label-success">@item.TotalPublishedPost posts</span>
+                            <span class="label label-warning">@item.TotalCommentPost comments</span>
+                            <span class="label label-danger">@item.TotalLikedPost likes</span>
+                            <span class="label label-info">@item.TotalViewedPost views</span>
                         </div>
                     </div>
+                </div>
                     <hr />
-                }
-            </div>
+            }
         </div>
+    </div>
 </div>

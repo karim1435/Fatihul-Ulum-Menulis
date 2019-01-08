@@ -53,7 +53,10 @@ namespace ScraBoy.Features.Lomba.Contest
 
             await this.db.SaveChangesAsync();
         }
-        //https://docs.microsoft.com/en-us/ef/ef6/querying/related-data
+        public IEnumerable<Competition> GetContest()
+        {
+            return this.db.Competiton.Include(a => a.Participants.Select(post => post.Author)).Include("Category").Include("Creator").ToList();
+        }
         public async Task<IEnumerable<Competition>> GetAll()
         {
             return await this.db.Competiton.Include(a => a.Participants.Select(post=> post.Author)).Include("Category").Include("Creator").ToArrayAsync();

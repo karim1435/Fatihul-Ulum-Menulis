@@ -18,18 +18,16 @@ namespace ScraBoy.Features.CMS.Comments
         private readonly IPostRepository postRepository;
         private readonly ICommentRepository commentRepository;
         private readonly IUserRepository userRepository;
-        public CommentController(IPostRepository postRepo, ICommentRepository commentRepo,IUserRepository userRepo)
+        public CommentController(IPostRepository postRepo,ICommentRepository commentRepo,IUserRepository userRepo)
         {
             this.userRepository = userRepo;
             this.postRepository = postRepo;
             this.commentRepository = commentRepo;
         }
-        public CommentController():this(new PostRepository(), new CommentRepository(), new UserRepository())
+        public CommentController() : this(new PostRepository(),new CommentRepository(),new UserRepository())
         {
 
         }
-
-
         [Route("")]
         [CompressContent]
         public async Task<ActionResult> Index(int? page,string currentFilter)
@@ -53,7 +51,7 @@ namespace ScraBoy.Features.CMS.Comments
         {
             var comment = await commentRepository.GetCommentById(commentId);
 
-            if(comment==null)
+            if(comment == null)
             {
                 return HttpNotFound();
             }
@@ -82,10 +80,10 @@ namespace ScraBoy.Features.CMS.Comments
             model.PostId = comment.PostId;
             model.PostedOn = DateTime.Now;
             model.UserId = user.Id;
-            
+
             await this.commentRepository.ReplyAsync(model);
 
-            return RedirectToAction("Post","HomeBlog",new { postId = comment.PostId});
+            return RedirectToAction("Post","HomeBlog",new { postId = comment.PostId });
         }
 
         [HttpGet]
@@ -107,7 +105,7 @@ namespace ScraBoy.Features.CMS.Comments
         [CompressContent]
         public async Task<ActionResult> Edit(Comment model,int commentId)
         {
-           
+
             var comment = await commentRepository.GetCommentById(commentId);
 
             if(comment == null)
@@ -144,7 +142,7 @@ namespace ScraBoy.Features.CMS.Comments
         public async Task<ActionResult> Delete(int id)
         {
             var comment = await commentRepository.GetCommentById(id);
-            if(comment==null)
+            if(comment == null)
             {
                 return HttpNotFound();
             }
@@ -159,7 +157,7 @@ namespace ScraBoy.Features.CMS.Comments
 
             try
             {
-                 await this.commentRepository.DeleteCommentAsync(comment);
+                await this.commentRepository.DeleteCommentAsync(comment);
                 return RedirectToAction("Index");
             }
             catch(KeyNotFoundException e)

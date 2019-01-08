@@ -250,6 +250,9 @@
     <Compile Include="Features\CMS\News\ReportController.cs" />
     <Compile Include="Features\CMS\News\IReportRepository.cs" />
     <Compile Include="Features\CMS\News\ReportRepoitory.cs" />
+    <Compile Include="Features\CMS\PointScore\IUserScoreRepository.cs" />
+    <Compile Include="Features\CMS\PointScore\ScoreController.cs" />
+    <Compile Include="Features\CMS\PointScore\UserScoreRepository.cs" />
     <Compile Include="Features\CMS\Reporting\IViolationRepository.cs" />
     <Compile Include="Features\CMS\Reporting\VIolation.cs" />
     <Compile Include="Features\CMS\Reporting\ViolationController.cs" />
@@ -272,8 +275,8 @@
     <Compile Include="Features\CMS\User\CMSUser.cs" />
     <Compile Include="Features\CMS\User\IUserRepository.cs" />
     <Compile Include="Features\CMS\User\UserController.cs" />
-    <Compile Include="Features\CMS\User\UserProfileModel.cs" />
     <Compile Include="Features\CMS\User\UserRepository.cs" />
+    <Compile Include="Features\CMS\PointScore\UserScore.cs" />
     <Compile Include="Features\CMS\User\UserService.cs" />
     <Compile Include="Features\CMS\User\UserViewModel.cs" />
     <Compile Include="Features\Data\CMSContext.cs" />
@@ -568,6 +571,30 @@
     <Compile Include="Migrations\201812281814521_profile fb.cs" />
     <Compile Include="Migrations\201812281814521_profile fb.Designer.cs">
       <DependentUpon>201812281814521_profile fb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901071125531_tos.cs" />
+    <Compile Include="Migrations\201901071125531_tos.Designer.cs">
+      <DependentUpon>201901071125531_tos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901071127108_userscorebos.cs" />
+    <Compile Include="Migrations\201901071127108_userscorebos.Designer.cs">
+      <DependentUpon>201901071127108_userscorebos.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901071843549_forgot time.cs" />
+    <Compile Include="Migrations\201901071843549_forgot time.Designer.cs">
+      <DependentUpon>201901071843549_forgot time.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901072142128_tps.cs" />
+    <Compile Include="Migrations\201901072142128_tps.Designer.cs">
+      <DependentUpon>201901072142128_tps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901072143061_tpsdd.cs" />
+    <Compile Include="Migrations\201901072143061_tpsdd.Designer.cs">
+      <DependentUpon>201901072143061_tpsdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901072143593_tossssss.cs" />
+    <Compile Include="Migrations\201901072143593_tossssss.Designer.cs">
+      <DependentUpon>201901072143593_tossssss.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -910,10 +937,9 @@
     <Content Include="Views\HomeBlog\_RenderCommentCount.cshtml" />
     <Content Include="Views\HomeBlog\NotificationMenu.cshtml" />
     <Content Include="Views\HomeBlog\Info.cshtml" />
-    <Content Include="Views\HomeBlog\Author.cshtml" />
+    <Content Include="Views\HomeBlog\Profile.cshtml" />
     <Content Include="Views\Competition\Create.cshtml" />
     <Content Include="Views\Competition\Index.cshtml" />
-    <Content Include="Views\User\Profile.cshtml" />
     <Content Include="Views\Competition\View.cshtml" />
     <Content Include="Views\Participant\Join.cshtml" />
     <Content Include="Views\Competition\ContestList.cshtml" />
@@ -926,6 +952,10 @@
     <Content Include="Views\Competition\_InfoContest.cshtml" />
     <Content Include="Views\Participant\ViewContest.cshtml" />
     <Content Include="Views\Competition\_FooterInfo.cshtml" />
+    <Content Include="Views\Score\AddScore.cshtml" />
+    <Content Include="Views\Score\History.cshtml" />
+    <Content Include="Views\Score\Edit.cshtml" />
+    <Content Include="Views\Score\_PostForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1126,6 +1156,24 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201812281814521_profile fb.resx">
       <DependentUpon>201812281814521_profile fb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901071125531_tos.resx">
+      <DependentUpon>201901071125531_tos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901071127108_userscorebos.resx">
+      <DependentUpon>201901071127108_userscorebos.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901071843549_forgot time.resx">
+      <DependentUpon>201901071843549_forgot time.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901072142128_tps.resx">
+      <DependentUpon>201901072142128_tps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901072143061_tpsdd.resx">
+      <DependentUpon>201901072143061_tpsdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901072143593_tossssss.resx">
+      <DependentUpon>201901072143593_tossssss.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -55,6 +55,7 @@ namespace ScraBoy.Features.CMS.Blog
         }
 
         public bool Private { get; set; }
+        public bool IsContest { get; set;}
         public string AuthorId { get; set; }
         [ForeignKey("AuthorId")]
         public virtual CMSUser Author { get; set; }

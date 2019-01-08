@@ -20,7 +20,10 @@ namespace ScraBoy.Features.CMS.User
             store = new CmsUserStore();
             manager = new CmsUserManager(store);
         }
- 
+        public async Task<CMSUser> GetUserBySlug(string slugUrl)
+        {
+            return await store.Users.Where(a => a.SlugUrl.Equals(slugUrl)).FirstOrDefaultAsync();
+        }
         public async Task<CMSUser> GetUserById(string userId)
         {
             return await store.FindByIdAsync(userId);
@@ -29,11 +32,11 @@ namespace ScraBoy.Features.CMS.User
         {
             return await store.FindByNameAsync(username);
         }
-        public async Task<IdentityResult> ResetPasswordAsync(string userid, string code, string password)
+        public async Task<IdentityResult> ResetPasswordAsync(string userid,string code,string password)
         {
             return await manager.ResetPasswordAsync(userid,code,password);
         }
-    
+
         public IQueryable<CMSUser> GetPosts(string name)
         {
             if(!string.IsNullOrEmpty(name))
@@ -46,15 +49,15 @@ namespace ScraBoy.Features.CMS.User
         {
             return store.Users;
         }
-        public  IEnumerable<CMSUser> GetAllUsersAsync(string userName)
+        public IEnumerable<CMSUser> GetAllUsersAsync(string userName)
         {
-            return store.Users.Where(a=>a.UserName.Contains(userName)).ToList();
+            return store.Users.Where(a => a.UserName.Contains(userName)).ToList();
         }
         public async Task CreateAsync(CMSUser user,string password)
         {
             await manager.CreateAsync(user,password);
         }
-  
+
         public async Task DeleteAsync(CMSUser user)
         {
             await manager.DeleteAsync(user);

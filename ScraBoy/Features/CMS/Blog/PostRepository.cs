@@ -122,8 +122,6 @@ namespace ScraBoy.Features.CMS.Blog
                 return GetPostByCategories(categoryId).AsQueryable();
             }
 
-        
-
             return this.db.Post;
         }
 
@@ -176,7 +174,7 @@ namespace ScraBoy.Features.CMS.Blog
             }
 
             post.Private = updatedItem.Private;
-            
+            post.IsContest = updatedItem.IsContest;
             post.Tags = updatedItem.Tags;
             post.UrlImage = updatedItem.UrlImage;
             post.CategoryId = updatedItem.CategoryId;
@@ -210,7 +208,7 @@ namespace ScraBoy.Features.CMS.Blog
         public async Task<IEnumerable<Post>> GetPostsByAuthorAsync(string authorId)
         {
             return await db.Post.Include("Author").Where(p => p.AuthorId == authorId &&
-                    p.Published < DateTime.Now && !p.Private).ToArrayAsync();
+                    !p.Private).ToArrayAsync();
         }
         public void Delete(string id)
         {

@@ -10,6 +10,7 @@ namespace ScraBoy.Features.CMS.User
 {
     public interface IUserRepository : IDisposable
     {
+        Task<CMSUser> GetUserBySlug(string slugUrl);
         Task<CMSUser> GetUserById(string userId);
         Task<CMSUser> GetUserByNameAsync(string username);
         Task CreateAsync(CMSUser user,string password);

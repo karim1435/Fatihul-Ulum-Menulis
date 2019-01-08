@@ -96,45 +96,66 @@
     </nav>
     <!-- Page Content -->
     @RenderBody()
-    <!-- /.container -->
-    <!-- Footer -->
-    <footer class="bg-green">
+    <footer>
         <div class="container">
-            <div class="row d-flex text-center justify-content-center mb-md-0 mb-4">
-                <!--Grid column-->
-                <div class="col-md-8 col-12 mt-5">
-                    <p style="line-height: 1.7rem;color:white">
+            <div class="row">
+                <div class="col-md-3 col-sm-6 footer-col">
+                    <h6 class="heading7">About Us</h6>
+                    <p>
                         Fatihul Ulum Menulis is free online writing platform which presented for people who has eager
                         and passion to share their own opinion and also provided for someone to turn their idea into a story as wisdow quote said "Menulis adalah ladang untuk berlogika (berfikir secara logis)".
                     </p>
+                    <p><i class="fa fa-map-pin"></i> Jl. Argopuro No. 7 Manggisan, Tanggul, Jember, Jawa Timur, Indonesia, 68155</p>
+                    <p><i class="fa fa-phone"></i> Phone : +62 81230208298</p>
+                    <p><i class="fa fa-envelope"></i> E-mail : tulisanfatihululum@gmail.com</p>
+
                 </div>
-                <!--Grid column-->
-            </div>
-            <!--Grid row-->
-            <hr class="clearfix d-md-none rgba-white-light" style="margin: 10% 15% 5%;">
-            <!--Grid row-->
-            <div class="row pb-3">
-                <!--Grid column-->
-                <div class="col-md-12">
-                    <div class="m-0 text-center text-white">
-                        Copyright © Fatihul Ulum @DateTime.Now.Year
-                    </div>
+                <div class="col-md-3 col-sm-6 footer-col">
+                    <h6 class="heading7">Quick links</h6>
+                    <ul class="footer-ul">
+                        <li><a href="@Url.Action("Index","HomeBlog")"> Home</a></li>
+                        <li><a href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "mostpopularpost" })"> Trending</a></li>
+                        <li><a href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "mostdiscusspost" })"> Viral</a></li>
+                        <li><a href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "mosstinterestpost" })"> Favorite</a></li>
+                    </ul>
                 </div>
-                <!--Grid column-->
+                <div class="col-md-3 col-sm-6 footer-col">
+                    <h6 class="heading7">General Links</h6>
+                    <ul class="footer-ul">
+                        <li><a href="@Url.Action("RankingTopUser",new { controller = "HomeBlog"})"> Ranking</a></li>
+                        <li><a href="@Url.Action("Index",new { controller = "Competition"})"> Contest</a></li>
+                        <li><a href="@Url.Action("MyContest","Competition")"> My Contest</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 col-sm-6 footer-col">
+                    <h6 class="heading7">Follow Us</h6>
+                    <ul class="footer-social">
+                        <li><a href="https://www.facebook.com/fatihululum.site"><i class="fa fa-facebook social-icon facebook" aria-hidden="true"></i></a></li>
+                        <li><i class="fa fa-twitter social-icon twitter" aria-hidden="true"></i></li>
+                        <li><i class="fa fa-instagram social-icon instagram" aria-hidden="true"></i></li>
+                    </ul>
+                </div>
             </div>
-            <!--Grid row-->
         </div>
-        <!-- /.container -->
     </footer>
 
-    <!-- Grid row -->
-    <!-- Bootstrap core JavaScript -->
-    <script src="~/Scripts/jquery.min.js"></script>
-    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
-
-    <script src="~/js/jquery-2.1.1.min.js"></script>
-    <script src="~/js/jquery-ui.min-1.11.1.js"></script>
-    <script src="~/js/admin.js"></script>
+    <!--footer start from here-->
+    <div class="copyright">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>Copyright © Fatihul Ulum @DateTime.Now.Year</p>
+                </div>
+                <div class="col-md-6">
+                    <ul class="bottom_ul">
+                        <li><a href="@Url.Action("Index","HomeBlog")">Home</a></li>
+                        <li><a href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "latestpost" })">Blog</a></li>
+                        <li><a href="@Url.Action("Post","Sitemap")">Site Map</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-131424917-1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -142,6 +163,13 @@
         gtag('js', new Date());
         gtag('config', 'UA-131424917-1');
     </script>
+    <script src="~/Scripts/jquery.min.js"></script>
+    <script src="~/Scripts/bootstrap.bundle.min.js"></script>
+
+    <script src="~/js/jquery-2.1.1.min.js"></script>
+    <script src="~/js/jquery-ui.min-1.11.1.js"></script>
+    <script src="~/js/admin.js"></script>
+
 
     @RenderSection("scripts",required: false)
 

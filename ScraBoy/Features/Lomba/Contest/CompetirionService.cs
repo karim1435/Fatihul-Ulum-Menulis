@@ -29,7 +29,7 @@ namespace ScraBoy.Features.Lomba.Contest
 
             if(!string.IsNullOrEmpty(name))
             {
-                return model.Where(a => a.Title.ToLower().Contains(name.ToLower())).OrderByDescending(a => a.StartedOn);
+                return model.Where(a => a.Title.ToLower().Contains(name.ToLower()));
             }
             return model;  
         }
@@ -37,7 +37,7 @@ namespace ScraBoy.Features.Lomba.Contest
         {
             var model = await GetCompetition(name);
 
-            return model.ToPagedList(currentPage,pageSize);       
+            return model.OrderByDescending(a=>a.StartedOn).ToPagedList(currentPage,pageSize);       
         }
         public async Task<IEnumerable<Competition>> GetContestHomePage()
         {

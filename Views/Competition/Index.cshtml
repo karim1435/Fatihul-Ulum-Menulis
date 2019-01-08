@@ -8,9 +8,10 @@
     Layout = "~/Views/Shared/_BlogLayout.cshtml";
 }
 @section seoSection{
-    <meta name="description" content="Fatihul Ulum Contest - Let's Compete Now">
+    <meta name="description" content="Fatihul Ulum Menulis - Kontes - Let's Compete Now">
     <meta name="robots" content="index">
 }
+
 <style type="text/css">
     body {
         background: #F7F7F7 !important;
@@ -111,6 +112,5 @@
             @Html.PagedListPager(Model,page => Url.Action("Index","Competition",new { page = page,currentFilter = ViewBag.Filter }))
         }
     </div>
-
     <br />
 </div>

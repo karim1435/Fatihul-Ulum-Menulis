@@ -63,10 +63,18 @@ namespace ScraBoy.Features.CMS.Blog
         }
         private async Task SetViewBag()
         {
-            var user = await GetLoggedInUser();
-
             ViewBag.Categories = await categoryRepositoriy.GetAllCategoriesAsync();
 
+            if(User.IsInRole("admin"))
+            {
+                await SetUserViewBag();
+            }
+            
+        }
+        private async Task SetUserViewBag()
+        {
+            var user = this.userRepository.GetAllUsersAsync();
+            ViewBag.Users = user;
         }
         [HttpGet]
         [Route("create")]
@@ -107,28 +115,32 @@ namespace ScraBoy.Features.CMS.Blog
 
             model.UrlImage = pathFolder + filePath;
 
-            var user = await GetLoggedInUser();
-
             model.Id = "iqro"+"-"+DateTime.Now.ToString("yymmddss")+"-"+ model.Title;
 
             model.Id = model.Id.MakeUrlFriednly();
-            model.AuthorId = user.Id;
+            
             model.Tags = model.Tags.Select(tag => tag.MakeUrlFriednly()).ToList();
             model.Created = DateTime.Now;
             model.Updated = DateTime.Now;
             model.Published = DateTime.Now;
 
-            var content = model.Content.ReadMore(model.Content.Length);
-
-            int contentLenth = content.CountTotalWords();
-
-            if(contentLenth < totalMinWords)
+            if(!model.IsContest)
             {
-                ModelState.AddModelError(string.Empty,"Conten harus lebih dari " +totalMinWords + " Kata");
-                await SetViewBag();
-                return View(model);
-            }
+                var user = await GetLoggedInUser();
 
+                model.AuthorId = user.Id;
+
+                var content = model.Content.ReadMore(model.Content.Length);
+
+                int contentLenth = content.CountTotalWords();
+
+                if(contentLenth < totalMinWords)
+                {
+                    ModelState.AddModelError(string.Empty,"Conten harus lebih dari " + totalMinWords + " Kata");
+                    await SetViewBag();
+                    return View(model);
+                }
+            }
             try
             {
                 await postRepository.Create(model);
@@ -247,17 +259,23 @@ namespace ScraBoy.Features.CMS.Blog
 
             model.Tags = model.Tags.Select(tag => tag.MakeUrlFriednly()).ToList();
 
-            var content = model.Content.ReadMore(model.Content.Length);
-
-            int contentLenth = content.CountTotalWords();
-
-            if(contentLenth < totalMinWords)
+            if(!model.IsContest)
             {
-                ModelState.AddModelError(string.Empty,"Conten harus lebih dari " + totalMinWords + " Kata");
-                await SetViewBag();
-                return View(model);
-            }
+                var content = model.Content.ReadMore(model.Content.Length);
 
+                int contentLenth = content.CountTotalWords();
+
+                if(contentLenth < totalMinWords)
+                {
+                    ModelState.AddModelError(string.Empty,"Conten harus lebih dari " + totalMinWords + " Kata");
+                    await SetViewBag();
+                    return View(model);
+                }
+            }
+            else
+            {
+                post.AuthorId = model.AuthorId;
+            }
             try
             {
                 postRepository.Edit(postId,model);

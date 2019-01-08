@@ -38,7 +38,9 @@ namespace ScraBoy.Features.CMS.HomeBlog
         {
             get
             {
-                return ((TotalLikedPost * 1) + (TotalViewedPost * 2) + (TotalPublishedPost * 10) + (TotalCommentPost * 2)) + User.Bonus;
+                return ((TotalLikedPost * 1) + (TotalViewedPost * 2) +
+                    (TotalPublishedPost * 10) + (TotalCommentPost * 2)) +
+                    User.TotalBonus;
             }
         }
     }

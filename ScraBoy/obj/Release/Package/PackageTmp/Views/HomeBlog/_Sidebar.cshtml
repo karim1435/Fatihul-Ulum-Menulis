@@ -1,9 +1,4 @@
-﻿@*<div class="card my-4">
-    <h5 class="card-header"><i class="fa fa-tags"></i> Tags</h5>
-    @Html.Partial("_WidgetTags",(IEnumerable<String>)ViewBag.Tags)
-</div>*@
-
-
+﻿
 <div class="card my-4">
     <h5 class="card-header"><i class="fa fa-line-chart"></i> Popular Posts</h5>
     @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.Blog.Post>)ViewBag.PopularView)

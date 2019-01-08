@@ -16,7 +16,7 @@
 @AntiForgery.GetHtml()
 <div class="card mb-3">
     <div class="card-header">
-        <h2> <i class="fa fa-user-secret""></i> User List</h2>
+        <h2> <i class="fa fa-user-secret"></i> User List</h2>
         @using(Html.BeginForm("Search","User",FormMethod.Get))
         {
             @Html.Partial("~/Views/Widgets/_Search.cshtml")
@@ -37,13 +37,20 @@
                     @foreach(var item in Model)
                     {
                         <tr>
-                           
+
                             <td>
                                 @item.DisplayName
-                                <br>
-                                @Html.ActionLink(" View","Profile","User",new { userId = item.SlugUrl },new { @class = "fa fa-eye" })
-                                @Html.ActionLink(" Manage","Manage","Admin",new { username = item.UserName },new { @class = "fa fa-cog" }) 
-                                @Html.ActionLink(" Delete","Delete",new { username = item.UserName },new { @class = "fa fa-trash", data_action = "delete",data_value = item.UserName })                               
+                                <br />
+                                <b>Manage Setting</b>
+                                <br />
+                                @Html.ActionLink(" View","Profile","HomeBlog",new { userId = item.SlugUrl },new { @class = "fa fa-eye" })
+                                @Html.ActionLink(" Manage","Manage","Admin",new { username = item.UserName },new { @class = "fa fa-cog" })
+                                @Html.ActionLink(" Delete","Delete",new { username = item.UserName },new { @class = "fa fa-trash",data_action = "delete",data_value = item.UserName })
+                                <br />
+                                <b>Point Setting</b>
+                                <br />
+                                @Html.ActionLink(" Track","History","Score",new { userId = item.Id },new { @class = "fa fa-book" })
+                                @Html.ActionLink(" Bonus","AddScore","Score",new { userId = item.Id },new { @class = "fa fa-trophy" })
                             </td>
                             <td>@item.UserName</td>
                             <td>@item.Born.Value.FormatDate()</td>
@@ -51,6 +58,7 @@
                                 <p>Level : @item.CurrentRole</p>
                                 <p>Registered Date : @item.RegistrationDate.Value.FormatDate()</p>
                                 <p>Last Login : @item.LastLoginTime.Value.TimeAgo()</p>
+                                <p>Security Question : @item.Security</p>
                             </td>
                         </tr>
                     }

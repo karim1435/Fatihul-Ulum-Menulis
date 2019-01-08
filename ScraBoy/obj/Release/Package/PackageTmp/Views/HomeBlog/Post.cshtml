@@ -8,8 +8,8 @@
 }
 
 @section seoSection{
-    <meta name="description" content="Tulisan Fatihul Ulum - @Model.Title">
-    <meta name="robots" content="index">
+    <meta name="description" content="Tulisan Fatihul Ulum Menulis - @Model.Content.ReadMore(90)" />
+    <meta name="robots" content="index" />
 
     <meta property="fb:app_id" content="221173468811282" />
     <meta property="og:type" content="article" />
@@ -45,7 +45,7 @@
             <h1 class="mt-4">@Model.Title</h1>
             <!-- Author -->
             <div class="lead">
-                Posted Under @Html.Partial("_RenderCategory",Model.Category.Name)  by <a href="@Url.Action("Profile","User",new { userId= Model.Author.SlugUrl})">@Model.Author.DisplayName</a> on @Model.Published.Value.FormatDate()
+                Posted Under @Html.Partial("_RenderCategory",Model.Category.Name)  by <a href="@Url.Action("Profile","HomeBlog",new { userId= Model.Author.SlugUrl})">@Model.Author.DisplayName</a> on @Model.Published.Value.FormatDate()
             </div>
             <div class="fb-share-button" data-href="@Model.FullUrlPost" data-layout="button" data-size="small" data-mobile-iframe="true">
                 <a target="_blank" href="@Model.FullUrlPost" class="fb-xfbml-parse-ignore">Share</a>
@@ -76,7 +76,6 @@
         </div>
     </div>
 </div>
-
 
 <script src="~/js/fbshare.js"></script>
 

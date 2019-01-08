@@ -4,6 +4,7 @@ using ScraBoy.Features.CMS.Comments;
 using ScraBoy.Features.CMS.Interest;
 using ScraBoy.Features.CMS.ModelBinders;
 using ScraBoy.Features.CMS.Nws;
+using ScraBoy.Features.CMS.PointScore;
 using ScraBoy.Features.CMS.Reporting;
 using ScraBoy.Features.Lomba.Audience;
 using ScraBoy.Features.Lomba.Contest;
@@ -25,7 +26,6 @@ namespace ScraBoy.Features.CMS.User
         [Display(Name ="Birth Date")]
         [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}",ApplyFormatInEditMode = true)]
         public DateTime? Born { get; set; }
-        public int Bonus { get; set; }
         [AllowHtml]
         public string Description { get; set; }
         [Required]
@@ -42,6 +42,7 @@ namespace ScraBoy.Features.CMS.User
         public virtual ICollection<Report> Reports { get; set; }
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<Violation> Violations { get; set; }
+        public virtual ICollection<UserScore> UserScores { get; set; }
         [NotMapped]
         public string CurrentRole { get; set; }
 
@@ -59,6 +60,81 @@ namespace ScraBoy.Features.CMS.User
             get
             {
                 return StringExtensions.getUrl() + UrlUser;
+            }
+        }
+        [NotMapped]
+        public int TotalScore
+        {
+            get
+            {
+                return (TotalLike * 1) + 
+                    (TotalView * 2) + 
+                    (TotalPost * 10) + 
+                    (TotalComment * 2) + 
+                    TotalBonus;
+            }
+        }
+        [NotMapped]
+        public int TotalBonus
+        {
+            get
+            {
+                if(UserScores==null)
+                    return 0;
+                return UserScores.Sum(a => a.Score);
+            }
+        }
+
+        [NotMapped]
+        public int TotalPoint
+        {
+            get
+            {
+                if(Posts == null)
+                    return 0;
+
+                return Posts.Sum(a=>a.TotalViews) + Posts.Sum(a => a.TotalComment) +
+                    Posts.Sum(a => a.TotalVote);
+            }
+        }
+        [NotMapped]
+        public int TotalComment
+        {
+            get
+            {
+                if(Posts == null)
+                    return 0;
+                return Posts.Sum(a=>a.Comments.Count());
+            }
+        }
+        [NotMapped]
+        public int TotalPost
+        {
+            get
+            {
+                if(Posts == null)
+                    return 0;
+                return Posts.Where(a=>!a.Private).Count();
+            }
+        }
+        [NotMapped]
+        public int TotalLike
+        {
+            get
+            {
+                if(Posts == null)
+                    return 0;
+                return Posts.Sum(a => a.Votings.Count());
+            }
+        }
+        [NotMapped]
+        public int TotalView
+        {
+            get
+            {
+                if(Posts == null)
+                    return 0;
+                return Posts.Sum(a => a.ViewPosts.Count());
             }
         }
     }

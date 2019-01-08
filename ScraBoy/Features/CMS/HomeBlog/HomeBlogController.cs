@@ -6,6 +6,7 @@ using ScraBoy.Features.CMS.Interest;
 using ScraBoy.Features.CMS.ModelBinders;
 using ScraBoy.Features.CMS.Tag;
 using ScraBoy.Features.CMS.User;
+using ScraBoy.Features.Data;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -23,19 +24,19 @@ namespace ScraBoy.Features.CMS.HomeBlog
     {
         private readonly IPostRepository posRepository;
         private readonly ICommentRepository commentRepository;
-        private readonly IVotingRepository votingRepository;
+        private readonly IUserRepository userRepository;
         private BlogService blogService = new BlogService();
 
         public HomeBlogController() : this(new PostRepository()
-            ,new CommentRepository(),new VotingRepository())
+            ,new CommentRepository(),new UserRepository())
         { }
 
         public HomeBlogController(IPostRepository postRepository,
-            ICommentRepository commentRepository,IVotingRepository votingRepository)
+            ICommentRepository commentRepository,IUserRepository userRepository)
         {
             posRepository = postRepository;
             this.commentRepository = commentRepository;
-            this.votingRepository = votingRepository;
+            this.userRepository = userRepository;
         }
         [Route("")]
         [CompressContent]
@@ -243,7 +244,6 @@ namespace ScraBoy.Features.CMS.HomeBlog
         [CompressContent]
         public async Task<ActionResult> RankingTopUser()
         {
-            await SetViewBag();
             var user = await this.blogService.GetTopContributors();
             return View(user);
         }
@@ -266,6 +266,23 @@ namespace ScraBoy.Features.CMS.HomeBlog
             ViewBag.PopularView = blog.Where(a => a.TotalViews >= 1).OrderByDescending(a => a.TotalViews);
             ViewBag.Commented = blog.Where(a => a.TotalComment >= 1).OrderByDescending(a => a.TotalComment);
         }
+        [Route("profile/{userId}")]
+        [AllowAnonymous]
+        [CompressContent]
+        public async Task<ActionResult> Profile(string userId)
+        {
+            var user = await userRepository.GetUserBySlug(userId);
+
+            if(user == null)
+            {
+                return HttpNotFound();
+            }
+
+            var profile = await blogService.GetProfileModel(userId);
+
+            return View(profile);
+        }
+
         public string UserId
         {
             get { return User.Identity.GetUserId(); }

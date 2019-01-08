@@ -39,9 +39,6 @@
                                 <a href=@Url.Action("Review","Participant",new { id = item.Id })>
                                     Review <i class="fa fa-eye"></i>
                                 </a>
-                                <a href=@Url.Action("Edit","Category",new { id = item.Id })>
-                                    Edit <i class="fa fa-pencil"></i>
-                                </a>
                                 <a data-action="delete" ,data-value="item.Id" href=@Url.Action("Delete","Participant",new { id = item.Id })>
                                     Delete <i class="fa fa-trash"></i>
                                 </a>

@@ -158,3 +158,9 @@ E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.reward.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.rewardrequired.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.catwithcontest.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.profilefb.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.tos.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.userscorebos.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.forgottime.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.tps.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.tpsdd.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.tossssss.resources

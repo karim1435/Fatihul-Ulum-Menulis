@@ -26,11 +26,9 @@ namespace ScraBoy.Features.CMS.Comments
         public string UserId { get; set; }
         [ForeignKey("UserId")]
         public virtual CMSUser User { get; set; }
-
         public int? ParentId { get; set; }
         [ForeignKey("ParentId")]
         public virtual Comment Parent { get; set; }
-
         public virtual ICollection<Comment> Respond { get; set; }
     }
 }
