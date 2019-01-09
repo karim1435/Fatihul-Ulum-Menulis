@@ -57,7 +57,7 @@
                                             <div class="media mb-4">
                                                 <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.Author.UrlImage)" style="height: 80px; width:80px" alt="">
                                                 <div class="media-body">
-                                                    <a href="@Url.Action("Profile","HomeBlog",new { userId = item.Author.SlugUrl })">
+                                                    <a href="@Url.Action("Profile","HomeBlog",new { userId = item.Author.Id })">
                                                         <h5 class="mt-0">@item.Author.DisplayName</h5>
                                                     </a> <span>Date applied @item.ProposedOn.TimeAgo()</span>
 
@@ -91,7 +91,7 @@
                                             <div class="media mb-4">
                                                 <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.Author.UrlImage)" style="height: 80px; width:80px" alt="">
                                                 <div class="media-body">
-                                                    <a href="@Url.Action("Profile","HomeBlog",new { userId = item.Author.SlugUrl })">
+                                                    <a href="@Url.Action("Profile","HomeBlog",new { userId = item.Author.Id })">
                                                         <h5 class="mt-0">@item.Author.DisplayName</h5>
                                                     </a>
                                                     <span title="@item.Score" style="font-size:15px;" class="label label-primary"><li class="fa fa-star"></li> @item.Score.FormatNumber()</span>

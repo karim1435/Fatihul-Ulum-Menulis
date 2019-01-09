@@ -77,6 +77,7 @@
                             @if(User.Identity.IsAuthenticated)
                             {
                                 <a class="dropdown-item" href="@Url.Action("Index","Admin")">Dashboard <i class="fa fa-dashboard"></i></a>
+                                <a class="dropdown-item" href="@Url.Action("Profile","HomeBlog",new { userId = User.Identity.GetUserId() })">My Profile <i class="fa fa-user"></i></a>
                             }
                             else
                             {

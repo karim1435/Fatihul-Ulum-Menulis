@@ -23,6 +23,7 @@ using ScraBoy.Features.CMS.Reporting;
 using ScraBoy.Features.Lomba.Audience;
 using ScraBoy.Features.Lomba.Contest;
 using ScraBoy.Features.CMS.PointScore;
+using ScraBoy.Features.CMS.Following;
 //using ScraBoy.Features.Forum.Question;
 //using ScraBoy.Features.Forum.Channel;
 //using ScraBoy.Features.Forum.Favorite;
@@ -50,7 +51,8 @@ namespace ScraBoy.Features.Data
 
         public DbSet<Participant> Participant { get; set; }
         public DbSet<Competition> Competiton { get; set; }
-        public DbSet<UserScore> UserScore { get; set;}
+        public DbSet<UserScore> UserScore { get; set; }
+        public DbSet<Follow> Follow { get; set; }
         #endregion
 
         #region CMS
@@ -150,8 +152,16 @@ namespace ScraBoy.Features.Data
             .HasRequired(s => s.Author)
             .WithMany(g => g.UserScores)
             .HasForeignKey<string>(s => s.AuthorId).WillCascadeOnDelete(true);
-            #endregion
 
+            modelBuilder.Entity<Follow>()
+            .HasRequired(s => s.Follower)
+            .WithMany(g => g.Following)
+            .HasForeignKey<string>(s => s.FollowerId).WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Follow>()
+            .HasRequired(s => s.Followed)
+            .WithMany(g => g.Followers)
+            .HasForeignKey<string>(s => s.FollowedId).WillCascadeOnDelete(false);
             //#region Forum FluentApi
             //modelBuilder.Entity<Thread>().HasKey(e => e.Id)
             //   .Property(e => e.Id)
@@ -159,7 +169,7 @@ namespace ScraBoy.Features.Data
 
             //modelBuilder.Entity<Thread>().HasRequired(e => e.Author);
             //modelBuilder.Entity<Thread>().HasRequired(e => e.Topic);
-            //#endregion
+            #endregion
         }
 
     }

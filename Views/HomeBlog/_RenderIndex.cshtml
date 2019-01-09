@@ -1,10 +1,4 @@
 ﻿@model IEnumerable<ScraBoy.Features.CMS.Blog.Post>
-
-<div class="about">
-    <div class="content line"></div>
-    <div class="content text">Latest</div>
-    <div class="content line"></div>
-</div>
 @foreach(var item in Model)
 {
     <div class="item col-xs-4 col-lg-4">
@@ -16,7 +10,7 @@
                 <div class="col-xs-12 col-md-12">
                     <div class="group card-title inner list-group-item-heading text-muted">
                         @item.Published.Value.FormatDate() | @Html.Partial("_RenderCategory",item.Category.Name)
-                        by <a href="@Url.Action("Profile","HomeBlog",new { userId= item.Author.SlugUrl})">
+                        by <a href="@Url.Action("Profile","HomeBlog",new { userId= item.Author.Id})">
                             @item.Author.DisplayName
                         </a>
                     </div>

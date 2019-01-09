@@ -101,6 +101,11 @@
 
 <div class="container">
     <div id="products" class="row view-group">
+        <div class="about">
+            <div class="content line"></div>
+            <div class="content text">Latest</div>
+            <div class="content line"></div>
+        </div>
         @Html.Partial("_RenderIndex",(ViewBag.NewPosts as IEnumerable<ScraBoy.Features.CMS.Blog.Post>).Take(9))
         <a target="_blank" href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "latestpost" })" class="btn btn-block" style="background-color:#ffffff">
             <h5 class="mt-0 text-success">Show More</h5>

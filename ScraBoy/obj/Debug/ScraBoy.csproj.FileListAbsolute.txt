@@ -113,7 +113,6 @@ E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.urep.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.csproj.GenerateResource.Cache
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.dll
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.pdb
-E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.csprojResolveAssemblyReference.cache
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.imageprofile.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.testingcoy.resources
 E:\Projects\ScraBoy\ScraBoy\bin\ZetaProducerHtmlCompressor.dll
@@ -164,3 +163,14 @@ E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.forgottime.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.tps.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.tpsdd.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.tossssss.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.csprojResolveAssemblyReference.cache
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.followsystem.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.test.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.tongcep.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.followco.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.testttttt.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.seems.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.tongs.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.setttdkfjdk.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.someaddfollow.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.bismillahsuccess.resources

@@ -59,7 +59,6 @@ namespace ScraBoy.Features.CMS.Blog
         public string AuthorId { get; set; }
         [ForeignKey("AuthorId")]
         public virtual CMSUser Author { get; set; }
-
         [Required(ErrorMessage = "Please Select Category")]
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
@@ -70,7 +69,6 @@ namespace ScraBoy.Features.CMS.Blog
         public virtual ICollection<Violation> Violations { get; set; }
         [Display(Name = "Upload Image")]
         public string UrlImage { get; set; }
-
         [NotMapped]
         public HttpPostedFileBase ImageFile { get; set; }
         [NotMapped]

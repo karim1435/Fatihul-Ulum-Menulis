@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
 using ScraBoy.Features.CMS.Blog;
 using ScraBoy.Features.CMS.Comments;
+using ScraBoy.Features.CMS.Following;
 using ScraBoy.Features.CMS.Gzip;
 using ScraBoy.Features.CMS.Interest;
 using ScraBoy.Features.CMS.ModelBinders;
@@ -23,20 +24,15 @@ namespace ScraBoy.Features.CMS.HomeBlog
     public class HomeBlogController : Controller
     {
         private readonly IPostRepository posRepository;
-        private readonly ICommentRepository commentRepository;
-        private readonly IUserRepository userRepository;
         private BlogService blogService = new BlogService();
 
-        public HomeBlogController() : this(new PostRepository()
-            ,new CommentRepository(),new UserRepository())
-        { }
+        public HomeBlogController() : this(new PostRepository())
+        {
+        }
 
-        public HomeBlogController(IPostRepository postRepository,
-            ICommentRepository commentRepository,IUserRepository userRepository)
+        public HomeBlogController(IPostRepository postRepository)
         {
             posRepository = postRepository;
-            this.commentRepository = commentRepository;
-            this.userRepository = userRepository;
         }
         [Route("")]
         [CompressContent]
@@ -126,6 +122,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
 
             try
             {
+                ICommentRepository commentRepository = new CommentRepository();
                 await commentRepository.CreateAsync(model.NewComment);
 
                 return RedirectToAction("Post");
@@ -153,8 +150,6 @@ namespace ScraBoy.Features.CMS.HomeBlog
             {
                 return HttpNotFound();
             }
-
-
             return View("Category","",posts);
 
         }
@@ -209,9 +204,36 @@ namespace ScraBoy.Features.CMS.HomeBlog
             return View("Tag","",blogs);
         }
 
+        [Route("bestwriter")]
+        [AllowAnonymous]
+        [CompressContent]
+        public async Task<ActionResult> RankingTopUser()
+        {
+            var user = await this.blogService.GetTopContributors();
+            return View(user);
+        }
+        [Route("profile/{userId}")]
+        [AllowAnonymous]
+        [CompressContent]
+        public async Task<ActionResult> Profile(string userId)
+        {
+            IUserRepository userRepository = new UserRepository();
 
+            var user = await userRepository.GetUserById(userId);
+
+            if(user == null)
+            {
+                return HttpNotFound();
+            }
+            await CheckFollowAysnc(user.Id,UserId);
+
+            var profile = await blogService.GetProfileModel(user.SlugUrl);
+
+            return View(profile);
+        }
         [Route("votedBy/{postId}")]
         [CompressContent]
+        [Authorize]
         public async Task<ActionResult> ShowWhoVote(string postId)
         {
             await SetViewBag();
@@ -225,6 +247,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
             return View(post);
         }
         [CompressContent]
+        [Authorize]
         public async Task<ActionResult> Info(int? page)
         {
             int pageNumber = (page ?? 1);
@@ -236,17 +259,9 @@ namespace ScraBoy.Features.CMS.HomeBlog
         }
         public async Task<PartialViewResult> CategoryMenu()
         {
-
             return PartialView(this.blogService.GetAllCategories());
         }
-        [Route("bestwriter")]
-        [AllowAnonymous]
-        [CompressContent]
-        public async Task<ActionResult> RankingTopUser()
-        {
-            var user = await this.blogService.GetTopContributors();
-            return View(user);
-        }
+      
         public async Task TopContributor()
         {
             ViewBag.TopUser = await this.blogService.GetTopContributors();
@@ -261,28 +276,18 @@ namespace ScraBoy.Features.CMS.HomeBlog
         {
             var blog = await this.blogService.GetAllPost();
 
-            ViewBag.TopLikes = blog.Where(a => a.TotalVote >= 1).OrderByDescending(a => a.TotalVote); ;
+            ViewBag.TopLikes = blog.OrderByDescending(a => a.TotalVote); ;
             ViewBag.NewPosts = blog.OrderByDescending(a => a.Published); ;
-            ViewBag.PopularView = blog.Where(a => a.TotalViews >= 1).OrderByDescending(a => a.TotalViews);
-            ViewBag.Commented = blog.Where(a => a.TotalComment >= 1).OrderByDescending(a => a.TotalComment);
+            ViewBag.PopularView = blog.OrderByDescending(a => a.TotalViews);
+            ViewBag.Commented = blog.OrderByDescending(a => a.TotalComment);
         }
-        [Route("profile/{userId}")]
-        [AllowAnonymous]
-        [CompressContent]
-        public async Task<ActionResult> Profile(string userId)
+     
+        private async Task CheckFollowAysnc(string followed,string follower)
         {
-            var user = await userRepository.GetUserBySlug(userId);
-
-            if(user == null)
-            {
-                return HttpNotFound();
-            }
-
-            var profile = await blogService.GetProfileModel(userId);
-
-            return View(profile);
+            IFollowRepository followRepository = new FollowRepository();
+            var model = await followRepository.FollowedUser(followed,follower);
+            ViewBag.followed = model != null;
         }
-
         public string UserId
         {
             get { return User.Identity.GetUserId(); }

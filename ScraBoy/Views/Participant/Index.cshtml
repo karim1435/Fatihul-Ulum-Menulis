@@ -43,7 +43,12 @@
                                     Delete <i class="fa fa-trash"></i>
                                 </a>
                             </td>
-                            <td>@item.Author.DisplayName</td>
+
+                            <td>
+                                <a href="@Url.Action("Profile","HomeBlog",new { userId= item.Author.Id})">
+                                    @item.Author.DisplayName
+                                </a>
+                            </td>
                             <td>@item.Score</td>
                             <td>@item.ProposedOn.TimeAgo()</td>
                             <td>

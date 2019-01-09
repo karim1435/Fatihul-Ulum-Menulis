@@ -20,7 +20,7 @@
                                     </div>
                                 </div>
                                 <div class="col-md-10 col-sm-9 col-xs-9 pd-l0">
-                                    <a href="@Url.Action("Profile","HomeBlog",new { userId = item.User.SlugUrl })">@item.User.DisplayName</a>
+                                    <a href="@Url.Action("Profile","HomeBlog",new { userId = item.User.Id })">@item.User.DisplayName</a>
                                     @((int)item.NotificationType == 1 ? "Liked" : item.Parent != null ? "Replied comment On" : "Commented On"  ) your post
                                     <a href="@Url.Action("Post","HomeBlog",new { postId = item.Post.Id })">@item.Post.Title</a>   @item.PostedOn.TimeAgo()
                                 </div>

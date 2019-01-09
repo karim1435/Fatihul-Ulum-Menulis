@@ -464,3 +464,30 @@ footer {
     max-height: 200px;
     overflow-x: hidden;
 }
+
+
+@media screen and (min-width: 1200px) {
+  .container {
+    width: 90%;
+  }
+
+  .list--item {
+    width: 20%;
+  }
+}
+@media screen and (max-width: 768px) {
+  .list--item {
+    width: 33%;
+  }
+}
+@media screen and (max-width: 620px) {
+  .list--item {
+    width: 50%;
+  }
+}
+@media screen and (max-width: 480px) {
+  .list--item {
+    width: 100%;
+  }
+}
+

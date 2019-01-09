@@ -164,3 +164,13 @@ E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.forgottime.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.tps.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.tpsdd.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.tossssss.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.followsystem.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.test.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.tongcep.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.followco.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.testttttt.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.seems.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.tongs.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.setttdkfjdk.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.someaddfollow.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.bismillahsuccess.resources

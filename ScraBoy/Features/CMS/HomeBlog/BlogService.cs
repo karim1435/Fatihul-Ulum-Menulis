@@ -13,6 +13,8 @@ using ScraBoy.Features.Utility;
 using ScraBoy.Features.CMS.Topic;
 using ScraBoy.Features.CMS.User;
 using System.Data.Entity;
+using ScraBoy.Features.CMS.Following;
+
 namespace ScraBoy.Features.CMS.HomeBlog
 {
     public class BlogService
@@ -59,6 +61,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
             var model = commenRepository.GetAllComment();
             return model.Where(post => post.Post.AuthorId.Equals(userId) && post.UserId != userId).ToList();
         }
+
         public IEnumerable<NotificationViewModel> GetNotification(string userId)
         {
             var notifications = ((from like in GetALLVoting(userId)

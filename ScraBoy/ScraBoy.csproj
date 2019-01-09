@@ -236,6 +236,10 @@
     <Compile Include="Features\CMS\Comments\CommentController.cs" />
     <Compile Include="Features\CMS\Comments\CommentRepository.cs" />
     <Compile Include="Features\CMS\Comments\ICommentRepository.cs" />
+    <Compile Include="Features\CMS\Following\Follow.cs" />
+    <Compile Include="Features\CMS\Following\FollowController.cs" />
+    <Compile Include="Features\CMS\Following\FollowRepository.cs" />
+    <Compile Include="Features\CMS\Following\IFollowRepository.cs" />
     <Compile Include="Features\CMS\Gzip\CompressContentAttribute.cs" />
     <Compile Include="Features\CMS\HomeBlog\BlogService.cs" />
     <Compile Include="Features\CMS\HomeBlog\HomeBlogController.cs" />
@@ -595,6 +599,46 @@
     <Compile Include="Migrations\201901072143593_tossssss.cs" />
     <Compile Include="Migrations\201901072143593_tossssss.Designer.cs">
       <DependentUpon>201901072143593_tossssss.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901090812577_followsystem.cs" />
+    <Compile Include="Migrations\201901090812577_followsystem.Designer.cs">
+      <DependentUpon>201901090812577_followsystem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901091402515_test.cs" />
+    <Compile Include="Migrations\201901091402515_test.Designer.cs">
+      <DependentUpon>201901091402515_test.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901091409378_tongcep.cs" />
+    <Compile Include="Migrations\201901091409378_tongcep.Designer.cs">
+      <DependentUpon>201901091409378_tongcep.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901091410451_followco.cs" />
+    <Compile Include="Migrations\201901091410451_followco.Designer.cs">
+      <DependentUpon>201901091410451_followco.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901091537031_testttttt.cs" />
+    <Compile Include="Migrations\201901091537031_testttttt.Designer.cs">
+      <DependentUpon>201901091537031_testttttt.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901091554323_seems.cs" />
+    <Compile Include="Migrations\201901091554323_seems.Designer.cs">
+      <DependentUpon>201901091554323_seems.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901091613035_tongs.cs" />
+    <Compile Include="Migrations\201901091613035_tongs.Designer.cs">
+      <DependentUpon>201901091613035_tongs.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901091618546_setttdkfjdk.cs" />
+    <Compile Include="Migrations\201901091618546_setttdkfjdk.Designer.cs">
+      <DependentUpon>201901091618546_setttdkfjdk.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901091620080_someaddfollow.cs" />
+    <Compile Include="Migrations\201901091620080_someaddfollow.Designer.cs">
+      <DependentUpon>201901091620080_someaddfollow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901091621101_bismillah success.cs" />
+    <Compile Include="Migrations\201901091621101_bismillah success.Designer.cs">
+      <DependentUpon>201901091621101_bismillah success.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -956,6 +1000,8 @@
     <Content Include="Views\Score\History.cshtml" />
     <Content Include="Views\Score\Edit.cshtml" />
     <Content Include="Views\Score\_PostForm.cshtml" />
+    <Content Include="Views\Follow\Follower.cshtml" />
+    <Content Include="Views\Follow\Following.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1174,6 +1220,36 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901072143593_tossssss.resx">
       <DependentUpon>201901072143593_tossssss.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901090812577_followsystem.resx">
+      <DependentUpon>201901090812577_followsystem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901091402515_test.resx">
+      <DependentUpon>201901091402515_test.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901091409378_tongcep.resx">
+      <DependentUpon>201901091409378_tongcep.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901091410451_followco.resx">
+      <DependentUpon>201901091410451_followco.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901091537031_testttttt.resx">
+      <DependentUpon>201901091537031_testttttt.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901091554323_seems.resx">
+      <DependentUpon>201901091554323_seems.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901091613035_tongs.resx">
+      <DependentUpon>201901091613035_tongs.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901091618546_setttdkfjdk.resx">
+      <DependentUpon>201901091618546_setttdkfjdk.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901091620080_someaddfollow.resx">
+      <DependentUpon>201901091620080_someaddfollow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901091621101_bismillah success.resx">
+      <DependentUpon>201901091621101_bismillah success.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

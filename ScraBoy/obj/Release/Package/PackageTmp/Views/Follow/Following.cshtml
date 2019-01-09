@@ -1,0 +1,34 @@
+﻿@model IEnumerable<ScraBoy.Features.CMS.Following.Follow>
+
+@{
+    ViewBag.Title = "Fatihul Ulum Menulis - Following";
+
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+@section seoSection{
+    <meta name="description" content="Tulisan Fatihul Ulum - You Follows" />
+    <meta name="robots" content="index" />
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="about">
+                <div class="content line"></div>
+                <div class="content text">Following</div>
+                <div class="content line"></div>
+            </div>
+            @foreach(var item in Model)
+            {
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.Followed.UrlImage)" style="height: 30px; width:30px" alt="">
+                    <div class="media-body">
+                        <a class="text-primary" href="@Url.Action("Profile","HomeBlog",new { userId = item.Followed.Id })">
+                            <h5 class="mt-0">@item.Followed.DisplayName</h5>
+                        </a>
+                    </div>
+                </div>
+                <hr />
+            }
+        </div>
+    </div>
+</div>
