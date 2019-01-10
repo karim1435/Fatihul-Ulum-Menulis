@@ -213,8 +213,6 @@ namespace ScraBoy.Features.CMS.HomeBlog
             return View(user);
         }
         [Route("profile/{userId}")]
-        [AllowAnonymous]
-        [CompressContent]
         public async Task<ActionResult> Profile(string userId)
         {
             IUserRepository userRepository = new UserRepository();
@@ -246,16 +244,13 @@ namespace ScraBoy.Features.CMS.HomeBlog
             }
             return View(post);
         }
-        [CompressContent]
         [Authorize]
-        public async Task<ActionResult> Info(int? page)
+        [CompressContent]
+        [Route("Notifications")]
+        public async Task<ActionResult> Notifications(int? page)
         {
             int pageNumber = (page ?? 1);
             return View(this.blogService.GetPagedListInfo(pageNumber,User.Identity.GetUserId()));
-        }
-        public async Task<PartialViewResult> NotificationMenu()
-        {
-            return PartialView(this.blogService.GetNotification(UserId));
         }
         public async Task<PartialViewResult> CategoryMenu()
         {
@@ -281,12 +276,14 @@ namespace ScraBoy.Features.CMS.HomeBlog
             ViewBag.PopularView = blog.OrderByDescending(a => a.TotalViews);
             ViewBag.Commented = blog.OrderByDescending(a => a.TotalComment);
         }
-     
         private async Task CheckFollowAysnc(string followed,string follower)
         {
             IFollowRepository followRepository = new FollowRepository();
-            var model = await followRepository.FollowedUser(followed,follower);
-            ViewBag.followed = model != null;
+            var follow = await followRepository.FollowedUser(followed,follower);
+
+            var follback = await followRepository.FollowingUser(followed,follower);
+            ViewBag.followed = follow != null;
+            ViewBag.folback = follback != null;
         }
         public string UserId
         {

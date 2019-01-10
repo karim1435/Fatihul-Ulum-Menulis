@@ -62,7 +62,16 @@
                 }
                 @if(User.Identity.IsAuthenticated)
                 {
-                    Html.RenderAction("NotificationMenu",new { controller = "HomeBlog" });
+
+                    <div class="row">
+                        <nav class="navbar navbar-default">
+                            <li style="list-style-type: none">
+                                <a class="btn btn-default bg-green text-white" href="@Url.Action("Notifications","HomeBlog")">
+                                    <i style="color:white" class="fa fa-bell"></i> Notifications
+                                </a>
+                            </li>
+                        </nav>
+                    </div>
 
                 }
 
@@ -126,6 +135,7 @@
                         <li><a href="@Url.Action("RankingTopUser",new { controller = "HomeBlog"})"> Ranking</a></li>
                         <li><a href="@Url.Action("Index",new { controller = "Competition"})"> Contest</a></li>
                         <li><a href="@Url.Action("MyContest","Competition")"> My Contest</a></li>
+                        <li><a href="@Url.Action("Notifications","HomeBlog")"> Notifications</a></li>
                     </ul>
                 </div>
                 <div class="col-md-3 col-sm-6 footer-col">
@@ -147,13 +157,6 @@
                 <div class="col-md-6">
                     <p>Copyright © Fatihul Ulum @DateTime.Now.Year</p>
                 </div>
-                <div class="col-md-6">
-                    <ul class="bottom_ul">
-                        <li><a href="@Url.Action("Index","HomeBlog")">Home</a></li>
-                        <li><a href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "latestpost" })">Blog</a></li>
-                        <li><a href="@Url.Action("Post","Sitemap")">Site Map</a></li>
-                    </ul>
-                </div>
             </div>
         </div>
     </div>
@@ -164,16 +167,10 @@
         gtag('js', new Date());
         gtag('config', 'UA-131424917-1');
     </script>
+
     <script src="~/Scripts/jquery.min.js"></script>
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
 
-    <script src="~/js/jquery-2.1.1.min.js"></script>
-    <script src="~/js/jquery-ui.min-1.11.1.js"></script>
-    <script src="~/js/admin.js"></script>
-
-
     @RenderSection("scripts",required: false)
-
-
 </body>
 </html>

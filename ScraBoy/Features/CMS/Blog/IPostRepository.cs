@@ -11,6 +11,7 @@ namespace ScraBoy.Features.CMS.Blog
 {
     public interface IPostRepository
     {
+        IEnumerable<Post> GetPostsByAuthor(string authorId);
         IEnumerable<Post> GetAllPost();
         int CountPublished { get; }
         Task<Post> GetAsync(string id);

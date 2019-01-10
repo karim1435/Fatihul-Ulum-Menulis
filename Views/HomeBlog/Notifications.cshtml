@@ -1,0 +1,84 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<ScraBoy.Features.CMS.HomeBlog.NotificationViewModel>
+
+@{
+    ViewBag.Title = "Fatihul Ulum Menulis - Notifications";
+
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+@{
+    var commentType = ScraBoy.Features.CMS.HomeBlog.NotificationType.Comment;
+    var followType = ScraBoy.Features.CMS.HomeBlog.NotificationType.Follow;
+    var votingType = ScraBoy.Features.CMS.HomeBlog.NotificationType.Voting;
+    var postType = ScraBoy.Features.CMS.HomeBlog.NotificationType.PostType;
+    var mentionType = ScraBoy.Features.CMS.HomeBlog.NotificationType.Mention;
+
+}
+@section seoSection{
+    <meta name="robots" content="noindex, nofollow" />
+}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="about">
+                <div class="content line"></div>
+                <div class="content text">Notifications</div>
+                <div class="content line"></div>
+            </div>
+            @foreach(var item in Model)
+            {
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.User.UrlImage)" style="height: 50px; width:50px" alt="">
+                    <div class="media-body">
+                        <a class="text-primary" href="@Url.Action("Profile","HomeBlog",new { userId = item.User.Id })">
+                            <h5 class="mt-0">@item.User.DisplayName</h5>
+                        </a>
+                        @if(item.NotificationType.Equals(followType))
+                        {
+                            <span>Started to follow you </span>
+                        }
+                        else
+                        {
+                            if(item.NotificationType.Equals(votingType))
+                            {
+                                <span>
+                                    Liked your post)
+                                </span>
+                            }
+
+                            if(item.NotificationType.Equals(commentType))
+                            {
+                                <span>
+                                    @(item.Parent!=null? "Replied a Comment":"Commented")
+                                </span>
+                            }
+                            if(item.NotificationType.Equals(postType))
+                            {
+                                <span>
+                                    made new Post
+                                </span>
+                            }
+                            if(item.NotificationType.Equals(mentionType))
+                            {
+                                <span>
+                                    mentioned you on a post
+                                </span>
+                            }
+                            <a class="text-primary" href="@Url.Action("Post","HomeBlog",new { postId = item.Post.Id })">@item.Post.Title</a>
+                        }
+                        @item.PostedOn.TimeAgo()
+                    </div>
+                </div>
+                <hr />
+            }
+        </div>
+
+
+    </div>
+    @if(Model.Count() > 0)
+    {
+        <text>Page</text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text>Of</text> @Model.PageCount
+        @Html.PagedListPager(Model,page => Url.Action("Notifications",new { page = page }))
+    }
+</div>

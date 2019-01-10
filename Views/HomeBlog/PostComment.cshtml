@@ -21,8 +21,8 @@
 
             @if(User.Identity.Name == Model.User.UserName || User.IsInRole("admin"))
             {
-                <a class="btn btn-danger" data-action="delete" ,data-value="Model.Id" href=@Url.Action("Delete","Comment",new { id = Model.Id })>
-                    Delete <i class="fa fa-trash"></i>
+                <a class="btn btn-danger" href=@Url.Action("Remove","Comment",new { id = Model.Id})>
+                    Delete <i class="fa fa-pencil"></i>
                 </a>
                 <a class="btn btn-info" href=@Url.Action("Edit","Comment",new { commentId = Model.Id})>
                     Edit <i class="fa fa-pencil"></i>

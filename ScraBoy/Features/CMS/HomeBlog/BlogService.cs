@@ -26,13 +26,15 @@ namespace ScraBoy.Features.CMS.HomeBlog
         public readonly ITagRepostory tagRepoistory;
         private readonly ICategoryRepository categoryRepository;
         private readonly IUserRepository userRepository;
+        private readonly IFollowRepository followRepository;
         public BlogService() : this(
             new PostRepository(),
             new CommentRepository(),
             new VotingRepository(),
             new TagRepository(),
             new CategoryRepository(),
-            new UserRepository())
+            new UserRepository(),
+            new FollowRepository())
         {
 
         }
@@ -42,7 +44,8 @@ namespace ScraBoy.Features.CMS.HomeBlog
             IVotingRepository voteRepository,
             ITagRepostory tagRepository,
             ICategoryRepository categoryRepository,
-            IUserRepository userRepository)
+            IUserRepository userRepository,
+            IFollowRepository followRepository)
         {
             this.postRepository = postRepository;
             this.commenRepository = commentRepository;
@@ -50,6 +53,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
             this.tagRepoistory = tagRepository;
             this.categoryRepository = categoryRepository;
             this.userRepository = userRepository;
+            this.followRepository = followRepository;
         }
         private List<Voting> GetALLVoting(string userId)
         {
@@ -61,7 +65,28 @@ namespace ScraBoy.Features.CMS.HomeBlog
             var model = commenRepository.GetAllComment();
             return model.Where(post => post.Post.AuthorId.Equals(userId) && post.UserId != userId).ToList();
         }
+        public List<Comment> GetCommentMention(string userId)
+        {
+            var model = commenRepository.GetAllComment();
+            return model.Where(a => a.Parent != null && a.Parent.UserId.Equals(userId)).ToList();
+        }
+        public List<Follow> GetAllFollower(string userId)
+        {
+            return followRepository.GetAllFollowerbyUser(userId).ToList();
+        }
+        public List<Post> GetAllPostNote(string userId)
+        {
+            var model = followRepository.GetAllFollowedbyUser(userId);
 
+            List<Post> posts = new List<Post>();
+
+            foreach(var followed in model)
+            {
+                var post = postRepository.GetPostsByAuthor(followed.FollowedId);
+                posts.AddRange(post);
+            }
+            return posts;
+        }
         public IEnumerable<NotificationViewModel> GetNotification(string userId)
         {
             var notifications = ((from like in GetALLVoting(userId)
@@ -81,7 +106,31 @@ namespace ScraBoy.Features.CMS.HomeBlog
                                      User = comment.User,
                                      NotificationType = NotificationType.Comment,
                                      PostedOn = comment.PostedOn,
-                                 })).OrderByDescending(a => a.PostedOn).ToList();
+                                 }).Union
+                                 (from follow in GetAllFollower(userId)
+                                  select new NotificationViewModel
+                                  {
+                                      User = follow.Follower,
+                                      PostedOn = follow.FollowedOn,
+                                      NotificationType = NotificationType.Follow
+                                  }).Union
+                                  (from post in GetAllPostNote(userId)
+                                   select new NotificationViewModel
+                                   {
+                                       User = post.Author,
+                                       Post = post,
+                                       PostedOn = post.Published.Value,
+                                       NotificationType = NotificationType.PostType
+                                   }).Union
+                                   (from mention in GetCommentMention(userId)
+                                    select new NotificationViewModel
+                                    {
+                                        User = mention.User,
+                                        Post = mention.Post,
+                                        PostedOn = mention.PostedOn,
+                                        NotificationType = NotificationType.Mention
+                                    }
+                                   )).OrderByDescending(a => a.PostedOn).ToList();
 
             return notifications;
         }
@@ -153,12 +202,12 @@ namespace ScraBoy.Features.CMS.HomeBlog
             }
             return topUsers.Where(a => a.Point > 0).OrderByDescending(a => a.Point);
         }
-    
+
         public IEnumerable<string> GetAllCategories()
         {
             var cat = this.categoryRepository.GetAllCategory();
 
-            return cat.Where(a => a.Posts.Count() > 0).Select(a => a.Name).Distinct().ToList();
+            return cat.Select(a=>a.Name).ToList();
         }
         public async Task<CMSUser> GetProfileModel(string userId)
         {

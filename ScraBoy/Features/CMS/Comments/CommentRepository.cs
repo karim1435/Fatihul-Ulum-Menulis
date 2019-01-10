@@ -122,7 +122,7 @@ namespace ScraBoy.Features.CMS.Comments
 
         public IEnumerable<Comment> GetAllComment()
         {
-            return db.Comment.Include(a => a.Post).OrderByDescending(a => a.PostedOn).ToList();
+            return db.Comment.Include(a => a.Post).Include("Parent").OrderByDescending(a => a.PostedOn).ToList();
         }
     }
 

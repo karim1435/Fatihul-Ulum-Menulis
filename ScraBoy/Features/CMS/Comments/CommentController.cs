@@ -165,6 +165,21 @@ namespace ScraBoy.Features.CMS.Comments
                 return HttpNotFound();
             }
         }
+        [Route("Remove/{id}")]
+        [CompressContent]
+        public async Task<ActionResult> Remove(int id)
+        {
+            var comment = await commentRepository.GetCommentById(id);
+            if(comment == null)
+            {
+                return HttpNotFound();
+            }
+            string postId = comment.PostId;
+
+            await this.commentRepository.DeleteCommentAsync(comment);
+
+            return RedirectToAction("Post","HomeBlog",new { postId = postId });
+        }
         private async Task<CMSUser> GetLoggedInUser()
         {
             return await userRepository.GetUserByNameAsync(User.Identity.Name);

@@ -162,6 +162,10 @@ namespace ScraBoy.Features.Data
             .HasRequired(s => s.Followed)
             .WithMany(g => g.Followers)
             .HasForeignKey<string>(s => s.FollowedId).WillCascadeOnDelete(false);
+
+
+
+
             //#region Forum FluentApi
             //modelBuilder.Entity<Thread>().HasKey(e => e.Id)
             //   .Property(e => e.Id)

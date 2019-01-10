@@ -16,7 +16,10 @@ namespace ScraBoy.Features.CMS.HomeBlog
     public enum NotificationType
     {
         Comment,
-        Voting
+        Voting,
+        Follow,
+        PostType,
+        Mention
     }
     public class NotificationViewModel
     {

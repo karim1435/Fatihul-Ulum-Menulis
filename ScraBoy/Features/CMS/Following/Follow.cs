@@ -16,5 +16,6 @@ namespace ScraBoy.Features.CMS.Following
         public string FollowedId { get; set; }
         [ForeignKey("FollowedId")]
         public virtual CMSUser Followed { get; set; }
+        public DateTime FollowedOn { get; set; }
     }
 }

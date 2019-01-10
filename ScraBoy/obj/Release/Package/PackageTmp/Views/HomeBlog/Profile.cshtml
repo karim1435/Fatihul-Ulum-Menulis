@@ -27,18 +27,9 @@
                 <div class="small">
                     @if(userId != Model.Id)
                     {
-                        if(!ViewBag.followed)
-                        {
-                            <a class="btn btn-raised btn-danger text-white" href="@Url.Action("Follow",new { controller = "Follow",slugUrl = Model.SlugUrl })" title="IG Profile">
-                                <i class="fa fa-user-plus" aria-hidden="true"> Follow</i>
-                            </a>
-                        }
-                        else
-                        {
-                            <a class="btn btn-raised btn-danger text-white" href="@Url.Action("Follow",new { controller = "Follow",slugUrl = Model.SlugUrl })" title="IG Profile">
-                                <i class="fa fa-user-times" aria-hidden="true"> Unfollow</i>
-                            </a>
-                        }
+                        <a class="btn btn-raised btn-danger text-white" href="@Url.Action("Follow",new { controller = "Follow",slugUrl = Model.SlugUrl })" title="IG Profile">
+                            <i class="@(!ViewBag.followed ? "fa fa-user-plus" : "fa fa-user-times")" aria-hidden="true"> @(!ViewBag.followed ? (ViewBag.folback ? "Follback" : "Follow") : "Unfollow")</i>
+                        </a>
                     }
                 </div>
 

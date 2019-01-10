@@ -174,3 +174,7 @@ E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.tongs.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.setttdkfjdk.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.someaddfollow.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.bismillahsuccess.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.quote.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.burung.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.removefollowdate.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.datetimefollow.resources

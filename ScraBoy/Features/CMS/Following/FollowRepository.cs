@@ -51,13 +51,26 @@ namespace ScraBoy.Features.CMS.Following
         }
         public async Task<Follow> FollowedUser(string followed,string follower)
         {
-
             var followers = await GetFollowerByUser(followed);
 
             var result = followers.Where(a => a.FollowerId.Equals(follower)).FirstOrDefault();
 
             return result;
+        }
+        public async Task<Follow> FollowingUser(string followed,string follower)
+        {
+            var following =await GetFollowingByUser(followed);
+            var result = following.Where(a => a.FollowedId.Equals(follower)).FirstOrDefault();
+            return result;
+        }
 
+        public IEnumerable<Follow> GetAllFollowerbyUser(string userId)
+        {
+            return db.Follow.Where(a => a.FollowedId.Equals(userId)).ToList();
+        }
+        public IEnumerable<Follow> GetAllFollowedbyUser(string userId)
+        {
+            return db.Follow.Where(a => a.FollowerId.Equals(userId)).ToList();
         }
     }
 }

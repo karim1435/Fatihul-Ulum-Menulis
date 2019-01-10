@@ -6,7 +6,7 @@
 
 body {
     padding-top: 54px;
-    min-height:100%;
+    min-height: 100%;
 }
 
 @media (min-width: 992px) {
@@ -186,10 +186,10 @@ a.bg-green:focus, a.bg-green:hover, button.bg-green:focus, button.bg-green:hover
     }
 
 .navbar-default .dropdown-menu.notify-drop {
-    min-width: 310px;
+    min-width: 200px;
     background-color: #fff;
-    min-height: 360px;
-    max-height: 360px;
+    min-height: 340px;
+    max-height: 340px;
 }
 
     .navbar-default .dropdown-menu.notify-drop .notify-drop-title {
@@ -198,8 +198,8 @@ a.bg-green:focus, a.bg-green:hover, button.bg-green:focus, button.bg-green:hover
     }
 
     .navbar-default .dropdown-menu.notify-drop .drop-content {
-        min-height: 280px;
-        max-height: 280px;
+        min-height: 320px;
+        max-height: 320px;
         overflow-y: scroll;
     }
 
@@ -232,7 +232,7 @@ a.bg-green:focus, a.bg-green:hover, button.bg-green:focus, button.bg-green:hover
             }
 
             .navbar-default .dropdown-menu.notify-drop .drop-content > li:hover {
-                background-color: #fcfcfc;
+                background-color: #fafafa;
             }
 
             .navbar-default .dropdown-menu.notify-drop .drop-content > li:last-child {
@@ -320,9 +320,6 @@ a.bg-green:focus, a.bg-green:hover, button.bg-green:focus, button.bg-green:hover
             .navbar-default .dropdown-menu.notify-drop .notify-drop-footer a:hover {
                 color: #333;
             }
-
-@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700,300);
-@import url(https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css);
 
 ul, li {
     padding: 0;
@@ -467,27 +464,29 @@ footer {
 
 
 @media screen and (min-width: 1200px) {
-  .container {
-    width: 90%;
-  }
+    .container {
+        width: 90%;
+    }
 
-  .list--item {
-    width: 20%;
-  }
+    .list--item {
+        width: 20%;
+    }
 }
+
 @media screen and (max-width: 768px) {
-  .list--item {
-    width: 33%;
-  }
-}
-@media screen and (max-width: 620px) {
-  .list--item {
-    width: 50%;
-  }
-}
-@media screen and (max-width: 480px) {
-  .list--item {
-    width: 100%;
-  }
+    .list--item {
+        width: 33%;
+    }
 }
 
+@media screen and (max-width: 620px) {
+    .list--item {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .list--item {
+        width: 100%;
+    }
+}

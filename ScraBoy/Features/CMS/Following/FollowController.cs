@@ -65,6 +65,7 @@ namespace ScraBoy.Features.CMS.Following
 
             model.FollowerId = UserId;
             model.FollowedId = user.Id;
+            model.FollowedOn = DateTime.Now;
 
             await this.followRepository.Create(model,user.Id);
 

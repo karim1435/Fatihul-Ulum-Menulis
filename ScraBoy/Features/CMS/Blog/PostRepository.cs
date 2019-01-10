@@ -210,6 +210,11 @@ namespace ScraBoy.Features.CMS.Blog
             return await db.Post.Include("Author").Where(p => p.AuthorId == authorId &&
                     !p.Private).ToArrayAsync();
         }
+        public IEnumerable<Post> GetPostsByAuthor(string authorId)
+        {
+            return db.Post.Include("Author").Where(p => p.AuthorId == authorId &&
+                    !p.Private).ToList();
+        }
         public void Delete(string id)
         {
             var post = db.Post.FirstOrDefault(p => p.Id == id);

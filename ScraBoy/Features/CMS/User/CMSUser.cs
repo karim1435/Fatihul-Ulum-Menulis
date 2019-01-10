@@ -44,32 +44,8 @@ namespace ScraBoy.Features.CMS.User
         public virtual ICollection<Post> Posts { get; set; }
         public virtual ICollection<Violation> Violations { get; set; }
         public virtual ICollection<UserScore> UserScores { get; set; }
-
-
         public virtual ICollection<Follow> Followers { get; set; }
         public virtual ICollection<Follow> Following { get; set; }
-
-        //public virtual ICollection<Follow> Follows { get; set; }
-
-        //public int TotalFollower
-        //{
-        //    get
-        //    {
-        //        if(Follows == null)
-        //            return 0;
-        //        return Follows.Where(a => a.FollowedId.Equals(Id)).Count();
-        //    }
-        //}
-        //public int TotalFollowings
-        //{
-        //    get
-        //    {
-        //        if(Follows == null)
-        //            return 0;
-        //        return Follows.Where(a => a.FollowerId.Equals(Id)).Count();
-        //    }
-        //}
-
 
         [NotMapped]
         public string CurrentRole { get; set; }

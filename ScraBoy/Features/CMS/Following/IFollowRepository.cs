@@ -12,5 +12,8 @@ namespace ScraBoy.Features.CMS.Following
         Task<IEnumerable<Follow>> GetFollowerByUser(string userId);
         Task<IEnumerable<Follow>> GetFollowingByUser(string userId);
         Task<Follow> FollowedUser(string followed,string follower);
+        Task<Follow> FollowingUser(string followed,string follower);
+        IEnumerable<Follow> GetAllFollowerbyUser(string userId);
+        IEnumerable<Follow> GetAllFollowedbyUser(string userId);
     }
 }
