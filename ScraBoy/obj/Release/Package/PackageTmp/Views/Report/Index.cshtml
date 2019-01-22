@@ -38,7 +38,7 @@
                 <div style="background-color:@backgroundColor" class="media mb-4">
                     <div class="media-body bg-green">
                         <h6>
-                            <a href="@Url.Action("Profile","HomeBlog",new { userId= item.User.Id})">@item.User.DisplayName</a>
+                            <a href="@Url.Action("Profile","HomeBlog",new { username= item.User.UserName})">@item.User.DisplayName</a>
                             @{
                                 if((int)item.ReportType == 1)
                                 {

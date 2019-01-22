@@ -139,7 +139,8 @@ namespace ScraBoy.Features.CMS.HomeBlog
             var notification = GetNotification(userId).ToList();
             return notification.ToPagedList(page,10);
         }
-        public IPagedList<Post> GetPagedList(string postType,string search,string tagId,string catId,int currentPage)
+        public IPagedList<Post> GetPagedList(string postType,string search,
+            string tagId,string catId,int currentPage)
         {
             var model = new List<Post>();
 
@@ -151,31 +152,26 @@ namespace ScraBoy.Features.CMS.HomeBlog
             }
             else if(postType.Equals("mostpopularpost"))
             {
-                model = model.Where(a => a.TotalViews > 0).
-                    OrderByDescending(a => a.TotalViews).ToList();
+                model = model.OrderByDescending(a => a.TotalViews).ToList();
             }
             else if(postType.Equals("mosstinterestpost"))
             {
-                model = model.Where(a => a.TotalVote > 0).
-                    OrderByDescending(a => a.TotalVote).ToList();
+                model = model.OrderByDescending(a => a.TotalVote).ToList();
             }
             else if(postType.Equals("mostdiscusspost"))
             {
-                model = model.Where(a => a.TotalComment > 0).
-                    OrderByDescending(a => a.TotalComment).ToList();
+                model = model.OrderByDescending(a => a.TotalComment).ToList();
             }
-
             return model.Where(a => !a.Private).ToPagedList(currentPage,pageSize);
         }
         public async Task<IEnumerable<Post>> GetAllPost()
         {
             var model = await this.postRepository.GetAllAsync();
-            return model.Where(a => a.Private == false);
+            return model.Where(a => !a.Private);
         }
         public async Task<IEnumerable<Comment>> GetRecentCommentsAsycn()
         {
-            var comments = await this.commenRepository.GetAllCommentsAsync();
-            return comments.OrderByDescending(a => a.PostedOn);
+            return await this.commenRepository.GetAllCommentsAsync();
         }
         public async Task<IEnumerable<Post>> RelatedPosts(string postId,int categoryId)
         {
@@ -200,7 +196,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
                 model.TotalCommentPost = posts.Sum(post => (post.TotalComment));
                 topUsers.Add(model);
             }
-            return topUsers.Where(a => a.Point > 0).OrderByDescending(a => a.Point);
+            return topUsers.OrderByDescending(a => a.Point);
         }
 
         public IEnumerable<string> GetAllCategories()

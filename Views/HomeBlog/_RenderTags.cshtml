@@ -4,18 +4,18 @@
 {
     foreach(var item in Model.Tags.Distinct())
     {
-        <a target="_blank" class="label label-success" href="@Url.Action("Tag",new { tagId = item })" rel="nofollow">@item</a>
+        <a class="label label-success" href="@Url.Action("Tag",new { tagId = item })" rel="nofollow">@item</a>
     }
 }
 else
 {
     foreach(var item in Model.Tags.Distinct().Take(3))
     {
-        <a target="_blank" class="label label-success" href="@Url.Action("Tag",new { tagId = item })" rel="nofollow">@item</a>
+        <a class="label label-success" href="@Url.Action("Tag",new { tagId = item })" rel="nofollow">@item</a>
     }
     if(Model.Tags.Distinct().Count() > 3)
     {
-        <a class="text-muted" target="_blank" href=@Url.Action("Post","Homeblog",new { postId = Model.Id })>
+        <a class="text-muted" href=@Url.Action("Post","Homeblog",new { postId = Model.Id })>
             +@(Model.Tags.Distinct().Count() - 3) more
         </a>
 

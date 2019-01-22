@@ -1,4 +1,5 @@
-﻿using ScraBoy.Features.CMS.Role;
+﻿using ScraBoy.Features.CMS.Gzip;
+using ScraBoy.Features.CMS.Role;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ namespace ScraBoy.Features.CMS.Tag
             this.tagRepository = repository;
         }
         [Route("")]
+        [CompressContent]
         public async Task<ActionResult> Index(int? page,string currentFilter)
         {
             int pageNumber = (page ?? 1);
@@ -39,6 +41,7 @@ namespace ScraBoy.Features.CMS.Tag
             return View("Index","",tags);
 
         }
+        [CompressContent]
         public async Task<ViewResult> Search(string search)
         {
             ViewBag.Filter = search;
@@ -49,6 +52,7 @@ namespace ScraBoy.Features.CMS.Tag
         [Route("edit/{tag}")]
         [HttpGet]
         [Authorize(Roles = "admin, editor")]
+        [CompressContent]
         public ActionResult Edit(String tag)
         {
             try
@@ -66,6 +70,7 @@ namespace ScraBoy.Features.CMS.Tag
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin, editor")]
+        [CompressContent]
         public ActionResult Edit(String tag,string newTag)
         {
             var tags = tagRepository.GetAll();

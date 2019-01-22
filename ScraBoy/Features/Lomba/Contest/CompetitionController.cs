@@ -79,6 +79,7 @@ namespace ScraBoy.Features.Lomba.Contest
         [HttpGet]
         [Route("newcontest")]
         [Authorize(Roles = "admin")]
+        [CompressContent]
         public async Task<ActionResult> Create()
         {
             await SetViewBag();
@@ -87,6 +88,7 @@ namespace ScraBoy.Features.Lomba.Contest
         [HttpPost]
         [Route("newcontest")]
         [Authorize(Roles = "admin")]
+        [CompressContent]
         public async Task<ActionResult> Create(Competition model)
         {
             await SetViewBag();
@@ -124,6 +126,7 @@ namespace ScraBoy.Features.Lomba.Contest
         [HttpGet]
         [Route("editcontest/{slugUrl}")]
         [Authorize(Roles = "admin")]
+        [CompressContent]
         public async Task<ActionResult> Edit(string slugUrl)
         {
             await SetViewBag();
@@ -137,6 +140,7 @@ namespace ScraBoy.Features.Lomba.Contest
         [HttpPost]
         [Route("editcontest/{slugUrl}")]
         [Authorize(Roles = "admin")]
+        [CompressContent]
         public async Task<ActionResult> Edit(string slugUrl,Competition model)
         {
             var contest = await this.competititionRepository.GetByUrl(slugUrl);

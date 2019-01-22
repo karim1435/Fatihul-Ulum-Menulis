@@ -28,6 +28,8 @@ E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.ApplicationInsights.dll
 E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.AspNet.Identity.Core.dll
 E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.AspNet.Identity.EntityFramework.dll
 E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.AspNet.Identity.Owin.dll
+E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.AspNet.SignalR.Core.dll
+E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.AspNet.SignalR.SystemWeb.dll
 E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll
 E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.Owin.dll
 E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.Owin.Host.SystemWeb.dll
@@ -54,6 +56,7 @@ E:\Projects\ScraBoy\ScraBoy\bin\System.Web.WebPages.Deployment.dll
 E:\Projects\ScraBoy\ScraBoy\bin\System.Web.WebPages.dll
 E:\Projects\ScraBoy\ScraBoy\bin\System.Web.WebPages.Razor.dll
 E:\Projects\ScraBoy\ScraBoy\bin\WebGrease.dll
+E:\Projects\ScraBoy\ScraBoy\bin\ZetaProducerHtmlCompressor.dll
 E:\Projects\ScraBoy\ScraBoy\bin\HtmlAgilityPack.pdb
 E:\Projects\ScraBoy\ScraBoy\bin\HtmlAgilityPack.xml
 E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.AI.DependencyCollector.xml
@@ -61,6 +64,10 @@ E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.AI.ServerTelemetryChannel.xml
 E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.AI.Web.xml
 E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.AI.WindowsServer.xml
 E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.ApplicationInsights.xml
+E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.AspNet.SignalR.Core.pdb
+E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.AspNet.SignalR.Core.xml
+E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.AspNet.SignalR.SystemWeb.pdb
+E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.AspNet.SignalR.SystemWeb.xml
 E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.xml
 E:\Projects\ScraBoy\ScraBoy\bin\Microsoft.Owin.xml
 E:\Projects\ScraBoy\ScraBoy\bin\PagedList.xml
@@ -73,6 +80,7 @@ E:\Projects\ScraBoy\ScraBoy\bin\System.Web.WebPages.xml
 E:\Projects\ScraBoy\ScraBoy\bin\System.Web.WebPages.Deployment.xml
 E:\Projects\ScraBoy\ScraBoy\bin\System.Web.WebPages.Razor.xml
 E:\Projects\ScraBoy\ScraBoy\bin\Antlr3.Runtime.pdb
+E:\Projects\ScraBoy\ScraBoy\bin\ZetaProducerHtmlCompressor.pdb
 E:\Projects\ScraBoy\ScraBoy\bin\Newtonsoft.Json.xml
 E:\Projects\ScraBoy\ScraBoy\bin\System.Net.Http.Formatting.xml
 E:\Projects\ScraBoy\ScraBoy\bin\System.Web.Http.xml
@@ -110,13 +118,8 @@ E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.report.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.userreport.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.ureport.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.urep.resources
-E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.csproj.GenerateResource.Cache
-E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.dll
-E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.pdb
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.imageprofile.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.testingcoy.resources
-E:\Projects\ScraBoy\ScraBoy\bin\ZetaProducerHtmlCompressor.dll
-E:\Projects\ScraBoy\ScraBoy\bin\ZetaProducerHtmlCompressor.pdb
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.begintoaddforum.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.delete.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.categoryremoveuser.resources
@@ -163,7 +166,6 @@ E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.forgottime.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.tps.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.tpsdd.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.tossssss.resources
-E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.csprojResolveAssemblyReference.cache
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.followsystem.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.test.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.tongcep.resources
@@ -178,3 +180,19 @@ E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.quote.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.burung.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.removefollowdate.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.datetimefollow.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.quotesfeature.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.burung1.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.messagesystem.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.test1.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.hadis.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.csproj.GenerateResource.Cache
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.dll
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.pdb
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.csprojResolveAssemblyReference.cache
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.message.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.burungpole.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.bismillahtryagain.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.gommm.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.dbmessage.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.hadisttest.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Debug\ScraBoy.Migrations.tetsestsetsetsete.resources

@@ -55,7 +55,7 @@ namespace ScraBoy.Features.CMS.User
         {
             get
             {
-                return string.Format("profile/{0}",this.Id);
+                return string.Format("profile/{0}",this.UserName);
             }
         }
         [NotMapped]

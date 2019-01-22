@@ -1,4 +1,5 @@
-﻿using ScraBoy.Features.CMS.User;
+﻿using ScraBoy.Features.CMS.Gzip;
+using ScraBoy.Features.CMS.User;
 using ScraBoy.Features.Data;
 using System;
 using System.Collections.Generic;
@@ -25,12 +26,14 @@ namespace ScraBoy.Features.CMS.Topic
         }
 
         [Route("")]
+        [CompressContent]
         public async Task<ActionResult> Index(int? page,string currentFilter)
         {
             int pageNumber = (page ?? 1);
 
             return View("Index","",this.categoryService.GetPagedList(currentFilter,pageNumber));
         }
+        [CompressContent]
         public async Task<ViewResult> Search(string search)
         {
             ViewBag.Filter = search;
@@ -40,6 +43,7 @@ namespace ScraBoy.Features.CMS.Topic
 
         [HttpGet]
         [Route("create")]
+        [CompressContent]
         public async Task<ActionResult> Create()
         {
             await SetViewBag();
@@ -49,6 +53,7 @@ namespace ScraBoy.Features.CMS.Topic
 
         [HttpPost]
         [Route("create")]
+        [CompressContent]
         public async Task<ActionResult> Create(Category model)
         {
             if(!ModelState.IsValid)
@@ -75,6 +80,7 @@ namespace ScraBoy.Features.CMS.Topic
         }
         [HttpGet]
         [Route("edit/{catId}")]
+        [CompressContent]
         public async Task<ActionResult> Edit(int catId)
         {
             await SetViewBag();
@@ -90,6 +96,7 @@ namespace ScraBoy.Features.CMS.Topic
         }
         [HttpPost]
         [Route("edit/{catId}")]
+        [CompressContent]
         public async Task<ActionResult> Edit(Category model,int catId)
         {
 

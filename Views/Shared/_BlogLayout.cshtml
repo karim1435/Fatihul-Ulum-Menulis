@@ -54,8 +54,11 @@
                             Viral
                         </a>
                     </li>
-
-
+                    <li class="nav-item active">
+                        <a class="btn btn-default bg-green text-white" style="font-size:20px" href="@Url.Action("Index",new { controller = "Kitab" })" class="nav-link btn-group-lg">
+                            Hadist
+                        </a>
+                    </li>
                 </ul>
                 @{
                     Html.RenderAction("CategoryMenu",new { controller = "HomeBlog" });
@@ -86,7 +89,7 @@
                             @if(User.Identity.IsAuthenticated)
                             {
                                 <a class="dropdown-item" href="@Url.Action("Index","Admin")">Dashboard <i class="fa fa-dashboard"></i></a>
-                                <a class="dropdown-item" href="@Url.Action("Profile","HomeBlog",new { userId = User.Identity.GetUserId() })">My Profile <i class="fa fa-user"></i></a>
+                                <a class="dropdown-item" href="@Url.Action("Profile","HomeBlog",new { username = User.Identity.GetUserName() })">My Profile <i class="fa fa-user"></i></a>
                             }
                             else
                             {
@@ -155,7 +158,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <p>Copyright © Fatihul Ulum @DateTime.Now.Year</p>
+                    <p>Copyright © Fatihul Ulum 2018-@DateTime.Now.Year</p>
                 </div>
             </div>
         </div>
@@ -170,7 +173,7 @@
 
     <script src="~/Scripts/jquery.min.js"></script>
     <script src="~/Scripts/bootstrap.bundle.min.js"></script>
-
+    @RenderSection("JavaScript",required: false)
     @RenderSection("scripts",required: false)
 </body>
 </html>

@@ -1,4 +1,5 @@
 ﻿using ScraBoy.Features.CMS.Blog;
+using ScraBoy.Features.CMS.Gzip;
 using ScraBoy.Features.CMS.User;
 using System;
 using System.Collections.Generic;
@@ -30,12 +31,14 @@ namespace ScraBoy.Features.CMS.Reporting
         }
 
         [Route("")]
+        [CompressContent]
         public async Task<ActionResult> Index(int? page,string currentFilter)
         {
             int pageNumber = (page ?? 1);
 
             return View("Index","",this.violationRepository.GetPagedList(currentFilter,pageNumber));
         }
+        [CompressContent]
         public async Task<ActionResult> Search(string search)
         {
             ViewBag.Filter = search;
@@ -43,6 +46,7 @@ namespace ScraBoy.Features.CMS.Reporting
             return View("Index","",this.violationRepository.GetPagedList(search,1));
         }
         [HttpGet]
+        [CompressContent]
         [Route("CreateReport/postId")]
         public async Task<ActionResult> CreateReport(string postId)
         {
@@ -57,6 +61,7 @@ namespace ScraBoy.Features.CMS.Reporting
             return View();
         }
         [HttpPost]
+        [CompressContent]
         [Route("CreateReport/postId")]
         public async Task<ActionResult> CreateReport(Violation model,string postId)
         {
@@ -81,7 +86,7 @@ namespace ScraBoy.Features.CMS.Reporting
 
             return RedirectToAction("Post","HomeBlog",new { postId = postId });
         }
-
+        [CompressContent]
         public async Task<ActionResult> Decline(int id)
         {
             var report = await this.violationRepository.GetReportAsync(id);
@@ -94,7 +99,7 @@ namespace ScraBoy.Features.CMS.Reporting
 
             return RedirectToAction("Index");
         }
-
+        [CompressContent]
         public async Task<ActionResult> Accept(int id,string postId)
         {
             var post = await this.postRepository.GetAsync(postId);

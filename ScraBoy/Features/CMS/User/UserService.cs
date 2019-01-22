@@ -157,7 +157,7 @@ namespace ScraBoy.Features.CMS.User
         }
         public List<CMSUser> GetPostsList(string name)
         {
-            return this.usersRepository.GetPosts(name).OrderByDescending(a => a.UserName).ToList();
+            return this.usersRepository.GetPosts(name).OrderByDescending(a => a.RegistrationDate).ToList();
         }
 
         public IPagedList<CMSUser> GetPagedList(string search,int currentPage)

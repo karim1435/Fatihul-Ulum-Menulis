@@ -24,13 +24,9 @@ using ScraBoy.Features.Lomba.Audience;
 using ScraBoy.Features.Lomba.Contest;
 using ScraBoy.Features.CMS.PointScore;
 using ScraBoy.Features.CMS.Following;
-//using ScraBoy.Features.Forum.Question;
-//using ScraBoy.Features.Forum.Channel;
-//using ScraBoy.Features.Forum.Favorite;
-//using ScraBoy.Features.Forum.Respond;
-//using ScraBoy.Features.Forum.ThreadView;
-//using ScraBoy.Features.Forum.Vote;
-//using ScraBoy.Features.Forum.Warning;
+using ScraBoy.Features.Hadist.Book;
+using Microsoft.AspNet.SignalR.Messaging;
+using ScraBoy.Features.CMS.Chat;
 
 namespace ScraBoy.Features.Data
 {
@@ -52,7 +48,7 @@ namespace ScraBoy.Features.Data
         public DbSet<Participant> Participant { get; set; }
         public DbSet<Competition> Competiton { get; set; }
         public DbSet<UserScore> UserScore { get; set; }
-        public DbSet<Follow> Follow { get; set; }
+
         #endregion
 
         #region CMS
@@ -63,6 +59,11 @@ namespace ScraBoy.Features.Data
         public DbSet<ViewPost> ViewPost { get; set; }
         public DbSet<Report> Report { get; set; }
         public DbSet<Violation> Violation { get; set; }
+        public DbSet<Follow> Follow { get; set; }
+        public DbSet<Massage> Message { get; set; }
+        public DbSet<Kitab> Kitab { get; set; }
+        public DbSet<Chapter> Chapter { get; set; }
+        public DbSet<Imam> Imam { get; set; }
         #endregion
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -75,8 +76,6 @@ namespace ScraBoy.Features.Data
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
             modelBuilder.Entity<Post>().HasRequired(e => e.Category);
-
-
 
             modelBuilder.Entity<Comment>()
                 .HasRequired(s => s.Post)

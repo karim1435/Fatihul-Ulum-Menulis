@@ -45,10 +45,10 @@
             <h1 class="mt-4">@Model.Title</h1>
             <!-- Author -->
             <div class="lead">
-                Posted Under @Html.Partial("_RenderCategory",Model.Category.Name)  by <a href="@Url.Action("Profile","HomeBlog",new { userId= Model.Author.Id})">@Model.Author.DisplayName</a> on @Model.Published.Value.FormatDate()
+                Posted Under @Html.Partial("_RenderCategory",Model.Category.Name)  by <a href="@Url.Action("Profile","HomeBlog",new { username= Model.Author.UserName})">@Model.Author.DisplayName</a> on @Model.Published.Value.FormatDate()
             </div>
             <div class="fb-share-button" data-href="@Model.FullUrlPost" data-layout="button" data-size="small" data-mobile-iframe="true">
-                <a target="_blank" href="@Model.FullUrlPost" class="fb-xfbml-parse-ignore">Share</a>
+                <a class="fb-xfbml-parse-ignore">Share</a>
             </div>
             <div class="pull-right">
                 <a class="btn btn-xs text-danger" title="Report" href=@Url.Action("CreateReport","Violation",new { postId = Model.Id })>

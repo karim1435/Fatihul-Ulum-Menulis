@@ -43,7 +43,7 @@
                                 <br />
                                 <b>Manage Setting</b>
                                 <br />
-                                @Html.ActionLink(" View","Profile","HomeBlog",new { userId = item.Id },new { @class = "fa fa-eye" })
+                                @Html.ActionLink(" View","Profile","HomeBlog",new { username = item.UserName },new { @class = "fa fa-eye" })
                                 @Html.ActionLink(" Manage","Manage","Admin",new { username = item.UserName },new { @class = "fa fa-cog" })
                                 @Html.ActionLink(" Delete","Delete",new { username = item.UserName },new { @class = "fa fa-trash",data_action = "delete",data_value = item.UserName })
                                 <br />

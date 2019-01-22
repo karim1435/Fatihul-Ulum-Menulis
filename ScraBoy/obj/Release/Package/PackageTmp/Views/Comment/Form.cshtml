@@ -6,11 +6,11 @@
             <div class="media mb-4">
                 <img class="d-flex mr-3 rounded-circle" src="@Url.Content(Model.User.UrlImage)" style="height: 80px; width:80px" alt="">
                 <div class="media-body">
-                    <a href="@Url.Action("Profile","User",new { userId = Model.User.SlugUrl })">
+                    <a href="@Url.Action("Profile","HomeBlog",new { username = Model.User.UserName })">
                         <h5 class="mt-0">@Model.User.DisplayName</h5>
                     </a> <span class="text-muted">@Model.PostedOn.TimeAgo() on</span>
                     <a href="@Url.Action("Post","HomeBlog",new { postId = Model.Post.Id })">@Model.Post.Title</a>
-                    <p>@Html.Raw(Model.Content)</p>
+                    <p>@Html.Raw(ViewBag.ask)</p>
                 </div>
             </div>
         </div>

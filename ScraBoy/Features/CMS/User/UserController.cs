@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using ScraBoy.Features.CMS.Gzip;
 using ScraBoy.Features.CMS.Role;
 using ScraBoy.Features.CMS.Upload;
 using System;
@@ -31,6 +32,7 @@ namespace ScraBoy.Features.CMS.User
 
         [Route("")]
         [Authorize(Roles ="admin")]
+        [CompressContent]
         public async Task<ActionResult> Index(int? page,string currentFilter)
         {
             int pageNumber = (page ?? 1);
@@ -44,7 +46,7 @@ namespace ScraBoy.Features.CMS.User
             }
             return View("Index","",users);
         }
-       
+        [CompressContent]
         public async Task<ViewResult> Search(string search)
         {
             ViewBag.Filter = search;
@@ -56,6 +58,7 @@ namespace ScraBoy.Features.CMS.User
         [HttpGet]
         [Route("Create")]
         [Authorize(Roles = "admin")]
+        [CompressContent]
         public async Task<ActionResult> Create()
         {
             var model = new UserViewModel();
@@ -69,6 +72,7 @@ namespace ScraBoy.Features.CMS.User
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
+        [CompressContent]
         public async Task<ActionResult> Create(UserViewModel model)
         {
             model.UrlImage = defaultProfile;
@@ -85,6 +89,7 @@ namespace ScraBoy.Features.CMS.User
         [HttpGet]
         [Route("edit/{username}")]
         [Authorize(Roles = "admin, editor, author")]
+        [CompressContent]
         public async Task<ActionResult> Edit(string username)
         {
             var currentUser = User.Identity.Name;
@@ -109,6 +114,7 @@ namespace ScraBoy.Features.CMS.User
         [Route("edit/{username}")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin, editor, author")]
+        [CompressContent]
         public async Task<ActionResult> Edit(UserViewModel model, string username)
         {
             var user = await userservice.GetUserByNameAsync(username);
@@ -175,6 +181,7 @@ namespace ScraBoy.Features.CMS.User
         [Route("delete/{username}")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "admin")]
+
         public async Task<ActionResult> Delete(string username)
         {
             var user = await userservice.GetUserByNameAsync(username);

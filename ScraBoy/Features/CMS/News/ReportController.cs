@@ -1,4 +1,5 @@
-﻿using ScraBoy.Features.CMS.User;
+﻿using ScraBoy.Features.CMS.Gzip;
+using ScraBoy.Features.CMS.User;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -27,12 +28,14 @@ namespace ScraBoy.Features.CMS.Nws
         }
 
         [Route("")]
+        [CompressContent]
         public async Task<ActionResult> Index(int? page,string currentFilter)
         {
             int pageNumber = (page ?? 1);
 
             return View("Index","",this.reportRepsitory.GetPagedList(currentFilter,pageNumber));
         }
+        [CompressContent]
         public async Task<ViewResult> Search(string search)
         {
             ViewBag.Filter = search;
@@ -41,12 +44,14 @@ namespace ScraBoy.Features.CMS.Nws
         }
         [Route("create")]
         [HttpGet]
+        [CompressContent]
         public async Task<ActionResult> Create()
         {
             return View();
         }
         [HttpPost]
         [Route("create")]
+        [CompressContent]
         public async Task<ActionResult> Create(Report model)
         {
            if(!ModelState.IsValid)
@@ -62,6 +67,7 @@ namespace ScraBoy.Features.CMS.Nws
         }
         [HttpGet]
         [Route("edit{id}")]
+        [CompressContent]
         public async Task<ActionResult> Edit(int id)
         {
             var report = await this.reportRepsitory.GetByIdAsync(id);
@@ -73,6 +79,7 @@ namespace ScraBoy.Features.CMS.Nws
         }
         [HttpPost]
         [Route("edit{id}")]
+        [CompressContent]
         public async Task<ActionResult> Edit(Report model, int id)
         {
             var report = await this.reportRepsitory.GetByIdAsync(id);

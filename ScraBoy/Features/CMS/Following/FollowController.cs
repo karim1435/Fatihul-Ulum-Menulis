@@ -52,12 +52,11 @@ namespace ScraBoy.Features.CMS.Following
 
         }
 
-        [Route("Follow/{slugUrl}")]
+        [Route("Follow/{username}")]
         [CompressContent]
-        public async Task<ActionResult> Follow(string slugUrl)
+        public async Task<ActionResult> Follow(string username)
         {
-            var user = await userRepository.GetUserBySlug(slugUrl);
-
+            var user = await userRepository.GetUserByNameAsync(username);
 
             var follower = UserId;
 
@@ -69,7 +68,7 @@ namespace ScraBoy.Features.CMS.Following
 
             await this.followRepository.Create(model,user.Id);
 
-            return RedirectToAction("Profile","HomeBlog",new { userId = user.Id });
+            return RedirectToAction("Profile","HomeBlog",new { username = username });
         }
 
         public string UserId

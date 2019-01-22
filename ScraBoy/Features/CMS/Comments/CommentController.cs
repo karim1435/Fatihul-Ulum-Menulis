@@ -55,7 +55,9 @@ namespace ScraBoy.Features.CMS.Comments
             {
                 return HttpNotFound();
             }
+            ViewBag.ask = comment.Content;
             comment.Content = "";
+            
             return View(comment);
         }
 
@@ -65,6 +67,8 @@ namespace ScraBoy.Features.CMS.Comments
         public async Task<ActionResult> Reply(Comment model,int commentId)
         {
             var comment = await commentRepository.GetCommentById(commentId);
+
+            ViewBag.ask = comment.Content;
 
             if(comment == null)
             {
@@ -97,7 +101,7 @@ namespace ScraBoy.Features.CMS.Comments
             {
                 return HttpNotFound();
             }
-
+            ViewBag.ask = comment.Content;
             return View(comment);
         }
         [HttpPost]
@@ -107,7 +111,7 @@ namespace ScraBoy.Features.CMS.Comments
         {
 
             var comment = await commentRepository.GetCommentById(commentId);
-
+            ViewBag.ask = comment.Content;
             if(comment == null)
             {
                 return HttpNotFound();

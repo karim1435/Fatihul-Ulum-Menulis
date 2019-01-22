@@ -1,0 +1,42 @@
+﻿@model ScraBoy.Features.CMS.Chat.MassageViewModel
+@using Microsoft.AspNet.Identity;
+@foreach(var item in Model.Massages.OrderBy(a => a.Sent))
+{
+    if((int)item.MassageType == 1)
+    {
+        <div class="incoming_msg">
+            <div class="incoming_msg_img"> <img src="@Url.Content(item.From.UrlImage)" alt="sunil"> </div>
+            <div class="received_msg">
+                <div class="received_withd_msg">
+                    <p>
+                        @item.Content
+
+                    </p>
+                    <span class="time_date">
+                        @item.Sent.TimeAgo()
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+    }
+    else
+    {
+        <div class="outgoing_msg">
+            <div class="sent_msg">
+                <p>
+                    @item.Content
+                </p>
+                <span class="time_date">
+                    @item.Sent.TimeAgo()
+
+                        <a href=@Url.Action("Remove","Message",new { id = item.Id})>
+                            <i class="fa fa-trash"></i>
+                        </a>
+                </span>
+            </div>
+        </div>
+    }
+}

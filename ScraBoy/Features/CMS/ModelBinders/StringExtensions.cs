@@ -33,10 +33,41 @@ namespace ScraBoy.Features.CMS.ModelBinders
             return false;
         }
     }
-   
+
     public static class StringExtensions
     {
-      
+        public static bool CheckHarokah(this string text)
+        {
+            char[] tashkeel = new char[] { 'ِ','ُ','ٓ','ٰ','ْ','ٌ','ٍ','ً','ّ','َ' };
+
+            foreach(var c in tashkeel)
+            {
+                if(text.Contains(c))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public static string RemoveHarokah(this string text)
+        {
+            // to be replaced characters
+            char[] tashkeel = new char[] { 'ِ','ُ','ٓ','ٰ','ْ','ٌ','ٍ','ً','ّ','َ' };
+
+            // doing the replacement
+            foreach(char c in tashkeel)
+                text = text.Replace(c.ToString(),"");
+
+            return text;
+        }
+        public static string Reverse(this string text)
+        {
+            if(text == null) return null;
+            char[] array = text.ToCharArray();
+            Array.Reverse(array);
+            return new String(array);
+        }
+
         public static String getUrl()
         {
             //Return variable declaration
@@ -80,7 +111,7 @@ namespace ScraBoy.Features.CMS.ModelBinders
 
             return result;
         }
-        public static String ReadMore(this string content,int length=300,string ommission = "... ")
+        public static String ReadMore(this string content,int length = 300,string ommission = "... ")
         {
             HtmlDocument doc = new HtmlDocument();
 

@@ -1,0 +1,14 @@
+﻿@model ScraBoy.Features.CMS.Chat.MassageViewModel
+@using(Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="type_msg">
+        <div class="input_msg_write">
+            @Html.EditorFor(model => model.NewMessage.Content,
+           new { htmlAttributes = new { @class = "write_msg",@placeholder = "Type a message" } })
+            <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="false"></i></button>
+        </div>
+    </div>
+}
+

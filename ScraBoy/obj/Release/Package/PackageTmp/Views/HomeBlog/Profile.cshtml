@@ -27,8 +27,11 @@
                 <div class="small">
                     @if(userId != Model.Id)
                     {
-                        <a class="btn btn-raised btn-danger text-white" href="@Url.Action("Follow",new { controller = "Follow",slugUrl = Model.SlugUrl })" title="IG Profile">
+                        <a class="btn btn-raised btn-danger text-white" href="@Url.Action("Follow",new { controller = "Follow",username = Model.UserName })" title="IG Profile">
                             <i class="@(!ViewBag.followed ? "fa fa-user-plus" : "fa fa-user-times")" aria-hidden="true"> @(!ViewBag.followed ? (ViewBag.folback ? "Follback" : "Follow") : "Unfollow")</i>
+                        </a>
+                        <a class="btn btn-raised btn-success text-white" href=@Url.Action("ChatIndex","Message",new { username = Model.UserName })>
+                            <i class="fa fa-envelope" aria-hidden="true"> Message</i>
                         </a>
                     }
                 </div>
@@ -66,8 +69,7 @@
         </div>
         <br />
         <div class="row">
-
-            @Html.Partial("_RenderIndex",Model.Posts.OrderByDescending(a => a.Published))
+            @Html.Partial("_RenderIndex",Model.Posts.Where(a=>!a.Private).OrderByDescending(a => a.Published))
         </div>
         <br />
     </div>

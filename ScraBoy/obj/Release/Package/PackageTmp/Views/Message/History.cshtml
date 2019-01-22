@@ -1,0 +1,18 @@
+﻿@model IEnumerable<ScraBoy.Features.CMS.Chat.Massage>
+@using Microsoft.AspNet.Identity;
+
+@foreach(var item in Model.OrderByDescending(a => a.Sent).Select(c => c.From).Distinct())
+{
+
+    <div class="chat_list active_chat">
+        <div class="chat_people">
+            <div class="chat_img"> <img style="height:30px;width:30px;" src="@Url.Content(item.UrlImage)" alt="sunil"> </div>
+            <div class="chat_ib">
+                <a href=@Url.Action("ChatIndex","Message",new { username = item.UserName })>
+                    <h5 class="text-primary">@item.DisplayName <span class="chat_date"></span></h5>
+                </a>
+            </div>
+        </div>
+    </div>
+
+}

@@ -37,6 +37,7 @@ namespace ScraBoy.Features.Lomba.Audience
             return View("Index","",model);
         }
         [Route("Search/{slugUrl}")]
+        [CompressContent]
         public async Task<ViewResult> Search(string slugUrl, string search)
         {
             ViewBag.Filter = search;

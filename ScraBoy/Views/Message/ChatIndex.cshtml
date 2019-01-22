@@ -1,0 +1,86 @@
+﻿@model ScraBoy.Features.CMS.Chat.MassageViewModel
+
+@{
+    ViewBag.Title = "Chat";
+
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+<link href="~/Content/chat.css" rel="stylesheet" />
+<div class="container">
+    <br />
+    <div class="messaging">
+        <div class="inbox_msg">
+            <div class="inbox_people">
+                <div class="headind_srch">
+                    <div class="recent_heading">
+                        <h4>Recent</h4>
+                    </div>
+                </div>
+                <div id="historyTable" class="inbox_chat">
+                  
+                </div>
+            </div>
+            <div class="mesgs">
+                <div id="dataTable" class="msg_history">
+                </div>
+                @using(Html.BeginForm("Send","Message",new { username = ViewBag.username },FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="type_msg">
+                        <div class="input_msg_write">
+                            @Html.EditorFor(model => model.NewMessage.Content,
+                                new { htmlAttributes = new { @class = "write_msg",@placeholder = "Type a message" } })
+                            <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="false"></i></button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@section JavaScript{
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.4.0.min.js"></script>
+    <script src="~/signalr/hubs"></script>
+    <script type="text/javascript">
+        $(function () {
+            // Create a proxy to signalr hub on web server. It reference the hub.
+            var notificationFromHub = $.connection.messageHub;
+
+            // Connect to signalr hub
+            $.connection.hub.start().done(function () {
+                FetchMessages();
+                FetchHistory();
+            });
+
+            // Notify to client with the recent updates
+            notificationFromHub.client.updatedClients = function () {
+                FetchMessages();
+                FetchHistory();
+            };
+        });
+
+        function FetchMessages() {
+            var model = $('#dataTable');
+            $.ajax({
+                url: '@Url.Action("Chat","Message",new {username=ViewBag.username})',
+                contentType: 'application/html ; charset:utf-8',
+                type: 'GET',
+                dataType: 'html'
+            })
+                .success(function (result) { model.empty().append(result); })
+        }
+        function FetchHistory() {
+            var model = $('#historyTable');
+            $.ajax({
+                url: '@Url.Action("History","Message")',
+                contentType: 'application/html ; charset:utf-8',
+                type: 'GET',
+                dataType: 'html'
+            })
+                .success(function (result) { model.empty().append(result); })
+        }
+    </script>
+}

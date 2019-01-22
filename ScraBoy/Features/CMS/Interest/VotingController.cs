@@ -42,7 +42,7 @@ namespace ScraBoy.Features.CMS.Interest
             return View("Index","",this.votingRepository.GetPagedList(currentFilter,pageNumber,user.Id));
 
         }
-
+        [CompressContent]
         public async Task<ViewResult> Search(string search)
         {
             ViewBag.Filter = search;

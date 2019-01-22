@@ -41,7 +41,7 @@ namespace ScraBoy.Features.CMS.User
         {
             if(!string.IsNullOrEmpty(name))
             {
-                return this.GetAllUsersAsync(name).Where(a => a.UserName.Contains(name)).AsQueryable();
+                return this.GetAllUsersAsync(name).Where(a => a.UserName.Contains(name) || a.DisplayName.Contains(name)).AsQueryable();
             }
             return store.Users;
         }

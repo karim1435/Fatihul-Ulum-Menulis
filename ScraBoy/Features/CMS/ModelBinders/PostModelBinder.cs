@@ -26,7 +26,7 @@ namespace ScraBoy.Features.CMS.ModelBinders
             {
                 return new List<string>();
             }
-
+           
             return tags.Split(new[] { ',' }).Select(t=>t.Trim()).ToList();
             
         }

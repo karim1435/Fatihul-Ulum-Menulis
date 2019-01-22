@@ -1,10 +1,6 @@
 ﻿@model IEnumerable<ScraBoy.Features.CMS.Comments.Comment>
 
-<div class="about">
-    <div class="content line"></div>
-    <div class="content text">Recent Comments</div>
-    <div class="content line"></div>
-</div>
+
 @foreach(var item in Model.Take(6))
             {
     <div class="item col-xs-4 col-lg-4">
@@ -13,7 +9,7 @@
                 <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.User.UrlImage)" style="height: 50px; width:50px" alt="">
             </div>
             <div class="media-body">
-                <a href="@Url.Action("Profile","HomeBlog",new { userId = item.User.Id })">
+                <a href="@Url.Action("Profile","HomeBlog",new { username = item.User.UserName })">
                     <h5 class="mt-0">@item.User.DisplayName</h5>
                 </a> <span class="text-muted">@item.PostedOn.TimeAgo() on</span>
                 <a href="@Url.Action("Post","HomeBlog",new { postId = item.Post.Id })">@item.Post.Title</a>
@@ -22,5 +18,3 @@
         </div>
     </div>
 }
-
-

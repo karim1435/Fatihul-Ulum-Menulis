@@ -22,7 +22,7 @@
                 <div class="media mb-4">
                     <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.Followed.UrlImage)" style="height: 30px; width:30px" alt="">
                     <div class="media-body">
-                        <a class="text-primary" href="@Url.Action("Profile","HomeBlog",new { userId = item.Followed.Id })">
+                        <a class="text-primary" href="@Url.Action("Profile","HomeBlog",new { username = item.Followed.UserName })">
                             <h5 class="mt-0">@item.Followed.DisplayName</h5>
                         </a>
                     </div>

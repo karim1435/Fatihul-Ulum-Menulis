@@ -38,12 +38,12 @@ namespace ScraBoy.Features.CMS.HomeBlog
         [CompressContent]
         public async Task<ActionResult> Index()
         {
-            await SetViewBag();
+            var blogs = blogService.GetPagedList("","","","",1);
 
             await RecentComments();
             await TopContributor();
 
-            return View("Index");
+            return View(blogs);
         }
         [Route("FuPost/{type}")]
         [CompressContent]
@@ -74,7 +74,6 @@ namespace ScraBoy.Features.CMS.HomeBlog
 
             return View("FuPost","",blogs);
         }
-        // root/posts/post-id
         [HttpGet]
         [Route("posts/{postId}",Name = "Post")]
         [CompressContent]
@@ -205,19 +204,19 @@ namespace ScraBoy.Features.CMS.HomeBlog
         }
 
         [Route("bestwriter")]
-        [AllowAnonymous]
         [CompressContent]
         public async Task<ActionResult> RankingTopUser()
         {
             var user = await this.blogService.GetTopContributors();
             return View(user);
         }
-        [Route("profile/{userId}")]
-        public async Task<ActionResult> Profile(string userId)
+        [Route("profile/{username}")]
+        [CompressContent]
+        public async Task<ActionResult> Profile(string username)
         {
             IUserRepository userRepository = new UserRepository();
 
-            var user = await userRepository.GetUserById(userId);
+            var user = await userRepository.GetUserByNameAsync(username);
 
             if(user == null)
             {
@@ -234,8 +233,6 @@ namespace ScraBoy.Features.CMS.HomeBlog
         [Authorize]
         public async Task<ActionResult> ShowWhoVote(string postId)
         {
-            await SetViewBag();
-
             var post = await this.posRepository.GetAsync(postId);
 
             if(post == null)
@@ -263,8 +260,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
         }
         private async Task RecentComments()
         {
-            var model = await this.blogService.GetRecentCommentsAsycn();
-            ViewBag.RecentComments = model;
+            ViewBag.RecentComments = await this.blogService.GetRecentCommentsAsycn(); ;
         }
 
         private async Task SetViewBag()

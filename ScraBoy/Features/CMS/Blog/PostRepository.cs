@@ -27,14 +27,6 @@ namespace ScraBoy.Features.CMS.Blog
         public PostRepository() : this(new CMSContext())
         {
         }
-        public int CountPublished
-        {
-            get
-            {
-
-                return db.Post.Where(P => P.Published < DateTime.Now).Count();
-            }
-        }
         public async Task UpdateViewCount(string postId)
         {
             var view = await this.db.ViewPost.FirstOrDefaultAsync(a => a.ViewId == viewId &&
@@ -78,10 +70,6 @@ namespace ScraBoy.Features.CMS.Blog
             }
 
             viewId = cookieId;
-        }
-        public async Task<IEnumerable<Post>> SortByViews()
-        {
-            return await this.db.Post.OrderByDescending(a => a.TotalViews).ToArrayAsync();
         }
         public async Task<Post> GetAsync(string id)
         {
@@ -127,18 +115,8 @@ namespace ScraBoy.Features.CMS.Blog
 
         public List<Post> GetBlogList(string name,string tagId,string categoryId)
         {
-            return this.GetBlogs(name,tagId,categoryId).OrderByDescending(a => a.Created).ToList();
+            return this.GetBlogs(name,tagId,categoryId).ToList();
         }
-
-        public IQueryable<Post> GetPosts(string name)
-        {
-            if(!string.IsNullOrEmpty(name))
-            {
-                return this.db.Post.Where(m => m.Title.Contains(name));
-            }
-            return this.db.Post;
-        }
-
 
         public IPagedList<Post> GetPagedList(string search,int currentPage,string userId)
         {
@@ -228,14 +206,6 @@ namespace ScraBoy.Features.CMS.Blog
             db.Post.Remove(post);
             db.SaveChanges();
         }
-
-        public async Task<IEnumerable<Post>> GetPublishedPostAsync()
-        {
-            return await db.Post.Include("Author").
-                Where(p => p.Published < DateTime.Now).OrderByDescending(p => p.Published).
-                ToArrayAsync();
-        }
-
         public IEnumerable<Post> GetPostByTagAsync(string tag)
         {
             var posts = db.Post
@@ -247,34 +217,9 @@ namespace ScraBoy.Features.CMS.Blog
                 post.Tags.Contains(tag,StringComparer.CurrentCultureIgnoreCase))
                 .ToList();
         }
-
-        public async Task<IEnumerable<Post>> GetPageAsync(int pageNumber,int pageSize)
-        {
-            var skip = (pageNumber - 1) * pageSize;
-
-            return await db.Post.Where(p => p.Published < DateTime.Now).
-                Include("Author").
-                OrderByDescending(p => p.Published).
-                Skip(skip).
-                Take(pageSize).
-                ToArrayAsync();
-        }
-    
-        public IEnumerable<Post> GetPostsByUser(string slugUrl)
-        {
-
-            return db.Post.Include("Author").Where(p => p.Author.SlugUrl == slugUrl &&
-                    p.Published < DateTime.Now && !p.Private);
-
-        }
         public IEnumerable<Post> GetPostByCategories(string category)
         {
             return db.Post.Where(a => a.Category.Name.Contains(category)).ToList();
         }
-        public async Task<IEnumerable<string>> GetAllCategories()
-        {
-            return await db.Post.Select(a => a.Category.Name).ToListAsync();
-        }
-
     }
 }

@@ -15,9 +15,6 @@
     <meta name="description" content="Fatihul Ulum Menulis is free online writing platform which presented for people who has eager and passion to share their own opinion and also provided for someone to turn their idea into a story as wisdow quote said Menulis adalah ladang untuk berlogika (berfikir secara logis)." />
     <meta name="keywords" content="Fatihul ulum , Manggisan ,  Daerah , Profile , Menulis , Tulisan " />
     <meta name="robots" content="index" />
-    <link rel="canonical" href="http://www.fatihululum.site" />
-    <link rel="alternate" href="http://www.fatihululum.site" hreflang="id" />
-    <link rel="alternate" href="http://www.fatihululum.site" hreflang="x-default" />
 }
 <style>
     body {
@@ -45,14 +42,14 @@
                         <li data-target="#demo" data-slide-to="2"></li>
                     </ul>
                     <div class="carousel-inner">
-                        @foreach(var item in (ViewBag.PopularView as IEnumerable<ScraBoy.Features.CMS.Blog.Post>).Take(3))
+                        @foreach(var item in Model.Take(3))
                         {
-                            <div class="@(item == (ViewBag.PopularView as IEnumerable<ScraBoy.Features.CMS.Blog.Post>).First() ?
+                            <div class="@(item == Model.First() ?
                                 "carousel-item active" : "carousel-item")">
                                 <img src="@Url.Content(item.UrlImage)" style="height:380px;">
                                 <div class="carousel-caption">
                                     <h2 class="group card-title inner list-group-item-heading ">
-                                        @Html.ActionLink(item.Title,"post",new { controller = "HomeBlog",postId = item.Id },new { @class = "bg-dark text-light",target = "_blank" })
+                                        @Html.ActionLink(item.Title,"post",new { controller = "HomeBlog",postId = item.Id },new { @class = "bg-dark text-light"})
                                     </h2>
                                 </div>
                             </div>
@@ -70,14 +67,14 @@
             <br />
             <div>
                 <div id="products" class="row view-group">
-                    @foreach(var item in (ViewBag.PopularView as IEnumerable<ScraBoy.Features.CMS.Blog.Post>).Skip(3).Take(6))
+                    @foreach(var item in Model.Skip(3).Take(6))
             {
                         <div class="item grid-group-item col-xs-4 col-lg-4">
                             <div class="media mb-4">
                                 <img class="d-flex mr-3 " src="@Url.Content(item.UrlImage)" style="height: 50px; width:50px" alt="">
                                 <div class="media-body">
                                     <h5 class="group card-title inner list-group-item-heading">
-                                        @Html.ActionLink(item.Title,"post",new { controller = "HomeBlog",postId = item.Id },new { @class = "text-dark",target = "_blank" })
+                                        @Html.ActionLink(item.Title,"post",new { controller = "HomeBlog",postId = item.Id },new { @class = "text-dark"})
                                     </h5>
                                 </div>
                             </div>
@@ -89,9 +86,9 @@
         <div class="col-md-4">
             <div class="row">
                 <div class="col-md-12">
-                    <h4 class="card-header">Top Writers</h4>
-                    @Html.Partial("_WidgetTopUsers",(ViewBag.TopUser as IEnumerable<ScraBoy.Features.CMS.HomeBlog.RankingViewModel>).Take(5))
-                    <a target="_blank" href="@Url.Action("RankingTopUser",new { controller = "HomeBlog"})" class="btn btn-block" style="background-color:#ffffff"><h5 class="mt-0 text-success"> View Ranking</h5></a>
+                    <h4 class="card-header">Top Writers Ever</h4>
+                    @Html.Partial("_WidgetTopUsers",(ViewBag.TopUser as IEnumerable<ScraBoy.Features.CMS.HomeBlog.RankingViewModel>))
+                    <a href="@Url.Action("RankingTopUser",new { controller = "HomeBlog"})" class="btn btn-block" style="background-color:#ffffff"><h5 class="mt-0 text-success"> View Ranking</h5></a>
                     <hr />
                 </div>
             </div>
@@ -106,16 +103,21 @@
             <div class="content text">Latest</div>
             <div class="content line"></div>
         </div>
-        @Html.Partial("_RenderIndex",(ViewBag.NewPosts as IEnumerable<ScraBoy.Features.CMS.Blog.Post>).Take(9))
-        <a target="_blank" href="@Url.Action("FuPost",new { controller = "HomeBlog",type = "latestpost" })" class="btn btn-block" style="background-color:#ffffff">
+        @Html.Partial("_RenderIndex",Model.Take(15))
+        <a href="@Url.Action("FuPost",new { controller = "HomeBlog",page=2,type = "latestpost" })" class="btn btn-block" style="background-color:#ffffff">
             <h5 class="mt-0 text-success">Show More</h5>
         </a>
     </div>
 </div>
 
-
+<br />
 <div class="container">
     <div id="products" class="row view-group">
-        @Html.Partial("_WidgetRecentComments",(ViewBag.RecentComments as IEnumerable<ScraBoy.Features.CMS.Comments.Comment>).Take(9))
+        <div class="about">
+            <div class="content line"></div>
+            <div class="content text">Discussion</div>
+            <div class="content line"></div>
+        </div>
+        @Html.Partial("_WidgetRecentComments",(ViewBag.RecentComments as IEnumerable<ScraBoy.Features.CMS.Comments.Comment>))
     </div>
 </div>
