@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ScraBoy.Features.Hadist.Bab;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -28,11 +29,5 @@ namespace ScraBoy.Features.Hadist.Book
         public string Name { get; set; }
         public virtual ICollection<Kitab> Kitabs { get; set; }
     }
-    public class Chapter
-    {
-        [Key]
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public virtual ICollection<Kitab> Kitabs { get; set; }
-    }
+  
 }

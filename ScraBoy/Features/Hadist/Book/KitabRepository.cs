@@ -7,7 +7,6 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using PagedList;
 using ScraBoy.Features.CMS.ModelBinders;
 
 namespace ScraBoy.Features.Hadist.Book
@@ -26,17 +25,29 @@ namespace ScraBoy.Features.Hadist.Book
             this.db.Kitab.Add(model);
             await this.db.SaveChangesAsync();
         }
-        public async Task<IEnumerable<Chapter>> GetAllChapter()
-        {
-            return await this.db.Chapter.Include(a => a.Kitabs).ToArrayAsync();
-        }
         public async Task<IEnumerable<Kitab>> FindByChapter(int chapterId)
         {
-            return await this.db.Kitab.Where(a => a.ChapterId == chapterId).ToArrayAsync();
+            return await this.db.Kitab.Include("Chapter").Where(a => a.ChapterId == chapterId).ToArrayAsync();
+        }
+        public async Task<IEnumerable<Kitab>> Search(int chapterId,string name)
+        {
+            var model = await FindByChapter(chapterId);
+
+            if(!string.IsNullOrEmpty(name))
+            {
+                return model.Where(a => a.Content.Contains(name) || a.Content.RemoveHarokah().Contains(name));
+            }
+            return model;
+        }
+        public async Task<IPagedList> GetPageByChapter(string name, int chapterId,int currentPage)
+        {
+            var model = await Search(chapterId,name);
+
+            return model.OrderBy(a => a.Number).ToPagedList(currentPage,pageSize);
         }
         public async Task<IEnumerable<Kitab>> GetAll()
         {
-            return await this.db.Kitab.OrderBy(a=>a.Number).ToArrayAsync();
+            return await this.db.Kitab.Include("Chapter").OrderBy(a=>a.Number).ToArrayAsync();
         }
 
         public async Task<Kitab> GetById(int id)
@@ -60,6 +71,7 @@ namespace ScraBoy.Features.Hadist.Book
         public async Task<IPagedList> GetPagedListKitab(string name,int currentPage)
         {
             var model = await FindByContent(name);
+
             return model.OrderBy(a => a.Number).ToPagedList(currentPage,pageSize);
         }
         public async Task GetDataFromWeb(string url)
@@ -82,6 +94,24 @@ namespace ScraBoy.Features.Hadist.Book
                 return;
             }
             await this.Create(hadis);
+        }
+
+        public async Task Edit(int id,Kitab model)
+        {
+            var kitab = await GetById(id);
+
+            kitab.ChapterId = model.ChapterId;
+            kitab.Content = model.Content;
+            kitab.ImamId = model.ImamId;
+            kitab.Number = model.Number;
+
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task Delete(Kitab model)
+        {
+            this.db.Kitab.Remove(model);
+            await this.db.SaveChangesAsync();
         }
     }
 }

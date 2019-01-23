@@ -31,7 +31,7 @@ else
                         <div class="col-xs-12 col-md-12">
                             <div class="group card-title inner list-group-item-heading text-muted">
                                 @item.Published.Value.FormatDate() | @Html.Partial("_RenderCategory",item.Category.Name)
-                                by <a target="_blank" href="@Url.Action("Profile","HomeBlog",new { username= item.Author.UserName})">
+                                by <a href="@Url.Action("Profile","HomeBlog",new { username= item.Author.UserName})">
                                     @item.Author.DisplayName
                                 </a>
                             </div>
@@ -40,11 +40,11 @@ else
                     <div class="caption">
                         <div class="col-xs-12 col-md-12">
                             <h5 class="group card-title inner list-group-item-heading">
-                                @Html.ActionLink(item.Title,"post",new { controller = "HomeBlog",postId = item.Id },new { @class = "text-dark",target="_blank" })
+                                @Html.ActionLink(item.Title,"post",new { controller = "HomeBlog",postId = item.Id },new { @class = "text-dark"})
                             </h5>
                             <p class="group inner list-group-item-text">
                                 @item.Content.ReadMore(100)
-                                <a target="_blank" href="@Url.Action("Post",new { controller = "HomeBlog",postId = item.Id })">
+                                <a href="@Url.Action("Post",new { controller = "HomeBlog",postId = item.Id })">
                                     Continue Reading
                                 </a>
                             </p>

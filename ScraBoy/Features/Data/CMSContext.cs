@@ -27,6 +27,7 @@ using ScraBoy.Features.CMS.Following;
 using ScraBoy.Features.Hadist.Book;
 using Microsoft.AspNet.SignalR.Messaging;
 using ScraBoy.Features.CMS.Chat;
+using ScraBoy.Features.Hadist.Bab;
 
 namespace ScraBoy.Features.Data
 {

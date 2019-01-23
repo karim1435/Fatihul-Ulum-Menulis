@@ -1,4 +1,6 @@
-﻿using System;
+﻿using PagedList;
+using ScraBoy.Features.Hadist.Bab;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +16,8 @@ namespace ScraBoy.Features.Hadist.Book
         Task<Kitab> GetByNumber(int number);
         Task GetDataFromWeb(string url);
         Task<IEnumerable<Kitab>> FindByChapter(int chapterId);
-        Task<IEnumerable<Chapter>> GetAllChapter();
+        Task Edit(int id,Kitab model);
+        Task Delete(Kitab model);
+        Task<IPagedList> GetPageByChapter(string name,int chapterId,int currentPage);
     }
 }

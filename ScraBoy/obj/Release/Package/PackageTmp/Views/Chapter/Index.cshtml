@@ -1,0 +1,76 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model IPagedList<ScraBoy.Features.Hadist.Bab.Chapter>
+
+@{
+    ViewBag.Title = "Fatihul Ulum - Chapter Hadist";
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+<div class="container">
+    <br />
+    @if(User.IsInRole("admin"))
+    {
+        <a href="@Url.Action("Create", "Chapter")" class="btn btn-success">
+            New Chapter
+        </a>
+    }
+
+    @Html.Partial("~/Views/Widgets/_SortBy.cshtml")
+    <div style="background-color:#EEEEEE" class="card mb-3">
+        <div dir="ltr" class="card-header">
+            @using(Html.BeginForm("Search","Chapter",FormMethod.Get))
+            {
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Find Chapter"
+                           value="@ViewBag.Filter" name="search" aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit" id="searchsubmit">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table dir="ltr" class="table table-bordered text-justify" id="dataTable" width="100%" cellspacing="0">
+                    <tbody>
+                        @foreach(var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <a href="@Url.Action("FindByChapter","Kitab",new { chapterId=item.Id})">
+                                        Bab: @item.Name
+                                        @if(item.Kitabs.Count()>0)
+                                        {
+                                            @item.LimitNumber
+                                        }
+                                        
+                                    </a>
+                                    <br />
+                                    @if(User.IsInRole("admin"))
+                                    {
+                                        <a href=@Url.Action("Edit","Chapter",new { id = item.Id })>
+                                            Edit <i class="fa fa-pencil"></i>
+                                        </a>
+                                        <a href=@Url.Action("Delete","Chapter",new { id = item.Id })>
+                                            Delete <i class="fa fa-trash"></i>
+                                        </a>
+                                    }
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                @if(Model.Count() > 0)
+                {
+                    <text>Page</text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text>Of</text> @Model.PageCount
+                    @Html.PagedListPager(Model,page => Url.Action("Index",new { page = page,currentFilter = ViewBag.Filter }))
+                }
+            </div>
+
+        </div>
+    </div>
+</div>

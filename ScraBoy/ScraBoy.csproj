@@ -300,6 +300,10 @@
     <Compile Include="Features\CMS\User\UserViewModel.cs" />
     <Compile Include="Features\Data\CMSContext.cs" />
     <Compile Include="Features\Data\IdentityClasses.cs" />
+    <Compile Include="Features\Hadist\Bab\Chapter.cs" />
+    <Compile Include="Features\Hadist\Bab\ChapterController.cs" />
+    <Compile Include="Features\Hadist\Bab\ChapterRepository.cs" />
+    <Compile Include="Features\Hadist\Bab\IChapterRepostiroy.cs" />
     <Compile Include="Features\Hadist\Book\IKitabRepository.cs" />
     <Compile Include="Features\Hadist\Book\Kitab.cs" />
     <Compile Include="Features\Hadist\Book\KitabController.cs" />
@@ -1099,7 +1103,15 @@
     <Content Include="Views\Message\Test.cshtml" />
     <Content Include="Views\Message\_ReplyForm.cshtml" />
     <Content Include="Views\Kitab\Chapter.cshtml" />
-    <Content Include="Views\Kitab\FindByChapter.cshtml" />
+    <Content Include="Views\Chapter\Index.cshtml" />
+    <Content Include="Views\Chapter\Create.cshtml" />
+    <Content Include="Views\Chapter\_Form.cshtml" />
+    <Content Include="Views\Chapter\Edit.cshtml" />
+    <Content Include="Views\Kitab\Create.cshtml" />
+    <Content Include="Views\Kitab\_Form.cshtml" />
+    <Content Include="Views\Kitab\Edit.cshtml" />
+    <Content Include="Views\Kitab\_RenderHadis.cshtml" />
+    <Content Include="Views\Widgets\_SortBy.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
