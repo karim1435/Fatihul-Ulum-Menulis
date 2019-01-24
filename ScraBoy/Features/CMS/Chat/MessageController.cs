@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using ScraBoy.Features.CMS.Gzip;
 using ScraBoy.Features.CMS.User;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,8 @@ using System.Web.Mvc;
 
 namespace ScraBoy.Features.CMS.Chat
 {
+    [RoutePrefix("message")]
+    [Authorize]
     public class MessageController : Controller
     {
         MessageServices messageService;
@@ -21,23 +24,28 @@ namespace ScraBoy.Features.CMS.Chat
             this.messageRepository = new MessageRepository();
             this.messageService = new MessageServices(ModelState,messageRepository,userRepository);
         }
+        [CompressContent]
+        [Route("")]
         public async Task<ActionResult> Index()
         {
             var user = await this.messageService.GetAllUser();
-            return View(user.ToList());
+            var model = user.Where(a => !a.Id.Equals(UserLoginId));
+            return View(model.ToList());
         }
         [Route("Chatting/{username}")]
+        [CompressContent]
         public async Task<ActionResult> ChatIndex(string username)
         {
             var user = await this.userRepository.GetUserByNameAsync(username);
 
             ViewBag.username = username;
-
+            ViewBag.info = user.DisplayName;
             await SetViewBag();
 
             return View();
         }
         [HttpGet]
+        [CompressContent]
         public async Task<ActionResult> History(string username)
         {
             var chats = await this.messageRepository.GetAllChat(UserLoginId);
@@ -45,6 +53,7 @@ namespace ScraBoy.Features.CMS.Chat
             return PartialView("History",chats);
         }
         [HttpGet]
+        [CompressContent]
         public async Task<ActionResult> Chat(string username)
         {
             var user = await this.userRepository.GetUserByNameAsync(username);
@@ -54,6 +63,7 @@ namespace ScraBoy.Features.CMS.Chat
             return PartialView("Chat",chats);
         }
         [Route("Send/{username}")]
+        [CompressContent]
         public async Task<ActionResult> Send(string username)
         {
             var user = await this.userRepository.GetUserByNameAsync(username);
@@ -67,6 +77,7 @@ namespace ScraBoy.Features.CMS.Chat
         [Route("Send/{username}")]
         [Authorize]
         [HttpPost]
+        [CompressContent]
         public async Task<ActionResult> Send(string username,MassageViewModel model)
         {
             var user = await this.userRepository.GetUserByNameAsync(username);
@@ -86,6 +97,7 @@ namespace ScraBoy.Features.CMS.Chat
             return RedirectToAction("ChatIndex","Message",new { username = username });
         }
         [Route("Remove/{id}")]
+        [CompressContent]
         public async Task<ActionResult> Remove(int id)
         {
             var message = await messageRepository.GetSingleMessage(id);

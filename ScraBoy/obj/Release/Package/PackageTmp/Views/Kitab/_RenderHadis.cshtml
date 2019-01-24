@@ -4,14 +4,14 @@
 @model  IPagedList<ScraBoy.Features.Hadist.Book.Kitab>
 
 
-<div style="background-color:#EEEEEE" class="table-responsive">
-    <table class="table table-bordered text-justify" id="dataTable" width="100%" cellspacing="0">
+<div class="table-responsive">
+    <table class="table text-justify" id="dataTable" width="100%" cellspacing="0">
         <tbody>
             @foreach(var item in Model)
             {
                 <tr>
                     <td>
-                        <p style="font-size:20px"; dir="rtl">
+                        <p style="font-size:20px" ; dir="rtl">
                             @item.Number -
                             @if(!string.IsNullOrEmpty(ViewBag.Filter))
                             {
@@ -31,7 +31,7 @@
                         </p>
                         @if(item.Chapter != null)
                         {
-                            <a dir="ltr" class="label label-success" href="@Url.Action("FindByChapter","Kitab",new { chapterId= item.ChapterId})" rel="nofollow">Bab : @item.Chapter.Name</a>
+                            <a dir="ltr" class="label label-dark" href="@Url.Action("FindByChapter","Kitab",new { chapterId= item.ChapterId})" rel="nofollow">Bab : @item.Chapter.Name</a>
                         }
                         <br />
                         @if(User.IsInRole("admin"))
@@ -39,9 +39,9 @@
                             <a href=@Url.Action("Edit","Kitab",new { id = item.Id })>
                                 Edit <i class="fa fa-pencil"></i>
                             </a>
-                                        <a href=@Url.Action("Delete","Kitab",new { id = item.Id })>
-                                            Delete <i class="fa fa-trash"></i>
-                                        </a>
+                            <a href=@Url.Action("Delete","Kitab",new { id = item.Id })>
+                                Delete <i class="fa fa-trash"></i>
+                            </a>
                         }
                     </td>
                 </tr>

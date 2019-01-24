@@ -9,7 +9,8 @@
 }
 <div class="container">
     <br />
-    <div class="card mb-3">
+    @Html.Partial("~/Views/Widgets/_SortBy.cshtml")
+    <div style="background-color:#EBC390" class="card mb-3">
         <div dir="rtl" class="card-header">
             @using(Html.BeginForm("SearchByChapter","Kitab",new { chapterId = ViewBag.chapterNumber },FormMethod.Get))
             {

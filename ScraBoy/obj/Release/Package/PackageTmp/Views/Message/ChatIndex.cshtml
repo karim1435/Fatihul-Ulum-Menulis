@@ -23,15 +23,14 @@
             <div class="mesgs">
                 <div id="dataTable" class="msg_history">
                 </div>
-                @using(Html.BeginForm("Send","Message",new { username = ViewBag.username },FormMethod.Post))
-                {
+              @using(Html.BeginForm("Send","Message",new { username = ViewBag.username },FormMethod.Post,new { id = "OptionForm" }))
+              {
                     @Html.AntiForgeryToken()
 
                     <div class="type_msg">
                         <div class="input_msg_write">
                             @Html.EditorFor(model => model.NewMessage.Content,
-                                new { htmlAttributes = new { @class = "write_msg",@placeholder = "Type a message" } })
-                            <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="false"></i></button>
+                                new { htmlAttributes = new {@id= "cform", @class = "write_msg",@placeholder = "Type a message to " + ViewBag.info +"..."} })
                         </div>
                     </div>
                 }
@@ -82,5 +81,36 @@
             })
                 .success(function (result) { model.empty().append(result); })
         }
+
+        $("#myLink").click(function (e) {
+
+            e.preventDefault();
+            $.ajax({
+
+                url: $(this).attr("href"), // comma here instead of semicolon   
+                success: function () {
+                    alert("Value Added");  // or any other indication if you want to show
+                }
+
+            });
+
+        });
+        $(function () {
+            $(document).on('submit', '#OptionForm', refreshGrid);
+        });
+        var refreshGrid = function () {
+            $.ajax({
+                url: this.action,
+                type: this.method,
+                data: $(this).serialize(),
+                success: function (data) {
+                    $("input[type='text']").val("");
+                }
+            });
+
+            return false;
+        }
+
+
     </script>
 }

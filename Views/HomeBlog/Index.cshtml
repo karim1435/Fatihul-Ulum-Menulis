@@ -103,7 +103,7 @@
             <div class="content text">Latest</div>
             <div class="content line"></div>
         </div>
-        @Html.Partial("_RenderIndex",Model.Take(15))
+        @Html.Partial("_RenderIndex",Model.Take(9))
         <a href="@Url.Action("FuPost",new { controller = "HomeBlog",page=2,type = "latestpost" })" class="btn btn-block" style="background-color:#ffffff">
             <h5 class="mt-0 text-success">Show More</h5>
         </a>

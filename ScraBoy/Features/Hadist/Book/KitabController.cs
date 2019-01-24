@@ -60,7 +60,6 @@ namespace ScraBoy.Features.Hadist.Book
         
         [CompressContent]
         [Authorize]
-        [Route("scrap/{url}")]
         public async Task<ActionResult> Scrap(string url)
         {
             if(!string.IsNullOrEmpty(url))

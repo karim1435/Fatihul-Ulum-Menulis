@@ -67,7 +67,6 @@ namespace ScraBoy.Features.CMS.ModelBinders
             Array.Reverse(array);
             return new String(array);
         }
-
         public static String getUrl()
         {
             //Return variable declaration

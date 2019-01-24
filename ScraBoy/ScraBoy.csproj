@@ -1100,7 +1100,6 @@
     <Content Include="Views\Message\ChatIndex.cshtml" />
     <Content Include="Views\Message\History.cshtml" />
     <Content Include="Views\Message\Index.cshtml" />
-    <Content Include="Views\Message\Test.cshtml" />
     <Content Include="Views\Message\_ReplyForm.cshtml" />
     <Content Include="Views\Kitab\Chapter.cshtml" />
     <Content Include="Views\Chapter\Index.cshtml" />

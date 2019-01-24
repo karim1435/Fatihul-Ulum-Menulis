@@ -101,6 +101,15 @@ a.bg-green:focus, a.bg-green:hover, button.bg-green:focus, button.bg-green:hover
         background-color: #c9302c;
     }
 
+.label-dark {
+    background-color: #000;
+}
+
+    .label-dark[href]:hover,
+    .label-dark[href]:focus {
+        background-color: #000;
+    }
+
 .about {
     display: table;
     width: 100%;
@@ -328,6 +337,7 @@ footer {
     color: #FFF;
     margin-bottom: 22px;
 }
+
 .social-icon {
     width: 30px;
     height: 30px;

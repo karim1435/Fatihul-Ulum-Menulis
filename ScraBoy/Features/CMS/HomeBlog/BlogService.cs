@@ -14,12 +14,13 @@ using ScraBoy.Features.CMS.Topic;
 using ScraBoy.Features.CMS.User;
 using System.Data.Entity;
 using ScraBoy.Features.CMS.Following;
+using System.Collections;
 
 namespace ScraBoy.Features.CMS.HomeBlog
 {
     public class BlogService
     {
-        private readonly int pageSize = 15;
+        private readonly int pageSize = 9;
         private readonly IPostRepository postRepository;
         private readonly ICommentRepository commenRepository;
         private readonly IVotingRepository voteRepository;

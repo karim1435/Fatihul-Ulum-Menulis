@@ -1,43 +1,37 @@
 ﻿@model IEnumerable<ScraBoy.Features.CMS.User.CMSUser>
 
+
 @{
-    Layout = null;
+    ViewBag.Title = "Chat";
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-    <p>
-        @Html.ActionLink("Create New","Create")
-    </p>
-    <table class="table">
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DisplayName)
-            </th>
-            <th></th>
-        </tr>
-
-        @foreach(var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.ActionLink(item.DisplayName,"ChatIndex","Message",new { username = item.UserName },new { @class = "fa fa-eye" })
-                    @Html.DisplayFor(modelItem => item.DisplayName)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit","Edit",new { id = item.Id }) |
-                    @Html.ActionLink("Details","Details",new { id = item.Id }) |
-                    @Html.ActionLink("Delete","Delete",new { id = item.Id })
-                </td>
-            </tr>
-        }
-
-    </table>
-</body>
-</html>
+<link href="~/Content/chat.css" rel="stylesheet" />
+<div class="container">
+    <br />
+    <div class="messaging">
+        <div class="inbox_msg">
+            <div class="inbox_people">
+                <div class="headind_srch">
+                    <div class="recent_heading">
+                        <h4>Start Chatting</h4>
+                    </div>
+                </div>
+                <div id="historyTable" class="inbox_chat">
+                    @foreach(var item in Model)
+                    {
+                        <div class="chat_list active_chat">
+                            <div class="chat_people">
+                                <div class="chat_img"> <img style="height:30px;width:30px;" src="@Url.Content(item.UrlImage)" alt="sunil"> </div>
+                                <div class="chat_ib">
+                                    <a href=@Url.Action("ChatIndex","Message",new { username = item.UserName })>
+                                        <h5 class="text-primary">@item.DisplayName <span class="chat_date"></span></h5>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
