@@ -1,4 +1,5 @@
 ﻿using ScraBoy.Features.Hadist.Bab;
+using ScraBoy.Features.Hadist.Hadis;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -15,19 +16,11 @@ namespace ScraBoy.Features.Hadist.Book
         public int Number { get; set; }
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
-        public int? ChapterId { get; set; }
+        public int ChapterId { get; set; }
         [ForeignKey("ChapterId")]
         public Chapter Chapter { get; set; }
-        public int? ImamId { get; set; }
-        [ForeignKey("ImamId")]
-        public Imam Imam { get; set; }
+       
     }
-    public class Imam
-    {
-        [Key]
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public virtual ICollection<Kitab> Kitabs { get; set; }
-    }
+ 
   
 }

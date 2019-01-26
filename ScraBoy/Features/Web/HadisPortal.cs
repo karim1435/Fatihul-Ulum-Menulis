@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using ScraBoy.Features.Hadist.Book;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ namespace ScraBoy.Features.Web
 {
     public class HadisPortal : WebParent
     {
-        public HadisModel model = new HadisModel();
+        public Kitab model = new Kitab();
         public HadisPortal(string url) : base(url)
         {
             Init();
@@ -20,17 +21,21 @@ namespace ScraBoy.Features.Web
                Where(d => d.Attributes.Contains("class") && d.Attributes["class"].
                Value.Contains("hadith")).FirstOrDefault();
 
-            this.model.Content = RemoveNumber(GetContent(titles));
-            this.model.Number = GetNumber(GetContent(titles));
+            if(titles!=null)
+            {
+                this.model.Content = RemoveNumber(GetContent(titles));
+                this.model.Number = GetNumber(GetContent(titles));
+            }
         }
         private string GetContent(HtmlNode title)
         {
             string result = "";
 
+           
             var node = title.Descendants("div").
                 Where(d => d.Attributes["id"].
                 Value.Contains("ar")).FirstOrDefault();
-
+           
             result = node.InnerText;
             return result;
         }
@@ -42,6 +47,7 @@ namespace ScraBoy.Features.Web
         }
         static int GetNumber(string text)
         {
+            
             string number = Regex.Match(text,@"\d+").Value;
             return Convert.ToInt32(number);
         }

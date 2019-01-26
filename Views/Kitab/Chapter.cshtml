@@ -9,9 +9,36 @@
 }
 <div class="container">
     <br />
+    @if(User.IsInRole("admin"))
+    {
+        <a href="@Url.Action("Create","Kitab")" class="btn btn-success">
+            New Hadis
+        </a>
+    }
+
+    @Html.Partial("~/Views/Widgets/_SortBy.cshtml")
     <div style="background-color:#EBC390" class="card mb-3">
+        @if(User.IsInRole("admin"))
+        {
+            <div dir="ltr" class="card my-4">
+                <div class="card-body">
+                    @using(Html.BeginForm("Scrap","Kitab",FormMethod.Get))
+                    {
+                        <div class="input-group">
+                            <input type="number" class="form-control" placeholder="From"
+                                   value="@ViewBag.filter" name="from">
+                            <input type="number" class="form-control" placeholder="To"
+                                   value="@ViewBag.filter" name="to">
+                            <span class="input-group-btn">
+                                <button class="btn btn-secondary" type="submit">Scrap</button>
+                            </span>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
         <div dir="rtl" class="card-header">
-            @using(Html.BeginForm("SearchByChapter","Kitab",new { chapterId = ViewBag.chapterNumber },FormMethod.Get))
+            @using(Html.BeginForm("SearchByChapter","Kitab",new { imam=ViewBag.imamName, chapterId = ViewBag.chapterNumber },FormMethod.Get))
             {
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="قم بالبحث"
@@ -26,11 +53,12 @@
         </div>
         <div class="card-body">
             @Html.Partial("_RenderHadis",Model)
-            @if(Model.Count() > 0)
-            {
-                <text>Page</text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text>Of</text> @Model.PageCount
-                @Html.PagedListPager(Model,page => Url.Action("FindByChapter",new { page = page,currentFilter = ViewBag.Filter }))
-            }
+          
         </div>
     </div>
+    @if(Model.Count() > 0)
+            {
+        <text>Page</text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text>Of</text> @Model.PageCount
+        @Html.PagedListPager(Model,page => Url.Action("FindByChapter",new { page = page,currentFilter = ViewBag.Filter }))
+    }
 </div>

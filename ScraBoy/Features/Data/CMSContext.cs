@@ -28,6 +28,7 @@ using ScraBoy.Features.Hadist.Book;
 using Microsoft.AspNet.SignalR.Messaging;
 using ScraBoy.Features.CMS.Chat;
 using ScraBoy.Features.Hadist.Bab;
+using ScraBoy.Features.Hadist.Hadis;
 
 namespace ScraBoy.Features.Data
 {
@@ -165,6 +166,15 @@ namespace ScraBoy.Features.Data
 
 
 
+            modelBuilder.Entity<Chapter>()
+            .HasRequired(s => s.Imam)
+            .WithMany(g => g.Chapters)
+            .HasForeignKey<int>(s => s.ImamId).WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<Kitab>()
+            .HasRequired(s => s.Chapter)
+            .WithMany(g => g.Kitabs)
+            .HasForeignKey<int>(s => s.ChapterId).WillCascadeOnDelete(true);
 
             //#region Forum FluentApi
             //modelBuilder.Entity<Thread>().HasKey(e => e.Id)

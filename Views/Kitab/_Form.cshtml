@@ -34,17 +34,6 @@
         </div>
 
         <div class="form-group">
-            <p>Select Imam</p>
-            <div class="btn-group dropup">
-                @Html.DropDownListFor(
-                 model => model.ChapterId,new SelectList(ViewBag.imam,"Id","Name"),
-                 new { @class = "form-control",@placeholder = "Enter Title",@autofocus = "autofocus" }
-             )
-                @Html.ValidationMessageFor(model => model.ChapterId,"",new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>

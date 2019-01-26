@@ -1,14 +1,31 @@
-﻿<div class="row">
+﻿
+<div class="row">
     <div class="col-lg-12 my-3">
         <div class="pull-right">
             <div class="btn-group">
-                <a href="@Url.Action("Index","Chapter")" class="btn btn-info text-white">
-                    Chapter
-                </a>
-                <a href="@Url.Action("Index","Kitab")" class="btn btn-danger text-white">
-                    Hadist
+                <a href="@Url.Action("Index","Kitab", new { imam=ViewBag.imamName})" class="btn btn-success text-white">
+                    <i class="fa fa-book"></i>
                 </a>
             </div>
         </div>
+        <div class="pull-left">
+            <div class="btn-group">
+                <a href="@Url.Action("Index","Imam")" class="btn btn-info text-white">
+                    <i class="fa fa-home"></i>
+                </a>
+                <a href="@Url.Action("Index","Chapter", new {imam=ViewBag.imamName })" class="btn btn-default text-dark">
+                    <b>
+                        @ViewBag.hadisTitle
+
+                        @if(!string.IsNullOrEmpty(ViewBag.chapterName))
+                        {
+                            <span>/ @ViewBag.chapterName</span>
+                        }
+                    </b>
+                </a>
+            </div>
+
+
+        </div>
     </div>
-</div> 
+</div>

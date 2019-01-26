@@ -14,10 +14,10 @@ namespace ScraBoy.Features.Hadist.Book
         Task<IEnumerable<Kitab>> GetAll();
         Task<Kitab> GetById(int id);
         Task<Kitab> GetByNumber(int number);
-        Task GetDataFromWeb(string url);
-        Task<IEnumerable<Kitab>> FindByChapter(int chapterId);
+        Task GetDataFromWeb(int chapterId,int form, int to);
         Task Edit(int id,Kitab model);
         Task Delete(Kitab model);
-        Task<IPagedList> GetPageByChapter(string name,int chapterId,int currentPage);
+        Task<IPagedList> GetPagedListKitab(string imam,string name,int currentPage);
+        Task<IPagedList> GetPageByChapter(string imam,string name,string chapterId,int currentPage);
     }
 }

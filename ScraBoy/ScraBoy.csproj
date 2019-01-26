@@ -308,6 +308,10 @@
     <Compile Include="Features\Hadist\Book\Kitab.cs" />
     <Compile Include="Features\Hadist\Book\KitabController.cs" />
     <Compile Include="Features\Hadist\Book\KitabRepository.cs" />
+    <Compile Include="Features\Hadist\Hadis\Imam.cs" />
+    <Compile Include="Features\Hadist\Hadis\ImamController.cs" />
+    <Compile Include="Features\Hadist\Hadis\ImamRepository.cs" />
+    <Compile Include="Features\Hadist\Hadis\ImamRerpository.cs" />
     <Compile Include="Features\Inventory\Data\InventroySeed.cs" />
     <Compile Include="Features\Inventory\Item\InventoryController.cs" />
     <Compile Include="Features\Inventory\Item\InventoryService.cs" />
@@ -729,6 +733,18 @@
     <Compile Include="Migrations\201901220323367_tetsestsetsetsete.Designer.cs">
       <DependentUpon>201901220323367_tetsestsetsetsete.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201901240110536_wrongmodel.cs" />
+    <Compile Include="Migrations\201901240110536_wrongmodel.Designer.cs">
+      <DependentUpon>201901240110536_wrongmodel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901250051528_slugurl.cs" />
+    <Compile Include="Migrations\201901250051528_slugurl.Designer.cs">
+      <DependentUpon>201901250051528_slugurl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201901260057280_success.cs" />
+    <Compile Include="Migrations\201901260057280_success.Designer.cs">
+      <DependentUpon>201901260057280_success.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -1111,6 +1127,10 @@
     <Content Include="Views\Kitab\Edit.cshtml" />
     <Content Include="Views\Kitab\_RenderHadis.cshtml" />
     <Content Include="Views\Widgets\_SortBy.cshtml" />
+    <Content Include="Views\Imam\_Form.cshtml" />
+    <Content Include="Views\Imam\Create.cshtml" />
+    <Content Include="Views\Imam\Edit.cshtml" />
+    <Content Include="Views\Imam\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -1407,6 +1427,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201901220323367_tetsestsetsetsete.resx">
       <DependentUpon>201901220323367_tetsestsetsetsete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901240110536_wrongmodel.resx">
+      <DependentUpon>201901240110536_wrongmodel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901250051528_slugurl.resx">
+      <DependentUpon>201901250051528_slugurl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201901260057280_success.resx">
+      <DependentUpon>201901260057280_success.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

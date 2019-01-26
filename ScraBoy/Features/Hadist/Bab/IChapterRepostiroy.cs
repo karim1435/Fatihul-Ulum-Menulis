@@ -14,7 +14,8 @@ namespace ScraBoy.Features.Hadist.Bab
         Task Delete(Chapter model);
         Task<IEnumerable<Chapter>> GetAll();
         Task<Chapter> GetOne(int id);
-        Task<IPagedList> GetPageChapter(string name,int currenPage);
+        Task<Chapter> FindBySlug(string slugUrl);
+        Task<IPagedList> GetPageChapter(string name,string imam,int currenPage);
     }
 
 }

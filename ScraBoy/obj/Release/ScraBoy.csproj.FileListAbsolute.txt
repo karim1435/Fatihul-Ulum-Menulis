@@ -196,3 +196,6 @@ E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.gommm.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.dbmessage.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.hadisttest.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.tetsestsetsetsete.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.wrongmodel.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.slugurl.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.success.resources

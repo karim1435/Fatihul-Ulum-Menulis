@@ -31,7 +31,7 @@
                         </p>
                         @if(item.Chapter != null)
                         {
-                            <a dir="ltr" class="label label-dark" href="@Url.Action("FindByChapter","Kitab",new { chapterId= item.ChapterId})" rel="nofollow">Bab : @item.Chapter.Name</a>
+                            <a dir="ltr" class="label label-dark" href="@Url.Action("FindByChapter","Kitab",new {imam=ViewBag.imamName,chapterId=item.Chapter.SlugUrl})" rel="nofollow">Bab : @item.Chapter.Name</a>
                         }
                         <br />
                         @if(User.IsInRole("admin"))
