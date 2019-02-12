@@ -13,8 +13,10 @@ namespace ScraBoy.Features.Hadist.Bab
     {
         [Key]
         public int Id { get; set; }
+        [Required]
         public int Number { get; set; }
         public string SlugUrl { get; set; }
+        [Required]
         public string Name { get; set; }
         public int ImamId { get; set; }
         [ForeignKey("ImamId")]

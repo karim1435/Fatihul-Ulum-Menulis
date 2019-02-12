@@ -3,22 +3,18 @@
 @using(Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-
     <div class="form-horizontal">
         <hr />
         @Html.ValidationSummary(true,"",new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.Number,htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Number,new { htmlAttributes = new { @class = "form-control" } })
+            <div class="form-label-group">
+                @Html.EditorFor(model => model.Number,new { htmlAttributes = new { @class = "form-control",@placeholder = "Nomor Hadist",@autofocus = "autofocus" } })
                 @Html.ValidationMessageFor(model => model.Number,"",new { @class = "text-danger" })
             </div>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.Content,htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Content,10,100,new { htmlAttributes = new { @class = "form-control" } })
+            <div class="form-label-group">
+                @Html.TextAreaFor(model => model.Content,10,40,htmlAttributes: new { style = "width: 100%; max-width: 100%;" })
                 @Html.ValidationMessageFor(model => model.Content,"",new { @class = "text-danger" })
             </div>
         </div>
@@ -28,15 +24,14 @@
                 @Html.DropDownListFor(
                  model => model.ChapterId,new SelectList(ViewBag.chapter,"Id","Name"),
                  new { @class = "form-control",@placeholder = "Enter Title",@autofocus = "autofocus" }
-             )
+                )
                 @Html.ValidationMessageFor(model => model.ChapterId,"",new { @class = "text-danger" })
             </div>
         </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Submit" class="btn btn-default" />
         </div>
     </div>
 }

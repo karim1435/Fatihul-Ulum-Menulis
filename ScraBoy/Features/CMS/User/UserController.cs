@@ -76,6 +76,7 @@ namespace ScraBoy.Features.CMS.User
         public async Task<ActionResult> Create(UserViewModel model)
         {
             model.UrlImage = defaultProfile;
+
             var completed = await userservice.CreateAsync(model);
 
             model.LoadUserRoles(await rolesRepository.GetAllRolesAsync());

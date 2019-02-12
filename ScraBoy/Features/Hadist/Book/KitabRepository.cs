@@ -27,7 +27,7 @@ namespace ScraBoy.Features.Hadist.Book
         }
         public async Task<IEnumerable<Kitab>> FindByChapter(string imam,string chapterId)
         {
-            return await this.db.Kitab.Include("Chapter").Where(a => a.Chapter.SlugUrl == chapterId && a.Chapter.Imam.SlugUrl.Equals(imam)).ToArrayAsync();
+            return await this.db.Kitab.Include("Chapter").Include(a => a.Translations.Select(post => post.Language)).Where(a => a.Chapter.SlugUrl == chapterId && a.Chapter.Imam.SlugUrl.Equals(imam)).ToArrayAsync();
         }
         public async Task<IEnumerable<Kitab>> Search(string imam,string chapterId,string name)
         {
@@ -39,23 +39,37 @@ namespace ScraBoy.Features.Hadist.Book
             }
             return model;
         }
-        public async Task<IPagedList> GetPageByChapter(string imam,string name,string chapterId,int currentPage)
+        public async Task<IPagedList> GetPageByChapter(string code,int? number,string imam,string name,string chapterId,int currentPage)
         {
             var model = await Search(imam,chapterId,name);
+
+            foreach(var item in model)
+            {
+                item.CurrentTranslation = item.Translations.Where(a => a.Language.KeyCode.ToLower().Equals(code.ToLower())).FirstOrDefault();
+            }
+            if(number.HasValue)
+            {
+                model = model.Where(a => a.Number == number);
+            }
 
             return model.OrderBy(a => a.Number).ToPagedList(currentPage,pageSize);
         }
         public async Task<IEnumerable<Kitab>> GetAll()
         {
-            return await this.db.Kitab.Include("Chapter").OrderBy(a => a.Number).ToArrayAsync();
+            return await this.db.Kitab.Include("Chapter").OrderBy(a => a.Number).OrderBy(a => a.Number).ToArrayAsync();
         }
         public async Task<IEnumerable<Kitab>> FindByImam(string imam)
         {
-            return await this.db.Kitab.Include("Chapter").Where(a => a.Chapter.Imam.SlugUrl.Equals(imam)).ToArrayAsync();
+            return await this.db.Kitab.Include("Chapter.Imam").Where(a => a.Chapter.Imam.SlugUrl.Equals(imam)).ToArrayAsync();
+        }
+        public async Task<Kitab> FindByNumberImam(string imam,int number)
+        {
+            var model = await FindByImam(imam);
+            return model.Where(a => a.Number == number).FirstOrDefault();
         }
         public async Task<Kitab> GetById(int id)
         {
-            return await this.db.Kitab.Where(a => a.Id == id).FirstOrDefaultAsync();
+            return await this.db.Kitab.Include("Chapter").Where(a => a.Id == id).FirstOrDefaultAsync();
         }
         public async Task<IEnumerable<Kitab>> FindByContent(string imam,string query)
         {
@@ -64,6 +78,7 @@ namespace ScraBoy.Features.Hadist.Book
             if(!string.IsNullOrEmpty(query))
             {
                 return model.Where(a => a.Content.Contains(query) || a.Content.RemoveHarokah().Contains(query));
+
             }
             return model;
         }
@@ -74,7 +89,7 @@ namespace ScraBoy.Features.Hadist.Book
         }
         public async Task<Kitab> GetByNumber(int number)
         {
-            return await this.db.Kitab.Where(a => a.Number == number).FirstOrDefaultAsync();
+            return await this.db.Kitab.Include("Chapter.Imam").Where(a => a.Number == number).FirstOrDefaultAsync();
         }
         public async Task<IPagedList> GetPagedListKitab(string imam,string name,int currentPage)
         {
@@ -84,13 +99,11 @@ namespace ScraBoy.Features.Hadist.Book
         }
         public async Task GetDataFromWeb(int chapterId,int from,int to)
         {
-
             for(int number = from; number <= to; number++)
             {
                 if(await HasScrapped(chapterId,number))
-                {
                     continue;
-                }
+
                 string url = string.Format("http://hadithportal.com/hadith-sharh-{0}-31717&book=1",number);
                 HadisPortal hp = new HadisPortal(url);
 
@@ -98,14 +111,9 @@ namespace ScraBoy.Features.Hadist.Book
                 hp.model.ChapterId = chapterId;
 
                 if(string.IsNullOrEmpty(hp.model.Content))
-                {
                     hp.model.Content = "The hadist is empty";
-                }
-
 
                 await this.Create(hp.model);
-
-
             }
         }
 

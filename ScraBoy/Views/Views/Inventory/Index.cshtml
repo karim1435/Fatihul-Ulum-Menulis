@@ -1,0 +1,85 @@
+﻿@model ScraBoy.Features.Item.InventoryViewModel
+@{
+    ViewBag.Title = "Inventory List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<center><h1>Inventory List of Fatihul Ulum stuff </h1></center>
+<table class="table">
+
+    <tr>
+        <th>
+            No
+        </th>
+        <th>
+            Product
+        </th>
+        <th>
+            Info
+        </th>
+        <th>
+            Action
+        </th>
+    </tr>
+    @{int index = 0;}
+    @foreach(var item in Model.Items)
+    {
+        <tr>
+            <td>@(++index)</td>
+            <td>
+                <b>Product Name</b>
+                <br>
+                <a href=@item.Product.Url>@item.Product.ProductName</a>
+                <br>
+                <b>Product Price</b>
+                <br>
+                @item.Quantity Item x  @String.Format("{0:n}",@item.Product.UnitPrice);  = @String.Format("{0:n}",@item.TotalProductPrice);
+                <br>
+                <b>Shipment Cost</b>
+                <br>
+                @item.Quantity Item x  Rp @String.Format("{0:n}",@item.Product.ShipmentPrice) = @String.Format("{0:n}",@item.TotalShipmentPrice);
+            </td>
+            <td>
+                Shop: <a href=@item.Product.Shop.ShopLink>@item.Product.Shop.ShopName</a>
+                <br>
+                Type:<b> @item.Product.Type.TypeName</b>
+                <br />
+                Guarantee Ends: <b>@item.Product.ExpiresOn.ToString("dd-MM-yyyy")</b>
+            </td>
+            <td>
+                @Html.ActionLink("Add","AddToInventory",new { id = item.ProductId })
+                | @Html.ActionLink("Remove","RemoveFromInventory",new { id = item.ProductId })
+            </td>
+        </tr>
+    }
+
+</table>
+
+<br />
+<table class="table">
+    <tr>
+        <th>
+            <b>Total Products Price</b>
+        </th>
+        <td>
+            @String.Format("{0:n}",@Model.ItemsTotal);
+        </td>
+    </tr>
+
+    <tr>
+        <th>
+            <b>Total Shipments Cost</b>
+        </th>
+        <td>
+            @String.Format("{0:n}",@Model.ShipmentsTotal);
+        </td>
+    </tr>
+
+    <tr>
+        <th>
+            <b>Final Total Price</b>
+        </th>
+        <td>
+            @String.Format("{0:n}",@Model.ProductsTotal);
+        </td>
+    </tr>
+</table>

@@ -81,9 +81,7 @@ namespace ScraBoy.Features.CMS.Blog
         [CompressContent]
         public async Task<ActionResult> Create()
         {
-
             await SetViewBag();
-
             return View(new Post());
         }
 

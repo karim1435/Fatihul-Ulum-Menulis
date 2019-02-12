@@ -10,7 +10,7 @@ using ScraBoy.Features.CMS.ModelBinders;
 
 namespace ScraBoy.Features.Hadist.Hadis
 {
-    public class ImamRepository : ImamRerpository
+    public class ImamRepository : IimamRepository
     {
         private readonly int pageSize = 10;
         private readonly CMSContext DB;
@@ -42,6 +42,7 @@ namespace ScraBoy.Features.Hadist.Hadis
         public async Task<IEnumerable<Imam>> SearchByName(string name)
         {
             var model = await this.GetAll();
+
             if(!string.IsNullOrEmpty(name))
             {
                 return model.Where(a => a.Name.ToLower().Contains(name.ToLower()));
@@ -50,12 +51,14 @@ namespace ScraBoy.Features.Hadist.Hadis
         }
         public async Task<Imam> FindById(int id)
         {
-            return await this.DB.Imam.Where(a => a.Id == id).FirstOrDefaultAsync();
+            var model = await GetAll();
+            return model.Where(a => a.Id == id).FirstOrDefault();
         }
 
         public async Task<Imam> FindByName(string name)
         {
-            return await this.DB.Imam.Where(a => a.Name.Equals(name)).FirstOrDefaultAsync();
+            var model = await GetAll();
+            return model.Where(a => a.Name.Equals(name)).FirstOrDefault();
         }
 
         public async Task<IEnumerable<Imam>> GetAll()
@@ -71,7 +74,8 @@ namespace ScraBoy.Features.Hadist.Hadis
 
         public async Task<Imam> FindBySlug(string slugUrl)
         {
-            return await this.DB.Imam.Where(a => a.SlugUrl.Equals(slugUrl)).FirstOrDefaultAsync();
+            var model = await GetAll();
+            return model.Where(a => a.SlugUrl.Equals(slugUrl)).FirstOrDefault();
         }
     }
 }

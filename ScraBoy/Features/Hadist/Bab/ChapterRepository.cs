@@ -28,7 +28,7 @@ namespace ScraBoy.Features.Hadist.Bab
 
         public async Task Delete(Chapter model)
         {
-             this.db.Chapter.Remove(model);
+            this.db.Chapter.Remove(model);
             await this.db.SaveChangesAsync();
         }
 
@@ -44,11 +44,11 @@ namespace ScraBoy.Features.Hadist.Bab
 
         public async Task<IEnumerable<Chapter>> GetAll()
         {
-            return await this.db.Chapter.Include("Imam").ToArrayAsync();
+            return await this.db.Chapter.OrderBy(a => a.Number).Include("Imam").ToArrayAsync();
         }
         public async Task<IEnumerable<Chapter>> FindByImam(string url)
         {
-            return await this.db.Chapter.Include("Imam").Where(a => a.Imam.SlugUrl.Equals(url)).ToArrayAsync();
+            return await this.db.Chapter.OrderBy(a => a.Number).Include("Imam").Where(a => a.Imam.SlugUrl.Equals(url)).ToArrayAsync();
         }
         public async Task<IEnumerable<Chapter>> Find(string imam,string query)
         {
@@ -60,7 +60,7 @@ namespace ScraBoy.Features.Hadist.Bab
             }
             return model;
         }
-        public async Task<IPagedList> GetPageChapter(string name,string imam, int currenPage)
+        public async Task<IPagedList> GetPageChapter(string name,string imam,int currenPage)
         {
             var model = await Find(imam,name);
 

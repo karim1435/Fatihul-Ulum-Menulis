@@ -1,0 +1,45 @@
+﻿@model IEnumerable<ScraBoy.Features.CMS.HomeBlog.RankingViewModel>
+
+@{
+    ViewBag.Title = "Fatihul Ulum Menulis - Top Ten Writers Ranking";
+
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+@section seoSection{
+    <meta name="description" content="Fatihul Ulum Menulis, Fatihul Ulum Menulis - Top Ten Writers Ranking">
+    <meta name="robots" content="index">
+}
+<div class="container">
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="about">
+                <div class="content line"></div>
+                <div class="content text">Top Writers</div>
+                <div class="content line"></div>
+            </div>
+            @foreach(var item in Model.Take(10))
+            {
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.User.UrlImage)" style="height: 100px; width:100px" alt="">
+                    <div class="media-body">
+                        <a href="@Url.Action("Profile","HomeBlog",new { username = item.User.UserName })">
+                            <h5 class="mt-0">@item.User.DisplayName</h5>
+                        </a>
+                        <div>
+
+                        </div>
+                        <div>
+                            <a class="btn btn-raised btn-info text-white"><i class="fa fa-trophy" aria-hidden="true"> @item.Point.FormatNumber() point</i></a>
+                            <a class="btn btn-raised btn-info text-white"><i class="fa fa-book" aria-hidden="true"> @item.TotalPublishedPost posts</i></a>
+                            <a class="btn btn-raised btn-info text-white"><i class="fa fa-comments" aria-hidden="true"> @item.TotalCommentPost comments</i></a>
+                            <a class="btn btn-raised btn-info text-white"><i class="fa fa-heart" aria-hidden="true"> @item.TotalLikedPost likes</i></a>
+                            <a class="btn btn-raised btn-info text-white"><i class="fa fa-eye" aria-hidden="true"> @item.TotalViewedPost views</i></a>
+                        </div>
+                    </div>
+                </div>
+                <hr />
+            }
+        </div>
+    </div>
+</div>

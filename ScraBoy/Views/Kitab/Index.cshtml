@@ -4,12 +4,15 @@
 @model  IPagedList<ScraBoy.Features.Hadist.Book.Kitab>
 
 @{
-    ViewBag.Title = "Hadis Portal";
+    ViewBag.Title = "Fatihul Ulum Hadits - " + ViewBag.hadisTitle;
     Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+@section seoSection{
+    <meta name="description" content="Fatihul Ulum Hadits - @ViewBag.hadisTitle ">
+    <meta name="robots" content="index">
 }
 <div class="container">
     <br />
-
     @Html.Partial("~/Views/Widgets/_SortBy.cshtml")
     <div style="background-color:#EBC390" class="card mb-3">
         <div dir="rtl" class="card-header">

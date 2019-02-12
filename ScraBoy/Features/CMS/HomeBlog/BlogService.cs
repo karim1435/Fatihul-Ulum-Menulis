@@ -20,7 +20,7 @@ namespace ScraBoy.Features.CMS.HomeBlog
 {
     public class BlogService
     {
-        private readonly int pageSize = 9;
+        private readonly int pageSize = 12;
         private readonly IPostRepository postRepository;
         private readonly ICommentRepository commenRepository;
         private readonly IVotingRepository voteRepository;

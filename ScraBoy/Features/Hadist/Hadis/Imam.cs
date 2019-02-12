@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace ScraBoy.Features.Hadist.Hadis
 {
@@ -14,6 +15,7 @@ namespace ScraBoy.Features.Hadist.Hadis
         [Key]
         public int Id { get; set; }
         public string SlugUrl { get; set; }
+        [Required]
         public string Name { get; set; }
         public virtual ICollection<Chapter> Chapters { get; set; }
 

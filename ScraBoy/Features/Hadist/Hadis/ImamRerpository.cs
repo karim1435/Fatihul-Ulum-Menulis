@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ScraBoy.Features.Hadist.Hadis
 {
-    public interface ImamRerpository
+    public interface IimamRepository
     {
         Task<IEnumerable<Imam>> GetAll();
         Task Create(Imam model);

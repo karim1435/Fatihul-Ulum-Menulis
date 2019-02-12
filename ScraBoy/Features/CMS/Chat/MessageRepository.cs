@@ -49,5 +49,13 @@ namespace ScraBoy.Features.CMS.Chat
             this.db.Message.Remove(model);
             await this.db.SaveChangesAsync();
         }
+
+        public async Task Edit(int id,Massage model)
+        {
+            var message = await GetSingleMessage(id);
+
+            message.Content = model.Content;
+            await this.db.SaveChangesAsync();
+        }
     }
 }

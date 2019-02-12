@@ -12,6 +12,7 @@ using ScraBoy.Features.CMS.Blog;
 using ScraBoy.Features.Data;
 using System.Data.Entity;
 using PagedList;
+using System.Text.RegularExpressions;
 
 namespace ScraBoy.Features.CMS.User
 {
@@ -43,14 +44,9 @@ namespace ScraBoy.Features.CMS.User
                 modelState.AddModelError(string.Empty,"The user already exists");
                 return false;
             }
-            if(model.Username.Contains(" "))
+            if(!Regex.IsMatch(model.Username,@"^[a-zA-Z0-9]+$"))
             {
-                modelState.AddModelError(string.Empty,"Cannot contains space");
-                return false;
-            }
-            if(model.Username.Contains("@"))
-            {
-                modelState.AddModelError(string.Empty,"Cannot contains @");
+                modelState.AddModelError(string.Empty,"Username must be letter and number only");
                 return false;
             }
             if(string.IsNullOrWhiteSpace(model.Password))
@@ -69,7 +65,7 @@ namespace ScraBoy.Features.CMS.User
                 Security = model.Security,
                 RegistrationDate = DateTime.Now,
                 LastLoginTime = DateTime.Now,
-                SlugUrl ="fuuser"+Guid.NewGuid().ToString() + DateTime.Now.ToString("yymmssfff")
+                SlugUrl = "fuuser" + Guid.NewGuid().ToString() + DateTime.Now.ToString("yymmssfff")
             };
 
             await usersRepository.CreateAsync(newUser,model.Password);
@@ -92,21 +88,19 @@ namespace ScraBoy.Features.CMS.User
                 modelState.AddModelError(string.Empty,"The user already exists");
                 return false;
             }
-
-            if(model.Username.Contains(" "))
+            if(!Regex.IsMatch(model.Username,@"^[a-zA-Z0-9]+$"))
             {
-                modelState.AddModelError(string.Empty,"Cannot contains space");
+                modelState.AddModelError(string.Empty,"Username must be letter and number only");
                 return false;
             }
-            if(model.Username.Contains("@"))
-            {
-                modelState.AddModelError(string.Empty,"Cannot contains @");
-                return false;
-            }
-
             if(string.IsNullOrWhiteSpace(model.NewPassword))
             {
                 modelState.AddModelError(string.Empty,"Your must type a password");
+                return false;
+            }
+            if(model.NewPassword.Length<6)
+            {
+                modelState.AddModelError(string.Empty,"Password Length must be greater than 6 ");
                 return false;
             }
 
@@ -116,6 +110,9 @@ namespace ScraBoy.Features.CMS.User
                 UserName = model.Username,
                 Email = model.Username,
                 Born = DateTime.Now,
+                RegistrationDate = DateTime.Now,
+                Security = model.Security,
+                LastLoginTime = DateTime.Now,
                 DisplayName = model.DisplayName,
                 SlugUrl = "fuuser" + Guid.NewGuid().ToString() + DateTime.Now.ToString("yymmssfff")
             };
@@ -126,35 +123,7 @@ namespace ScraBoy.Features.CMS.User
 
             return true;
         }
-
-        public async Task<IEnumerable<Post>> GetPostByUserId(string userName)
-        {
-            using(var db = new CMSContext())
-            {
-                return await db.Post.Include("Author").
-                   Where(a => a.Author.UserName.Equals(userName)).
-                   Where(p => p.Published < DateTime.Now).
-                   OrderByDescending(a => a.Published).
-                   ToArrayAsync();
-            }
-        }
-        public async Task<CMSUser> GetProfileModel(string userId)
-        {
-            CMSUser user = await this.usersRepository.GetUserBySlug(userId);
-
-            var role = await this.usersRepository.GetRolesForUserAsync(user);
-
-            user.CurrentRole = role.FirstOrDefault();
-
-            return user;
-        }
-        public async Task<CMSUser> GetUser(string userId)
-        {
-            using(var db = new CMSContext())
-            {
-                return await db.Users.Include(a => a.Posts).Where(a => a.SlugUrl == userId).FirstOrDefaultAsync();
-            }
-        }
+     
         public List<CMSUser> GetPostsList(string name)
         {
             return this.usersRepository.GetPosts(name).OrderByDescending(a => a.RegistrationDate).ToList();
@@ -183,11 +152,12 @@ namespace ScraBoy.Features.CMS.User
                 Description = user.Description,
                 DisplayName = user.DisplayName,
                 Born = user.Born,
-                FbProfile=user.FbProfile,
-                InstagramProfile=user.InstagramProfile,
-                TwitterProfile=user.TwitterProfile,
-                UrlImage=user.UrlImage
-                
+                FbProfile = user.FbProfile,
+                Security = user.Security,
+                InstagramProfile = user.InstagramProfile,
+                TwitterProfile = user.TwitterProfile,
+                UrlImage = user.UrlImage
+
             };
 
             var userRoles = await usersRepository.GetRolesForUserAsync(user);
@@ -253,6 +223,7 @@ namespace ScraBoy.Features.CMS.User
             user.DisplayName = model.DisplayName;
             user.UrlImage = model.UrlImage;
             user.FbProfile = model.FbProfile;
+            user.Security = model.Security;
             user.InstagramProfile = model.InstagramProfile;
             user.TwitterProfile = model.TwitterProfile;
             await usersRepository.UpdateAsync(user);

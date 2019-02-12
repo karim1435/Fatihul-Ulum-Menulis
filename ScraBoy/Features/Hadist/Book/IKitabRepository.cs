@@ -17,7 +17,9 @@ namespace ScraBoy.Features.Hadist.Book
         Task GetDataFromWeb(int chapterId,int form, int to);
         Task Edit(int id,Kitab model);
         Task Delete(Kitab model);
+        Task<Kitab> FindByNumberImam(string imam,int number);
+        Task<IEnumerable<Kitab>> FindByImam(string imam);
         Task<IPagedList> GetPagedListKitab(string imam,string name,int currentPage);
-        Task<IPagedList> GetPageByChapter(string imam,string name,string chapterId,int currentPage);
+        Task<IPagedList> GetPageByChapter(string code,int? number,string imam,string name,string chapterId,int currentPage);
     }
 }

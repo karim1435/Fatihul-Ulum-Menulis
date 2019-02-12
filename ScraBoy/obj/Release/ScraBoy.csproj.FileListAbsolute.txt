@@ -199,3 +199,12 @@ E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.tetsestsetsetsete.res
 E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.wrongmodel.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.slugurl.resources
 E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.success.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.translation.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.remove1.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.addtransaltion.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.removefk.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.worng.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.requiredfield.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.LUPAA.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.biography.resources
+E:\Projects\ScraBoy\ScraBoy\obj\Release\ScraBoy.Migrations.removedesc.resources

@@ -9,15 +9,17 @@ using System.Web.Mvc;
 namespace ScraBoy.Features.Hadist.Hadis
 {
     [RoutePrefix("imam")]
+    [Authorize(Roles = "admin,editor")]
     public class ImamController : Controller
     {
-        private ImamRerpository imamRepository;
+        private IimamRepository imamRepository;
         public ImamController()
         {
             imamRepository = new ImamRepository();
         }
         [Route("")]
         [CompressContent]
+        [AllowAnonymous]
         public async Task<ActionResult> Index(int? page, string currentFilter)
         {
             int pageNumber = page ?? 1;
@@ -26,6 +28,7 @@ namespace ScraBoy.Features.Hadist.Hadis
             return View(model);
         }
         [CompressContent]
+        [AllowAnonymous]
         public async Task<ActionResult> Search(string search)
         {
             ViewBag.Filter = search;

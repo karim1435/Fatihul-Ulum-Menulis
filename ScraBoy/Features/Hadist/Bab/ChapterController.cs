@@ -10,11 +10,12 @@ using System.Web.Mvc;
 namespace ScraBoy.Features.Hadist.Bab
 {
     [RoutePrefix("chapter")]
-    public class ChapterController : Controller
+    [Authorize(Roles = "admin,editor")]
+    public class ChapterController : Controller 
     {
         private readonly IChapterRepository chapterRepository;
-        private readonly ImamRerpository imamRepository;
-        public ChapterController(IChapterRepository chapterRepository,ImamRerpository imamRepository)
+        private readonly IimamRepository imamRepository;
+        public ChapterController(IChapterRepository chapterRepository,IimamRepository imamRepository)
         {
             this.chapterRepository = chapterRepository;
             this.imamRepository = imamRepository;
@@ -25,6 +26,7 @@ namespace ScraBoy.Features.Hadist.Bab
         }
         [Route("hadist/{imam}")]
         [CompressContent]
+        [AllowAnonymous]
         public async Task<ActionResult> Index(string imam,int? page,string currentFilter)
         {
             var imamModel = await SetInfo(imam);
@@ -40,9 +42,10 @@ namespace ScraBoy.Features.Hadist.Bab
 
             return View("Index","",model);
         }
-   
+
         [Route("SearchByImam/{imam}")]
         [CompressContent]
+        [AllowAnonymous]
         public async Task<ActionResult> Search(string imam,string search)
         {
             var imamModel = await SetInfo(imam);
@@ -56,18 +59,18 @@ namespace ScraBoy.Features.Hadist.Bab
 
             return View("Index","",await this.chapterRepository.GetPageChapter(search,imam,1));
         }
+        [CompressContent]
         [Route("create")]
         [HttpGet]
-        [CompressContent]
         public async Task<ActionResult> Create()
         {
             await SetViewBag();
 
             return View(new Chapter());
         }
+        [CompressContent]
         [Route("create")]
         [HttpPost]
-        [CompressContent]
         public async Task<ActionResult> Create(Chapter model)
         {
             await SetViewBag();
@@ -77,7 +80,6 @@ namespace ScraBoy.Features.Hadist.Bab
                 await SetViewBag();
                 return View(model);
             }
-
             await this.chapterRepository.Create(model);
 
             return await Redirect();
@@ -144,10 +146,9 @@ namespace ScraBoy.Features.Hadist.Bab
         }
         public async Task SetViewBag()
         {
-            ImamRerpository imamRepo = new ImamRepository();
-            var imams = await imamRepo.GetAll();
+            var imams = await imamRepository.GetAll();
 
-            ViewBag.imam = imams.ToList();
+            ViewBag.imam = imams;
         }
     }
 }

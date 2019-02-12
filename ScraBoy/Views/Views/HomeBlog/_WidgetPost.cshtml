@@ -1,0 +1,19 @@
+﻿@model IEnumerable<ScraBoy.Features.CMS.Blog.Post>
+<div class="card-body">
+    <div class="row">
+        <div class="col-md-12">
+            @foreach(var item in Model.Take(3))
+            {
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 " src="@Url.Content(item.UrlImage)" style="height: 80px; width:80px" alt="">
+                    <div class="media-body">
+                        <a href="@Url.Action("Post","HomeBlog",new { postId = item.Id })">
+                            <h5 class="mt-0">@item.Title</h5>
+                        </a>
+                        <p>@item.Content.ReadMore(50)</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

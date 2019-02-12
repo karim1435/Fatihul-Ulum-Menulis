@@ -1,0 +1,115 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model IPagedList<ScraBoy.Features.Lomba.Contest.Competition>
+
+@{
+    ViewBag.Title = "Fatihul Ulum Menulis - Contest";
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+@section seoSection{
+    <meta name="description" content="Fatihul Ulum Menulis - Kontes - Let's Compete Now">
+    <meta name="robots" content="index">
+}
+
+<style type="text/css">
+    body {
+        background: #F7F7F7 !important;
+    }
+
+    .btn-success {
+        background-color: #14B796 !important;
+    }
+
+    .text-success {
+        color: #14B796 !important;
+</style>
+<div class="container">
+    <br />
+    <div class="jumbotron card bg-dark">
+        <div class="p-3 text-center">
+            <div class="card-body text-white">
+                <h1 class="display-4 ">Let's Compete Now <i class="fa fa-trophy"></i></h1>
+                <p class="lead">You can show off your writing skill to another writer througout the world</p>
+            </div>
+        </div>
+    </div>
+    @if(User.IsInRole("admin"))
+    {
+        <div>
+            <a href="@Url.Action("Create","Competition")" class="btn btn-danger">
+                <i class="fa fa-plus"></i> Create Contest
+            </a>
+        </div>
+        <br />
+
+    }
+    <div class="card my-4">
+        <div class="card-body">
+            @using(Html.BeginForm("Search","Competition",FormMethod.Get))
+            {
+                <div class="input-group">
+                    <input type="text" class="form-control" value="@ViewBag.Filter" name="search" placeholder="Find Contest">
+                    <span class="input-group-btn">
+                        <button class="btn btn-secondary" type="submit">Go!</button>
+                    </span>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach(var item in Model)
+        {
+            <div class="item col-xs-4 col-lg-4">
+                <div class="thumbnail card">
+                    <div class="img-event">
+                        <img style="height:200px; width:400px;" class="group list-group-image img-fluid" src="@Url.Content(item.UrlImage)" alt="@item.Title" />
+                    </div>
+                    <br />
+                    <div class="caption">
+                        <div class="col-xs-12 col-md-12">
+                            <h5 class="group card-title inner list-group-item-heading">
+                                <a class="text-dark" href="@Url.Action("View","Competition",new { slugUrl=item.SlugUrl})" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                                    @item.Title
+                                </a>
+                            </h5>
+                            <p>
+                                <span><a class="label @(item.StatusContest.Equals(ScraBoy.Features.Lomba.Contest.StatusContest.Open) ? "label-primary" : "label-danger") text-white" role="button">@item.StatusContest</a></span>
+                                @if(User.IsInRole("admin"))
+                                {
+                                    <a class="text-dark" href=@Url.Action("Edit","Competition",new { slugUrl = item.SlugUrl })>
+                                        Edit <i class="fa fa-pencil"></i>
+                                    </a>
+                                }
+                            </p>
+                            <hr />
+                            <div class="row">
+                                <div class="col-xs-12 col-md-12">
+                                    <div>
+                                        @Html.Partial("_FooterInfo",item)
+                                        <a class="btn btn-raised btn-success" href="@Url.Action("View","Competition",new { slugUrl=item.SlugUrl})" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+                                            View Contest
+                                        </a>
+                                    </div>
+                                    <br />
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+
+    <div>
+        @if(Model.Count() > 0)
+        {
+            <text>Page</text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text>Of</text> @Model.PageCount
+            @Html.PagedListPager(Model,page => Url.Action("Index","Competition",new { page = page,currentFilter = ViewBag.Filter }))
+        }
+    </div>
+</div>

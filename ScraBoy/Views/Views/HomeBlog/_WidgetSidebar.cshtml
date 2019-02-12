@@ -1,0 +1,5 @@
+﻿<div class="card my-4">
+    <h5 class="card-header"><i class="fa fa-laptop"></i> Latest Posts</h5>
+    @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.Blog.Post>)ViewBag.NewPosts)
+</div>
+@Html.Partial("_Sidebar")

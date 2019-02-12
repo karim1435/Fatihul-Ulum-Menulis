@@ -1,5 +1,4 @@
-﻿
-@using PagedList;
+﻿@using PagedList;
 @using PagedList.Mvc;
 
 @model PagedList.IPagedList<ScraBoy.Features.CMS.Blog.Post>
@@ -49,7 +48,7 @@
                                 <img src="@Url.Content(item.UrlImage)" style="height:380px;">
                                 <div class="carousel-caption">
                                     <h2 class="group card-title inner list-group-item-heading ">
-                                        @Html.ActionLink(item.Title,"post",new { controller = "HomeBlog",postId = item.Id },new { @class = "bg-dark text-light"})
+                                        @Html.ActionLink(item.Title,"post",new { controller = "HomeBlog",postId = item.Id },new { @class = "bg-dark text-light" })
                                     </h2>
                                 </div>
                             </div>
@@ -74,7 +73,7 @@
                                 <img class="d-flex mr-3 " src="@Url.Content(item.UrlImage)" style="height: 50px; width:50px" alt="">
                                 <div class="media-body">
                                     <h5 class="group card-title inner list-group-item-heading">
-                                        @Html.ActionLink(item.Title,"post",new { controller = "HomeBlog",postId = item.Id },new { @class = "text-dark"})
+                                        @Html.ActionLink(item.Title,"post",new { controller = "HomeBlog",postId = item.Id },new { @class = "text-dark" })
                                     </h5>
                                 </div>
                             </div>

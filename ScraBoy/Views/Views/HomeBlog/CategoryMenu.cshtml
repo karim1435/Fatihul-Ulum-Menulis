@@ -1,0 +1,23 @@
+﻿@model IEnumerable<string>
+<div class="row">
+    <nav class="navbar navbar-default">
+        <li style="list-style-type: none">
+            <a class="btn btn-default bg-green text-white" href="#" id="navbarDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i style="color:white" class="fa fa-search"></i>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-left notify-drop">
+                <div class="drop-content">
+                    @foreach(var item in Model)
+                    {
+                        <li>
+                            <div class="col-md-3 col-sm-3 col-xs-3">
+                                <a style="font-size:20px" class="dropdown-item" href="@Url.Action("Category",new { catId = item })">@item</a>
+                            </div>
+                        </li>
+                    }
+                </div>
+
+            </ul>
+        </li>
+    </nav>
+</div>

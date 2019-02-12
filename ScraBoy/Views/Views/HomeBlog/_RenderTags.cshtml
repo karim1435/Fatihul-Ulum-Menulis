@@ -1,0 +1,23 @@
+﻿@model ScraBoy.Features.CMS.Blog.Post
+
+@if(ViewBag.Single)
+{
+    foreach(var item in Model.Tags.Distinct())
+    {
+        <a class="label label-success" href="@Url.Action("Tag",new { tagId = item })" rel="nofollow">@item</a>
+    }
+}
+else
+{
+    foreach(var item in Model.Tags.Distinct().Take(3))
+    {
+        <a class="label label-success" href="@Url.Action("Tag",new { tagId = item })" rel="nofollow">@item</a>
+    }
+    if(Model.Tags.Distinct().Count() > 3)
+    {
+        <a class="text-muted" href=@Url.Action("Post","Homeblog",new { postId = Model.Id })>
+            +@(Model.Tags.Distinct().Count() - 3) more
+        </a>
+
+    }
+}

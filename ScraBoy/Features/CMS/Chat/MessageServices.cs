@@ -30,7 +30,7 @@ namespace ScraBoy.Features.CMS.Chat
                 return await db.Users.ToListAsync();
             }
         }
-        public async Task<IEnumerable<Massage>>  GetMessages()
+        public async Task<IEnumerable<Massage>> GetMessages()
         {
             using(var db = new CMSContext())
             {
@@ -69,7 +69,17 @@ namespace ScraBoy.Features.CMS.Chat
 
             return models;
         }
-        public async Task<bool> SendMessage(string userId, Massage model)
+        public async Task<Boolean> EditMessage(int id,Massage model)
+        {
+            if(!modelState.IsValid)
+            {
+                return false;
+            }
+
+            await this.messageRepository.Edit(id,model);
+            return true;
+        }
+        public async Task<bool> SendMessage(string userId,Massage model)
         {
             if(!modelState.IsValid)
             {
@@ -77,7 +87,7 @@ namespace ScraBoy.Features.CMS.Chat
             }
             var user = await this.FindUser(userId);
 
-            if(user==null)
+            if(user == null)
             {
                 modelState.AddModelError(string.Empty,"can't find user");
                 return false;
@@ -90,9 +100,9 @@ namespace ScraBoy.Features.CMS.Chat
             }
 
             model.Sent = DateTime.Now;
-      
+
             await this.messageRepository.Create(model);
             return true;
-        } 
+        }
     }
 }

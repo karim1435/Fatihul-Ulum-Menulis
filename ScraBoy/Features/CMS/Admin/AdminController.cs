@@ -268,18 +268,14 @@ namespace ScraBoy.Features.CMS.Admin
                         Icon = "fa fa-trophy",
                         RouteInfo = new { controller = "Competition" }
                     });
-                }
-                if(!User.IsInRole("author"))
-                {
                     items.Add(new AdminMenuItem
                     {
                         Text = "Tags",
                         Action = "Index",
                         Icon = "fa fa-tags",
-                        RouteInfo = new { controller = "tag"}
+                        RouteInfo = new { controller = "tag" }
                     });
                 }
-
                 items.Add(new AdminMenuItem
                 {
                     Text = "Posts",

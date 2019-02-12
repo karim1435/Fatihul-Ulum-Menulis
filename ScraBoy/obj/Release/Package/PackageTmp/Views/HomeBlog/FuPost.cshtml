@@ -29,7 +29,10 @@
 
         <div class="col-md-8">
             <br />
-            @Html.Partial("_RenderPost",Model)
+            
+            <div class="row">
+              @Html.Partial("_RenderPost",Model)
+            </div>
             <div>
                 @if(Model.Count() > 0)
                 {

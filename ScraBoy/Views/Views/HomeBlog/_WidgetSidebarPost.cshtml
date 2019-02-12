@@ -1,0 +1,7 @@
+﻿
+<div class="card my-4">
+    <h5 class="card-header"><i class="fa fa-link"></i> Related Posts</h5>
+    @Html.Partial("_WidgetPost",(IEnumerable<ScraBoy.Features.CMS.Blog.Post>)ViewBag.RelatedPosts)
+</div>
+@Html.Partial("_Sidebar")
+

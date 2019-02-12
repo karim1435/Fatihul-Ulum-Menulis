@@ -1,0 +1,44 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model IPagedList<ScraBoy.Features.CMS.HomeBlog.NotificationViewModel>
+
+    @{
+    ViewBag.Title = "Fatihul Ulum Menulis - Notifications";
+
+    Layout = "~/Views/Shared/_BlogLayout.cshtml";
+    }
+    @section seoSection{
+    <meta name="robots" content="noindex, nofollow" />
+    }
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="about">
+                    <div class="content line"></div>
+                    <div class="content text">Notifications</div>
+                    <div class="content line"></div>
+                </div>
+                @foreach(var item in Model)
+                {
+                <div class="media mb-4">
+                    <img class="d-flex mr-3 rounded-circle" src="@Url.Content(item.User.UrlImage)" style="height: 80px; width:80px" alt="">
+                    <div class="media-body">
+                        <a class="text-primary" href="@Url.Action(" Profile","HomeBlog",new { username=item.User.UserName })">
+                            <h5 class="mt-0">@item.User.DisplayName</h5>
+                        </a>
+                        <span>@((int)item.NotificationType == 1 ? "Liked" : item.Parent != null ? "Replied comment On" : "Commented On"  ) your post</span>
+                        <a class="text-primary" href="@Url.Action(" Post","HomeBlog",new { postId=item.Post.Id })">@item.Post.Title</a> @item.PostedOn.TimeAgo()
+                    </div>
+                </div>
+                <hr />
+                }
+            </div>
+
+
+        </div>
+        @if(Model.Count() > 0)
+        {
+        <text>Page</text> @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) <text>Of</text> @Model.PageCount
+        @Html.PagedListPager(Model,page => Url.Action("Info",new { page = page }))
+        }
+    </div>

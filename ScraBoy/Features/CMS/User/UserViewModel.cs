@@ -24,6 +24,8 @@ namespace ScraBoy.Features.CMS.User
         public string SlugUrl { get; set; }
         [Display(Name = "Display Name")]
         public string DisplayName { get; set; }
+        [Display(Name = "Security Question")]
+        public string Security { get; set; }
         public string Email { get; set; }
         [Display(Name = "Current Password")]
         public string CurrentPassword { get; set; }

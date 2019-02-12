@@ -15,6 +15,7 @@ namespace ScraBoy.Features.Hadist.Bab
         Task<IEnumerable<Chapter>> GetAll();
         Task<Chapter> GetOne(int id);
         Task<Chapter> FindBySlug(string slugUrl);
+        Task<IEnumerable<Chapter>> FindByImam(string url);
         Task<IPagedList> GetPageChapter(string name,string imam,int currenPage);
     }
 

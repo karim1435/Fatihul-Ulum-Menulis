@@ -1,0 +1,37 @@
+﻿@model ScraBoy.Features.Hadist.Meaning.Translation
+
+@{
+    var original = ViewBag.original as ScraBoy.Features.Hadist.Book.Kitab;
+}
+
+@Html.Partial("_Info",original)
+
+@using(Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true,"",new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="form-label-group">
+               @Html.TextAreaFor(model => model.Content,10,40,htmlAttributes: new { style = "width: 100%; max-width: 100%;" })
+                @Html.ValidationMessageFor(model => model.Content,"",new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group">
+            <p>Select Language</p>
+            <div class="btn-group dropup">
+                @Html.DropDownListFor(
+                 model => model.LanguageId,new SelectList(ViewBag.languages,"Id","Name"),
+                 new { @class = "form-control",@placeholder = "Enter Title",@autofocus = "autofocus" }
+                )
+                @Html.ValidationMessageFor(model => model.LanguageId,"",new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="Submit" class="btn btn-default" />
+        </div>
+    </div>
+}

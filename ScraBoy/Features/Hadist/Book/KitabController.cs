@@ -2,6 +2,7 @@
 using ScraBoy.Features.Data;
 using ScraBoy.Features.Hadist.Bab;
 using ScraBoy.Features.Hadist.Hadis;
+using ScraBoy.Features.Hadist.Meaning;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,19 +13,23 @@ using System.Web.Mvc;
 namespace ScraBoy.Features.Hadist.Book
 {
     [RoutePrefix("hadis")]
+    [Authorize(Roles = "admin,editor")]
     public class KitabController : Controller
     {
+        private readonly ITranslationRepository translationRepository;
         private readonly IKitabRepository kitabRepository;
-        private readonly ImamRerpository imamRepository;
+        private readonly IimamRepository imamRepository;
         private readonly IChapterRepository chapterRepository;
         public KitabController()
         {
             this.imamRepository = new ImamRepository();
             kitabRepository = new KitabRepository();
             chapterRepository = new ChapterRepository();
+            this.translationRepository = new TranslationRepository();
         }
         [Route("byhadis/{imam}")]
         [CompressContent]
+        [AllowAnonymous]
         public async Task<ActionResult> Index(string imam,int? page,string currentFilter)
         {
             var imamModel = await SetImamInfo(imam);
@@ -35,14 +40,13 @@ namespace ScraBoy.Features.Hadist.Book
             }
 
             int pageNumber = (page ?? 1);
-
-
             var model = await this.kitabRepository.GetPagedListKitab(imam,currentFilter,pageNumber);
 
             return View("Index","",model);
         }
         [CompressContent]
         [Route("SearchKitab/{imam}")]
+        [AllowAnonymous]
         public async Task<ActionResult> Search(string imam,string search)
         {
             var imamModel = await SetImamInfo(imam);
@@ -56,10 +60,13 @@ namespace ScraBoy.Features.Hadist.Book
 
             return View("Index","",await this.kitabRepository.GetPagedListKitab(imam,search,1));
         }
-        [Route("FindByChapter/{imam}/{chapterId}")]
+        [Route("FindByChapter/{imam}")]
+        [AllowAnonymous]
         [CompressContent]
-        public async Task<ActionResult> FindByChapter(string imam,string chapterId,int? page,string currentFilter)
+        public async Task<ActionResult> FindByChapter(string code,int? number,string imam,string chapterId,int? page,string currentFilter)
         {
+            ViewBag.Filter = currentFilter;
+            ViewBag.number = number;
             var imamModel = await SetImamInfo(imam);
 
             var chapterModel = await SetChapterInfo(chapterId);
@@ -68,21 +75,25 @@ namespace ScraBoy.Features.Hadist.Book
             {
                 return HttpNotFound();
             }
+            await SetChapterViewBag(imam);
 
             int pageNumber = (page ?? 1);
 
-            var model = await this.kitabRepository.GetPageByChapter(imam,currentFilter,chapterId,pageNumber);
+            var model = await this.kitabRepository.GetPageByChapter("ID",number,imam,currentFilter,chapterId,pageNumber);
 
-            return View("Chapter","",model);
+            return View("FindByChapter","",model);
         }
 
-        [Route("SearchByChapter/{imam}/{chapterId}")]
+        [Route("SearchByChapter/{imam}")]
         [CompressContent]
-        public async Task<ActionResult> SearchByChapter(string imam,string chapterId,string search)
+        [AllowAnonymous]
+        public async Task<ActionResult> SearchByChapter(string code,int? number,string imam,string chapterId,string search)
         {
             var imamModel = await SetImamInfo(imam);
 
             var chapterModel = await SetChapterInfo(chapterId);
+
+            await SetChapterViewBag(imam);
 
             if(imamModel == null || chapterModel == null)
             {
@@ -90,12 +101,12 @@ namespace ScraBoy.Features.Hadist.Book
             }
             ViewBag.Filter = search;
 
-            var model = await this.kitabRepository.GetPageByChapter(imam,search,chapterId,1);
+            ViewBag.Number = number;
 
-            return View("Chapter","",model);
+            var model = await this.kitabRepository.GetPageByChapter(code,number,imam,search,chapterId,1);
+
+            return View("FindByChapter","",model);
         }
-
-        [Authorize]
         [HttpGet]
         [Route("Scrap/{chapterId}")]
         [CompressContent]
@@ -110,37 +121,37 @@ namespace ScraBoy.Features.Hadist.Book
             await kitabRepository.GetDataFromWeb(chapter.Id,from,to);
 
             return await Redirect();
-
         }
         [HttpGet]
-        [Route("create")]
+        [Route("create/{imam}")]
         [CompressContent]
-        public async Task<ActionResult> Create()
+        public async Task<ActionResult> Create(string imam)
         {
-            await SetViewBag();
-            return View(new Kitab());
+            await SetViewBag(imam);
+            return View();
         }
         [HttpPost]
-        [Route("create")]
+        [Route("create/{imam}")]
         [CompressContent]
-        public async Task<ActionResult> Create(Kitab model)
+        public async Task<ActionResult> Create(string imam,Kitab model)
         {
-            await SetViewBag();
+            await SetViewBag(imam);
 
             if(!ModelState.IsValid)
             {
-                await SetViewBag();
+                await SetViewBag(imam);
                 return View(model);
             }
             await this.kitabRepository.Create(model);
             return await Redirect();
         }
         [HttpGet]
-        [Route("edit/{id}")]
+        [Route("edit/{imam}/{id}")]
         [CompressContent]
-        public async Task<ActionResult> Edit(int id)
+        public async Task<ActionResult> Edit(string imam,int id)
         {
-            await SetViewBag();
+            await SetViewBag(imam);
+
             var model = await this.kitabRepository.GetById(id);
 
             if(model == null)
@@ -150,14 +161,14 @@ namespace ScraBoy.Features.Hadist.Book
             return View(model);
         }
         [HttpPost]
-        [Route("edit/{id}")]
+        [Route("edit/{imam}/{id}")]
         [CompressContent]
-        public async Task<ActionResult> Edit(int id,Kitab model)
+        public async Task<ActionResult> Edit(string imam,int id,Kitab model)
         {
-            await SetViewBag();
+            await SetViewBag(imam);
             if(!ModelState.IsValid)
             {
-                await SetViewBag();
+                await SetViewBag(imam);
                 return View(model);
             }
             await this.kitabRepository.Edit(id,model);
@@ -173,20 +184,20 @@ namespace ScraBoy.Features.Hadist.Book
             {
                 return HttpNotFound();
             }
-
             await this.kitabRepository.Delete(model);
+
             return await Redirect();
         }
         public async Task<ActionResult> Redirect()
         {
             ViewBag.ImamUrl = TempData["imamSlugUrl"].ToString();
-            ViewBag.ChapterUrl= TempData["chapterSlugUrl"].ToString();
+            ViewBag.ChapterUrl = TempData["chapterSlugUrl"].ToString();
 
             return RedirectToAction("FindByChapter","Kitab",new { imam = ViewBag.ImamUrl,chapterId = ViewBag.ChapterUrl });
         }
-        public async Task SetViewBag()
+        public async Task SetViewBag(string imam)
         {
-            ViewBag.chapter = await chapterRepository.GetAll();
+            ViewBag.chapter = await chapterRepository.FindByImam(imam);
         }
         public async Task<Imam> SetImamInfo(string imam)
         {
@@ -208,9 +219,21 @@ namespace ScraBoy.Features.Hadist.Book
 
             TempData["chapterSlugUrl"] = chapterModel.SlugUrl;
 
-            ViewBag.chapterName = chapterModel.Name;
+            string chapterTitle = chapterModel.Name;
+            string chapterLimit = "";
+            if(chapterModel.Kitabs.Count() > 0)
+                chapterLimit = chapterModel.LimitNumber;
+
+            ViewBag.chapterName = chapterTitle + " " + chapterLimit;
 
             return chapterModel;
+        }
+        public async Task SetChapterViewBag(string imam)
+        {
+            var model = await this.chapterRepository.FindByImam(imam);
+            var language = await this.translationRepository.GetAllBahasa();
+            ViewBag.chapters = model;
+            ViewBag.language = language;
         }
     }
 }

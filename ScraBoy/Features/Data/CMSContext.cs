@@ -29,6 +29,7 @@ using Microsoft.AspNet.SignalR.Messaging;
 using ScraBoy.Features.CMS.Chat;
 using ScraBoy.Features.Hadist.Bab;
 using ScraBoy.Features.Hadist.Hadis;
+using ScraBoy.Features.Hadist.Meaning;
 
 namespace ScraBoy.Features.Data
 {
@@ -66,6 +67,8 @@ namespace ScraBoy.Features.Data
         public DbSet<Kitab> Kitab { get; set; }
         public DbSet<Chapter> Chapter { get; set; }
         public DbSet<Imam> Imam { get; set; }
+        public DbSet<Language> Language { get; set; }
+        public DbSet<Translation> Translation { get; set; }
         #endregion
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -176,6 +179,7 @@ namespace ScraBoy.Features.Data
             .WithMany(g => g.Kitabs)
             .HasForeignKey<int>(s => s.ChapterId).WillCascadeOnDelete(true);
 
+            
             //#region Forum FluentApi
             //modelBuilder.Entity<Thread>().HasKey(e => e.Id)
             //   .Property(e => e.Id)

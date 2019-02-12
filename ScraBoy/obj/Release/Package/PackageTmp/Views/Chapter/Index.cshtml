@@ -4,12 +4,16 @@
 @model IPagedList<ScraBoy.Features.Hadist.Bab.Chapter>
 
 @{
-    ViewBag.Title = "Fatihul Ulum - Chapter Hadist";
+    ViewBag.Title = "Fatihul Ulum Hadits - "+ViewBag.hadisTitle;
     Layout = "~/Views/Shared/_BlogLayout.cshtml";
+}
+@section seoSection{
+    <meta name="description" content="Fatihul Ulum Hadits - @ViewBag.hadisTitle ">
+    <meta name="robots" content="index">
 }
 <div class="container">
     <br />
-    @if(User.IsInRole("admin"))
+    @if(User.IsInRole("admin") || User.IsInRole("editor"))
     {
         <a href="@Url.Action("Create","Chapter")" class="btn btn-success">
             New Chapter
@@ -45,19 +49,24 @@
                                         {
                                             @item.LimitNumber
                                         }
-
                                     </a>
                                     <br />
-                                    @if(User.IsInRole("admin"))
+                                    @if(User.IsInRole("admin") || User.IsInRole("editor"))
                                     {
-                                        <a href=@Url.Action("Edit","Chapter",new { id = item.Id })>
+                                        <a class="label label-primary" href=@Url.Action("Edit","Chapter",new { id = item.Id })>
                                             Edit <i class="fa fa-pencil"></i>
                                         </a>
-                                        <a href=@Url.Action("Delete","Chapter",new { id = item.Id })>
+                                     
+                                    }
+                                    @if(User.IsInRole("admin"))
+                                    {
+                                        <a class="label label-danger" href=@Url.Action("Delete","Chapter",new { id = item.Id })>
                                             Delete <i class="fa fa-trash"></i>
                                         </a>
                                     }
                                 </td>
+
+
 
                             </tr>
                         }
